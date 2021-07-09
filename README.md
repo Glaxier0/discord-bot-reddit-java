@@ -27,7 +27,7 @@ An sql database named reddit_bot (if you use different sql then postgresql hiber
 
 reddit_bot database needs posts table.
 
-[Table create script for postgresql](https://github.com/celiktahir/discord-bot-java/blob/master/postgresql-create-script)
+[Table create script for postgresql](https://github.com/celiktahir/discord-bot-java/blob/master/postgresql-create-script.md)
 
 Some error may occur while creating table from script so an sql knowledge needed.
 
