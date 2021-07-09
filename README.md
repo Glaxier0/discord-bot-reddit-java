@@ -4,7 +4,7 @@
 ### Used APIs ###
 Reddit API - [JRAW Wrapper](https://github.com/mattbdean/JRAW)
 
-Vimeo API - [clickntap Java SDK](https://github.com/DV8FromTheWorld/JDA) 
+Vimeo API - [clickntap Java SDK](https://github.com/clickntap/Vimeo) 
 
 Vimeo API let us watch reddit videos directly in discord via embed. Any video hosting site can be used instead of Vimeo
 
@@ -23,7 +23,7 @@ Vimeo API TOKEN from https://developer.vimeo.com/apps
 
 DISCORD API BOT TOKEN from https://discord.com/developers/applications
 
-An sql database named reddit_bot (if you use different sql then postgresql hibernate.cfg.xml needs to be edited.)
+An sql database named reddit_bot (if you use different sql than postgresql hibernate.cfg.xml needs to be edited.)
 
 reddit_bot database needs posts table.
 
