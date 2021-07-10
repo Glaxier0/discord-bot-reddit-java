@@ -19,7 +19,7 @@ Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 Reddit username, reddit password, reddit personal use script from https://www.reddit.com/prefs/apps 
 Reddit client_id, client_secret.
 
-Vimeo API TOKEN from https://developer.vimeo.com/apps
+Vimeo API TOKEN from https://developer.vimeo.com/apps with auth(you) public, private, create, edit, delete, upload scopes
 
 DISCORD API BOT TOKEN from https://discord.com/developers/applications
 
