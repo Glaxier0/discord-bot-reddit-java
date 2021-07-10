@@ -1,4 +1,5 @@
 # postgresql-create-script #
+# default user is postgres but if you have a user dont forget to give it permissions
 
 
 -- Table: public.posts
@@ -30,3 +31,4 @@ ALTER TABLE public.posts
     OWNER to postgres;
 
 GRANT ALL ON TABLE public.posts TO postgres;
+GRANT USAGE, SELECT ON SEQUENCE posts_id_seq TO postgres;
