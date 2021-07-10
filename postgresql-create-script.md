@@ -1,5 +1,5 @@
 # postgresql-create-script #
-### default user is postgres but if you have a user dont forget to give it permissions###
+### default user is postgres but if you have a user dont forget to give it permissions
 
 
 -- Table: public.posts
