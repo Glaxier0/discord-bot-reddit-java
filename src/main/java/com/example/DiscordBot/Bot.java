@@ -92,15 +92,15 @@ public class Bot {
                 Credentials.script(REDDIT_USERNAME, REDDIT_PASSWORD,
                         CLIENT_ID, CLIENT_SECRET));
 
-        //Edit Unexpected to desired subreddit.
-        DefaultPaginator<Submission> unexpected =
-                redditClient.subreddit("Unexpected")
+        //Edit memes to desired subreddit.
+        DefaultPaginator<Submission> memes =
+                redditClient.subreddit("memes")
                         .posts()
                         .sorting(SubredditSort.TOP)
                         .timePeriod(TimePeriod.DAY)
                         .build();
 
-        Listing<Submission> submissions = unexpected.next();
+        Listing<Submission> submissions = memes.next();
 
         //List subreddit posts and save them to database
         for (Submission s : submissions) {
