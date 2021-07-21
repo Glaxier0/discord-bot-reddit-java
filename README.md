@@ -1,4 +1,4 @@
-# discord-bot-java
+# discord-bot-reddit-java
  A discord bot project that gathers posts from reddit and post them in discord channel.
  
 ### Used APIs ###
