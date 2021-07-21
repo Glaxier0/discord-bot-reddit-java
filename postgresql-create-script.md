@@ -11,7 +11,7 @@ CREATE TABLE public.posts
     id integer NOT NULL DEFAULT nextval('posts_id_seq'::regclass),
     url character varying(250) COLLATE pg_catalog."default" NOT NULL,
     author character varying(50) COLLATE pg_catalog."default",
-    title character varying(120) COLLATE pg_catalog."default",
+    title character varying(512) COLLATE pg_catalog."default",
     created date,
     subreddit character varying(50) COLLATE pg_catalog."default",
     type character varying(50) COLLATE pg_catalog."default",

@@ -1,11 +1,8 @@
-package com.example.DiscordBot.Entity;
+package com.discord.bot.Entity;
 
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Entity class for database connection.
- */
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -21,7 +18,7 @@ public class Post {
     @Column(name = "subreddit")
     private String subreddit;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 512)
     private String title;
 
     @Column(name = "author")
@@ -101,6 +98,7 @@ public class Post {
     public void setSubreddit(String subreddit) {
         this.subreddit = subreddit;
     }
+
 
     public String getContentType() {
         return contentType;

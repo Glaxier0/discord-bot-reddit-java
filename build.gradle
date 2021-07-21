@@ -1,0 +1,33 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.discord'
+version = '0.0.1'
+sourceCompatibility = '16'
+
+repositories {
+	mavenCentral()
+	jcenter()
+	maven {
+		name 'm2-dv8tion'
+		url 'https://m2.dv8tion.net/releases'
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation "net.dv8tion:JDA:4.3.0_277"
+	implementation "net.dean.jraw:JRAW:1.1.0"
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
+	implementation group: 'com.clickntap', name:  'vimeo', version: '1.13'
+}
+
+test {
+	useJUnitPlatform()
+}
