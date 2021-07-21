@@ -8,26 +8,29 @@ Vimeo API - [clickntap Java SDK](https://github.com/clickntap/Vimeo)
 
 Vimeo API let us watch reddit videos directly in discord via embed. Any video hosting site can be used instead of Vimeo
 
-Keep in mind vimeo has free 10 daily video upload quota (if you use vimeo, plus upgrade required for bot to work 24/7). 
+Keep in mind vimeo has free 10 daily video upload quota (if you use vimeo, plus upgrade required for bot to work 24/7 and can hold lots of videos). 
 
-Youtube has free 6 daily video upload quota so good luck finding good one.
+[Free version of this project that can hold 10 video at time](https://github.com/Glaxier0/discord-bot-reddit-java-free-version)
+
 
 Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 
 ### Things needed for project to work ###
 
-Reddit username, reddit password, reddit personal use script from https://www.reddit.com/prefs/apps 
+Don't forget to edit application.properties in resources folder.
+
+Reddit username, reddit password, reddit personal use script from [here](https://www.reddit.com/prefs/apps) 
 Reddit client_id, client_secret.
 
-Vimeo API TOKEN from https://developer.vimeo.com/apps with auth(you) public, private, create, edit, delete, upload scopes
+Vimeo API TOKEN from [here](https://developer.vimeo.com/apps) with auth(you) public, private, create, edit, delete, upload scopes
 
-DISCORD API BOT TOKEN from https://discord.com/developers/applications
+DISCORD API BOT TOKEN from [here](https://discord.com/developers/applications)
 
-An sql database named reddit_bot (if you use different sql than postgresql hibernate.cfg.xml needs to be edited.)
+An sql database named reddit_bot
 
 reddit_bot database needs posts table.
 
-[Table create script for postgresql](https://github.com/celiktahir/discord-bot-java/blob/master/postgresql-create-script.md)
+[Table create script for postgresql](https://github.com/Glaxier0/discord-bot-java/blob/master/postgresql-create-script.md)
 
 Some error may occur while creating table from script so an sql knowledge needed.
 
