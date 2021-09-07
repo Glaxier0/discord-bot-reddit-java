@@ -13,13 +13,12 @@ import java.util.Random;
 public class RedditCommands extends ListenerAdapter {
 
     PostService service;
+    Random random = new Random();
+    List<String> subreddit = Arrays.asList("!unexpected", "!dankmemes", "!memes", "!greentext");
 
     public RedditCommands(PostService service) {
         this.service = service;
     }
-
-    Random random = new Random();
-    List<String> subreddit = Arrays.asList("!unexpected", "!dankmemes", "!memes", "!greentext");
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
@@ -30,8 +29,7 @@ public class RedditCommands extends ListenerAdapter {
         if (subreddit.contains(messageSent.toLowerCase()) && !isBot) {
 
             String subreddit = messageSent.toLowerCase().substring(1);
-
-            if(subreddit.equals("unexpected")) {
+            if (subreddit.equals("unexpected")) {
                 subreddit = "Unexpected";
             }
 

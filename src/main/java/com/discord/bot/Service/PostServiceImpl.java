@@ -3,7 +3,6 @@ package com.discord.bot.Service;
 import com.discord.bot.Entity.Post;
 import com.discord.bot.Dao.PostRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -49,4 +48,12 @@ public class PostServiceImpl implements PostService {
     public List<String> getSubredditCount() {
         return repository.getSubredditCount();
     }
+
+    @Override
+    public List<Post> getHentai() {
+        return repository.getHentai();
+    }
+
+    @Override
+    public  List<Post> getPorn() {return repository.getPorn();}
 }

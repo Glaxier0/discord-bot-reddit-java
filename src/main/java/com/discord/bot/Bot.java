@@ -3,10 +3,9 @@ package com.discord.bot;
 import com.clickntap.vimeo.Vimeo;
 import com.clickntap.vimeo.VimeoException;
 import com.discord.bot.Entity.Post;
-import com.discord.bot.Event.AdminCommands;
-import com.discord.bot.Event.RedditCommands;
-import com.discord.bot.Event.TextCommands;
+import com.discord.bot.Event.*;
 import com.discord.bot.Service.PostService;
+import com.discord.bot.Service.TodoService;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.NetworkAdapter;
 import net.dean.jraw.http.OkHttpNetworkAdapter;
@@ -41,6 +40,9 @@ import java.util.*;
 @EnableScheduling
 public class Bot {
 
+    PostService service;
+    TodoService todoService;
+    //Edit this fields in application.properties under main > resources
     @Value("${reddit_username}")
     private String REDDIT_USERNAME;
     @Value("${reddit_password}")
@@ -49,30 +51,24 @@ public class Bot {
     private String REDDIT_CLIENT_ID;
     @Value("${reddit_client_secret}")
     private String REDDIT_CLIENT_SECRET;
-
     @Value("${vimeo_token}")
     private String VIMEO_TOKEN;
-
     @Value("${discord_bot_token}")
     private String DISCORD_TOKEN;
 
-    PostService service;
-
-    public Bot (PostService service) {
+    public Bot(PostService service, TodoService todoService) {
         this.service = service;
+        this.todoService = todoService;
     }
 
-    /**
-     * Starts the discord bot
-     */
     @Bean
     public void startDiscordBot() {
         try {
             JDA jda = JDABuilder.createDefault(DISCORD_TOKEN).build();
             jda.getPresence().setActivity(Activity.playing("Type !help"));
-            jda.addEventListener(new RedditCommands(service));
-            jda.addEventListener(new TextCommands());
-            jda.addEventListener(new AdminCommands(service));
+            jda.addEventListener(new RedditCommands(service), new TextCommands(), new AdminCommands(service),
+                    new NsfwCommands(service), new ToDoCommands(todoService));
+
             System.out.println("Starting bot is done!");
         } catch (LoginException e) {
             e.printStackTrace();
@@ -98,7 +94,12 @@ public class Bot {
                 Credentials.script(REDDIT_USERNAME, REDDIT_PASSWORD,
                         REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET));
 
-        List<String> subreddits = Arrays.asList("Unexpected", "memes", "dankmemes", "greentext");
+        //Embedded link need to be embedable in discord to nsfw videos work. Like redgifs.com or gyfcat.
+        //For legal reasons you cant upload vimeo nsfw stuff
+        //Keep in mind this things adding more nsfw subreddits to list.
+        List<String> subreddits = Arrays.asList("Unexpected", "memes", "dankmemes", "greentext",
+                                            "hentai", "HENTAI_GIF", "rule34", "porninaminute",
+                                            "porninfifteenseconds", "porn", "anal_gifs", "porn_gifs");
 
         List<DefaultPaginator<Submission>> paginatorList = new ArrayList<>();
 
@@ -110,17 +111,15 @@ public class Bot {
                     .build());
         }
 
-        for(DefaultPaginator<Submission> d : paginatorList) {
+        for (DefaultPaginator<Submission> d : paginatorList) {
             Listing<Submission> submissions = d.next();
             for (Submission s : submissions) {
 
+                int charLimit = s.getTitle().length() + s.getAuthor().length() + s.getSubreddit().length();
+                Post post = new Post(s.getUrl(), s.getSubreddit(), s.getTitle(), s.getAuthor(), s.getCreated());
+                post.setPermaUrl("https://reddit.com" + s.getPermalink());
+
                 if (!s.isNsfw()) {
-
-                    int charLimit = s.getTitle().length() + s.getAuthor().length() + s.getSubreddit().length();
-
-                    Post post = new Post(s.getUrl(), s.getSubreddit(), s.getTitle(), s.getAuthor(), s.getCreated());
-                    post.setPermaUrl("https://reddit.com" + s.getPermalink());
-
                     if (s.getUrl().contains("https://v.redd.it") && charLimit <= 101) {
 
                         String fallbackUrl = Objects.requireNonNull(Objects.requireNonNull(s.getEmbeddedMedia()).getRedditVideo()).getFallbackUrl();
@@ -133,37 +132,34 @@ public class Bot {
 
                         post.setContentType("video");
                         post.setDownloadUrl(fallbackVideoWithAudioDownloadUrl);
-                    }
-
-                    else if (s.getUrl().contains(".gif") || s.getUrl().contains("gfycat.com")) {
+                    } else if (s.getUrl().contains(".gif") || s.getUrl().contains("gfycat.com")) {
                         post.setContentType("gif");
-                    }
-
-                    else if (s.getUrl().contains(".jpg") || s.getUrl().contains(".png")) {
+                    } else if (s.getUrl().contains(".jpg") || s.getUrl().contains(".png")) {
                         post.setContentType("image");
-                    }
-
-                    else if (s.getUrl().contains("https://www.reddit.com/")) {
+                    } else if (s.getUrl().contains("https://www.reddit.com/")) {
                         post.setContentType("text");
                     }
-
-                    String queryPost = service.getByUrl(post.getUrl());
-
-                    if (post.getUrl().equals(queryPost)) {
-                        System.out.println("URL exist in database: " + queryPost);
+                } else {
+                    if (s.getUrl().contains("https://www.reddit.com/gallery/")) {
+                        post.setContentType("text");
+                    } else {
+                        post.setContentType("image");
                     }
+                }
 
-                    else {
-                        service.save(post);
-                        System.out.println("Saved url to database: " + post.getUrl());
-                    }
+                String queryPost = service.getByUrl(post.getUrl());
+
+                if (post.getUrl().equals(queryPost)) {
+                    System.out.println("URL exist in database: " + queryPost);
+                } else {
+                    service.save(post);
+                    System.out.println("Url saved to database: " + post.getUrl());
                 }
             }
 
             try {
                 Thread.sleep(30000);
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -196,17 +192,18 @@ public class Bot {
             try (InputStream in = Objects.requireNonNull(url).openStream();
                  ReadableByteChannel rbc = Channels.newChannel(in);
                  FileOutputStream fos = new FileOutputStream("temp.mp4")) {
-                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             //Upload video to vimeo
             String videoEndPoint, vimeoUrl = null;
+
             try {
                 videoEndPoint = vimeo.addVideo(new File("temp.mp4"), false);
                 vimeo.updateVideoMetadata(videoEndPoint, "Title: " + post.getTitle() + " by: u/" + post.getAuthor() +
-                        "\nPosted on: r/" + post.getSubreddit(),
+                                "\nPosted on: r/" + post.getSubreddit(),
                         "This video taken from reddit. Link to the video: " + post.getPermaUrl(),
                         "", "anybody", "public", false);
                 System.out.println("Id of uploaded video to vimeo: " + post.getId() + " url: " + post.getUrl());
@@ -226,7 +223,6 @@ public class Bot {
         if (file.delete()) {
             System.out.println("File deleted successfully");
         }
-
         System.out.println("File uploading to vimeo is done!");
     }
 
@@ -237,7 +233,7 @@ public class Bot {
     private void removeOldPosts() {
         System.out.println("Program in remove old posts");
         Date date = new Date();
-        final int dayDiff = 3;
+        final int dayDiff = 4;
 
         List<Post> list = service.findAll();
 
@@ -245,7 +241,7 @@ public class Bot {
 
             if (Math.abs(date.getDate() - post.getCreated().getDate()) >= dayDiff) {
 
-                if(post.getContentType() !=  null  && post.getContentType().equals("video") && post.getVimeoUrl() != null) {
+                if (post.getContentType() != null && post.getContentType().equals("video") && post.getVimeoUrl() != null) {
 
                     Vimeo vimeo = new Vimeo(VIMEO_TOKEN);
 

@@ -16,6 +16,13 @@ public interface PostRepositoryCustom {
     @Query(value = "SELECT * FROM posts WHERE type IS NOT NULL AND subreddit = :subreddit",nativeQuery = true)
     List<Post> getPosts(@Param("subreddit") String subreddit);
 
+    @Query(value = "SELECT * FROM posts WHERE subreddit IN ('hentai', 'HENTAI_GIF', 'rule34')", nativeQuery = true)
+    List<Post> getHentai();
+
+    @Query(value = "SELECT * FROM posts WHERE subreddit IN ('porninaminute', 'porninfifteenseconds', 'porn', " +
+            "'anal_gifs', 'porn_gifs')", nativeQuery = true)
+    List<Post> getPorn();
+
     @Query(value = "SELECT subreddit, COUNT(subreddit) FROM posts GROUP BY subreddit", nativeQuery = true)
     List<String> getSubredditCount();
 }
