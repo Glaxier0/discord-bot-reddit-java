@@ -24,7 +24,7 @@ Reddit client_id, client_secret.
 
 Vimeo API TOKEN from [here](https://developer.vimeo.com/apps) with auth(you) public, private, create, edit, delete, upload scopes
 
-DISCORD API BOT TOKEN from [here](https://discord.com/developers/applications)
+Discord API BOT TOKEN from [here](https://discord.com/developers/applications)
 
 An sql database named reddit_bot
 
@@ -35,5 +35,14 @@ reddit_bot database needs posts table.
 Some error may occur while creating table from script so an sql knowledge needed.
 
 [Example bot created by me](https://discord.com/api/oauth2/authorize?client_id=855806720834928641&permissions=2147936320&scope=bot)
+
+### PREVIEW ###
+
+https://user-images.githubusercontent.com/55876415/133401787-96db0fea-80a7-4b94-b211-3812e4c635c9.mp4
+
+
+
+
+
 
 
