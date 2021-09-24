@@ -36,6 +36,8 @@ Some error may occur while creating table from script so an sql knowledge needed
 
 [Example bot created by me](https://discord.com/api/oauth2/authorize?client_id=855806720834928641&permissions=2147936320&scope=bot)
 
+[top.gg](https://top.gg/bot/855806720834928641)
+
 ### PREVIEW ###
 
 https://user-images.githubusercontent.com/55876415/133401787-96db0fea-80a7-4b94-b211-3812e4c635c9.mp4
