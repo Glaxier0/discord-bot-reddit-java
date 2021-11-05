@@ -2,17 +2,15 @@ package com.discord.bot.Service;
 
 import com.discord.bot.Entity.Post;
 import com.discord.bot.Dao.PostRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class PostServiceImpl implements PostService {
 
     PostRepository repository;
-
-    public PostServiceImpl(PostRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public List<Post> findAll() {
@@ -35,8 +33,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getVideoNullVimeo() {
-        return repository.getVideoNullVimeo();
+    public List<Post> getVideoNullFirebase() {
+        return repository.getVideoNullFirebase();
+    }
+
+    @Override
+    public List<Post> getOldPosts() {
+        return repository.getOldPosts();
+    }
+
+    @Override
+    public List<Post> getOldFirebaseVideos() {
+        return repository.getOldFirebaseVideos();
     }
 
     @Override

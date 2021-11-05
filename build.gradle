@@ -18,16 +18,19 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter:2.5.5'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
 	implementation "net.dv8tion:JDA:4.3.0_277"
 	implementation "net.dean.jraw:JRAW:1.1.0"
 	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
-	implementation group: 'com.clickntap', name:  'vimeo', version: '1.13'
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	implementation 'com.google.firebase:firebase-admin:8.1.0'
 }
 
 test {
 	useJUnitPlatform()
 }
+

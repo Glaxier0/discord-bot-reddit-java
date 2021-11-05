@@ -2,16 +2,15 @@ package com.discord.bot.Service;
 
 import com.discord.bot.Dao.TodoRepository;
 import com.discord.bot.Entity.Todo;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TodoServiceImpl implements TodoService{
-    TodoRepository repository;
 
-    public TodoServiceImpl(TodoRepository repository) {
-        this.repository = repository;
-    }
+    TodoRepository repository;
 
     @Override
     public List<Todo> findAll() {

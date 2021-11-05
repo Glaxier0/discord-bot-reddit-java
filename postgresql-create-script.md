@@ -54,3 +54,20 @@ ALTER TABLE public.todo
 
 GRANT ALL ON TABLE public.todo TO postgres;
 GRANT USAGE, SELECT ON SEQUENCE todo_id_seq TO postgres;
+
+
+CREATE TABLE users
+(
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(256) UNIQUE,
+    text_count integer,
+    h_count integer,
+    p_count integer,
+    reddit_count integer,
+    todo_count integer,
+)
+
+
+ALTER TABLE users OWNER to glaxier;
+GRANT ALL ON TABLE users TO glaxier
+GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO glaxier;
