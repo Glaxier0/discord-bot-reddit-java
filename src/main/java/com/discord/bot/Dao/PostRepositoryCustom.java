@@ -10,8 +10,16 @@ public interface PostRepositoryCustom {
     @Query(value = "SELECT url from posts where url = :url", nativeQuery = true)
     String getByUrl(@Param("url") String url);
 
-    @Query(value = "SELECT * FROM posts WHERE type = 'video' AND vimeo_url IS NULL", nativeQuery = true)
-    List<Post> getVideoNullVimeo ();
+    @Query(value = "SELECT * FROM posts WHERE type = 'video' AND firebase_url IS NULL", nativeQuery = true)
+    List<Post> getVideoNullFirebase();
+
+    @Query(value = "SELECT * FROM posts WHERE created < NOW() - INTERVAL '4 days' AND type != 'video';"
+            , nativeQuery = true)
+    List<Post> getOldPosts();
+
+    @Query(value = "SELECT * FROM posts WHERE created < NOW() - INTERVAL '4 days' AND firebase_url IS NOT NULL;"
+            , nativeQuery = true)
+    List<Post> getOldFirebaseVideos();
 
     @Query(value = "SELECT * FROM posts WHERE type IS NOT NULL AND subreddit = :subreddit",nativeQuery = true)
     List<Post> getPosts(@Param("subreddit") String subreddit);
@@ -26,3 +34,4 @@ public interface PostRepositoryCustom {
     @Query(value = "SELECT subreddit, COUNT(subreddit) FROM posts GROUP BY subreddit", nativeQuery = true)
     List<String> getSubredditCount();
 }
+

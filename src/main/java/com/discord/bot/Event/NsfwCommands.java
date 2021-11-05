@@ -1,7 +1,9 @@
 package com.discord.bot.Event;
 
 import com.discord.bot.Entity.Post;
+import com.discord.bot.Entity.User;
 import com.discord.bot.Service.PostService;
+import com.discord.bot.Service.UserService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -9,10 +11,12 @@ import java.util.*;
 
 public class NsfwCommands extends ListenerAdapter {
 
-    PostService service;
+    PostService postService;
+    UserService userService;
 
-    public NsfwCommands(PostService service) {
-        this.service = service;
+    public NsfwCommands(PostService postService, UserService userService) {
+        this.postService = postService;
+        this.userService = userService;
     }
 
     Random random = new Random();
@@ -25,21 +29,28 @@ public class NsfwCommands extends ListenerAdapter {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         if (subreddit.contains(messageSent.toLowerCase()) && !isBot) {
+            String userId = Objects.requireNonNull(event.getMember()).getUser().getId();
+            String userWithTag = Objects.requireNonNull(event.getMember()).getUser().getAsTag();
+            User user = userService.getUser(userId);
+            if (user == null) {
+                user = new User(userId, 0, 0, 0, 0, 0, userWithTag);
+            }
             if (event.getChannel().isNSFW()) {
                 List<Post> postList;
                 if (messageSent.equalsIgnoreCase("!hentai")) {
-                    postList = service.getHentai();
+                    postList = postService.getHentai();
+                    user.setHCount(user.getHCount() + 1);
                 } else {
-                    postList = service.getPorn();
+                    postList = postService.getPorn();
+                    user.setPCount(user.getPCount() + 1);
                 }
+                userService.save(user);
 
                 Post post = postList.get(random.nextInt(postList.size()));
 
                 if (post.getUrl().contains("redgifs.com")
                         || (post.getUrl().contains("imgur.com") && post.getUrl().contains(".gifv"))
                         || post.getUrl().contains("gfycat.com")) {
-                    //set as video now cause they can be embedded directly to discord
-                    //and we dont want them to be uploadable on vimeo
                     post.setContentType("video");
                 }
 

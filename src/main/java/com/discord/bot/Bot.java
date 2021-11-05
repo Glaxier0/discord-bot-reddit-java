@@ -1,11 +1,12 @@
 package com.discord.bot;
 
-import com.clickntap.vimeo.Vimeo;
-import com.clickntap.vimeo.VimeoException;
 import com.discord.bot.Entity.Post;
 import com.discord.bot.Event.*;
 import com.discord.bot.Service.PostService;
 import com.discord.bot.Service.TodoService;
+import com.discord.bot.Service.UserService;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.*;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.NetworkAdapter;
 import net.dean.jraw.http.OkHttpNetworkAdapter;
@@ -25,8 +26,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
 import javax.security.auth.login.LoginException;
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,13 +38,14 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.*;
 
+
 @Configuration
 @EnableScheduling
 public class Bot {
 
-    PostService service;
+    PostService postService;
     TodoService todoService;
-    //Edit this fields in application.properties under main > resources
+    UserService userService;
     @Value("${reddit_username}")
     private String REDDIT_USERNAME;
     @Value("${reddit_password}")
@@ -51,23 +54,24 @@ public class Bot {
     private String REDDIT_CLIENT_ID;
     @Value("${reddit_client_secret}")
     private String REDDIT_CLIENT_SECRET;
-    @Value("${vimeo_token}")
-    private String VIMEO_TOKEN;
     @Value("${discord_bot_token}")
     private String DISCORD_TOKEN;
 
-    public Bot(PostService service, TodoService todoService) {
-        this.service = service;
+    public Bot(PostService postService, TodoService todoService, UserService userService) {
+        this.postService = postService;
         this.todoService = todoService;
+        this.userService = userService;
     }
+
 
     @Bean
     public void startDiscordBot() {
         try {
             JDA jda = JDABuilder.createDefault(DISCORD_TOKEN).build();
             jda.getPresence().setActivity(Activity.playing("Type !help"));
-            jda.addEventListener(new RedditCommands(service), new TextCommands(), new AdminCommands(service),
-                    new NsfwCommands(service), new ToDoCommands(todoService));
+            jda.addEventListener(new RedditCommands(postService, userService), new TextCommands(userService),
+                    new AdminCommands(postService, userService),
+                    new NsfwCommands(postService, userService), new ToDoCommands(todoService, userService));
 
             System.out.println("Starting bot is done!");
         } catch (LoginException e) {
@@ -78,28 +82,33 @@ public class Bot {
     @Scheduled(fixedDelay = 3600000)
     public void hourDelay() {
         searchReddit();
-        downloadAndUploadToVimeo();
+        downloadVideos();
+    }
+
+    @Scheduled(fixedDelay = 86400000)
+    public void dayDelay() throws IOException {
+        removeOldPosts();
+        removeOldFirebaseVideos();
     }
 
     /**
      * Searchs specialized subreddits and save them to database
      */
     private void searchReddit() {
-        System.out.println("Program in search reddit");
+        System.out.println("Program in search reddit.");
 
-        UserAgent userAgent = new UserAgent("Chrome", "com.example.demo.bot",
-                "v0.1", REDDIT_USERNAME);
+        UserAgent userAgent = new UserAgent("Chrome", "com.discord.bot",
+                "v1.0", REDDIT_USERNAME);
         NetworkAdapter networkAdapter = new OkHttpNetworkAdapter(userAgent);
         RedditClient redditClient = OAuthHelper.automatic(networkAdapter,
                 Credentials.script(REDDIT_USERNAME, REDDIT_PASSWORD,
                         REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET));
 
         //Embedded link need to be embedable in discord to nsfw videos work. Like redgifs.com or gyfcat.
-        //For legal reasons you cant upload vimeo nsfw stuff
-        //Keep in mind this things adding more nsfw subreddits to list.
-        List<String> subreddits = Arrays.asList("Unexpected", "memes", "dankmemes", "greentext",
-                                            "hentai", "HENTAI_GIF", "rule34", "porninaminute",
-                                            "porninfifteenseconds", "porn", "anal_gifs", "porn_gifs");
+        //Keep in mind these things adding more nsfw subreddits to list.
+        List<String> subreddits = Arrays.asList("Unexpected","memes", "dankmemes", "greentext",
+                "hentai", "HENTAI_GIF", "rule34", "porninaminute",
+                "porninfifteenseconds", "porn", "anal_gifs", "porn_gifs");
 
         List<DefaultPaginator<Submission>> paginatorList = new ArrayList<>();
 
@@ -115,22 +124,23 @@ public class Bot {
             Listing<Submission> submissions = d.next();
             for (Submission s : submissions) {
 
-                int charLimit = s.getTitle().length() + s.getAuthor().length() + s.getSubreddit().length();
                 Post post = new Post(s.getUrl(), s.getSubreddit(), s.getTitle(), s.getAuthor(), s.getCreated());
                 post.setPermaUrl("https://reddit.com" + s.getPermalink());
 
                 if (!s.isNsfw()) {
-                    if (s.getUrl().contains("https://v.redd.it") && charLimit <= 101) {
-
-                        String fallbackUrl = Objects.requireNonNull(Objects.requireNonNull(s.getEmbeddedMedia()).getRedditVideo()).getFallbackUrl();
+                    if (s.getUrl().contains("https://v.redd.it") && Objects.requireNonNull(Objects.requireNonNull
+                            (s.getEmbeddedMedia()).getRedditVideo()).getDuration() <= 60) {
+                        post.setContentType("video");
+                        //Can be done in 1 variable but this way string is easier to edit, and it is easier to read.
+                        String fallbackUrl = Objects.requireNonNull(Objects.requireNonNull(s.getEmbeddedMedia())
+                                .getRedditVideo()).getFallbackUrl();
                         String fallbackVideo = fallbackUrl.substring(0, fallbackUrl.indexOf("?"));
                         String fallbackAudio = fallbackVideo.substring(0, fallbackVideo.indexOf("_") + 1) + "audio.mp4";
                         String baseDownloadUrl = "https://ds.redditsave.com/download.php?permalink=https://reddit.com";
                         String videoDownloadUrl = baseDownloadUrl + s.getPermalink() + "&video_url=";
                         String fallbackVideoDownloadUrl = videoDownloadUrl + fallbackUrl + "&audio_url=";
-                        String fallbackVideoWithAudioDownloadUrl = fallbackVideoDownloadUrl + fallbackAudio + "?source=fallback";
-
-                        post.setContentType("video");
+                        String fallbackVideoWithAudioDownloadUrl = fallbackVideoDownloadUrl
+                                + fallbackAudio + "?source=fallback";
                         post.setDownloadUrl(fallbackVideoWithAudioDownloadUrl);
                     } else if (s.getUrl().contains(".gif") || s.getUrl().contains("gfycat.com")) {
                         post.setContentType("gif");
@@ -147,17 +157,14 @@ public class Bot {
                     }
                 }
 
-                String queryPost = service.getByUrl(post.getUrl());
+                String queryPost = postService.getByUrl(post.getUrl());
 
-                if (post.getUrl().equals(queryPost)) {
-                    System.out.println("URL exist in database: " + queryPost);
-                } else {
-                    service.save(post);
-                    System.out.println("Url saved to database: " + post.getUrl());
+                if (!post.getUrl().equals(queryPost)) {
+                    postService.save(post);
+                    System.out.println("URL saved to database: " + post.getUrl());
                 }
             }
-
-            try {
+            try {//30 sec wait because of reddit timeout if too many request occurs.
                 Thread.sleep(30000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -166,21 +173,13 @@ public class Bot {
         System.out.println("Reddit search done!");
     }
 
-    /**
-     * Checks database if vimeo url exists
-     * if not download video from reddit url and
-     * upload it to imgur and set vimeo_url to database
-     */
-    private void downloadAndUploadToVimeo() {
-        System.out.println("Program in download and upload to vimeo");
-        Vimeo vimeo = new Vimeo(VIMEO_TOKEN);
+    private void downloadVideos() {
+        System.out.println("Program in download videos");
 
-        List<Post> list = service.getVideoNullVimeo();
+        List<Post> list = postService.getVideoNullFirebase();
         System.out.println("File count: " + list.size());
 
         for (Post post : list) {
-
-            //Gets download url from database
             URL url = null;
             try {
                 url = new URL(post.getDownloadUrl());
@@ -188,76 +187,80 @@ public class Bot {
                 e.printStackTrace();
             }
 
-            //Download file and save it as temp.mp4
-            try (InputStream in = Objects.requireNonNull(url).openStream();
-                 ReadableByteChannel rbc = Channels.newChannel(in);
-                 FileOutputStream fos = new FileOutputStream("temp.mp4")) {
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            try {
+                InputStream inputStream = Objects.requireNonNull(url).openStream();
+                ReadableByteChannel readableByteChannel = Channels.newChannel(inputStream);
+                FileOutputStream fileOutputStream = new FileOutputStream("temp.mp4");
+                fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+                uploadToFirebaseStorage(post);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            //Upload video to vimeo
-            String videoEndPoint, vimeoUrl = null;
-
-            try {
-                videoEndPoint = vimeo.addVideo(new File("temp.mp4"), false);
-                vimeo.updateVideoMetadata(videoEndPoint, "Title: " + post.getTitle() + " by: u/" + post.getAuthor() +
-                                "\nPosted on: r/" + post.getSubreddit(),
-                        "This video taken from reddit. Link to the video: " + post.getPermaUrl(),
-                        "", "anybody", "public", false);
-                System.out.println("Id of uploaded video to vimeo: " + post.getId() + " url: " + post.getUrl());
-                vimeoUrl = "https://vimeo.com" + Objects.requireNonNull(videoEndPoint).substring(7);
-            } catch (VimeoException | IOException e) {
-                e.printStackTrace();
-                System.out.println("Video upload failed: " + post.getId() + " url: " + post.getUrl());
-            }
-
-            post.setVimeoUrl(vimeoUrl);
-
-            service.save(post);
         }
+        System.out.println("Downloading videos is done!");
+    }
 
-        //Deletes excess file
-        File file = new File("temp.mp4");
-        if (file.delete()) {
-            System.out.println("File deleted successfully");
+    private void uploadToFirebaseStorage(Post post) throws IOException {
+        FileInputStream serviceAccount =
+                new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
+        String fileName = String.valueOf(post.getId());
+        String bucketName = "Your bucket name including .appspot.com";
+        Map<String, String> map = new HashMap<>();
+        map.put("firebaseStorageDownloadTokens", fileName);
+        InputStream file = new FileInputStream("temp.mp4");
+        BlobId blobId = BlobId.of(bucketName, fileName + ".mp4");
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setMetadata(map).setContentType("video/mp4").build();
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
+                .fromStream(serviceAccount)).build().getService();
+
+        try {
+            Blob blob = storage.create(blobInfo, file);
+            String firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + bucketName + "/o/"
+                    + fileName + ".mp4" + "?alt=media&token=" + blob.getMetadata().get("firebaseStorageDownloadTokens");
+            System.out.println("Uploaded file: " + firebaseUrl);
+            post.setFirebaseUrl(firebaseUrl);
+            postService.save(post);
+        } catch (Exception e) {
+            System.out.println("File upload failed");
+            e.printStackTrace();
         }
-        System.out.println("File uploading to vimeo is done!");
     }
 
     /**
      * Removes old posts from database
      */
-    @Scheduled(fixedDelay = 86400000)
     private void removeOldPosts() {
-        System.out.println("Program in remove old posts");
-        Date date = new Date();
-        final int dayDiff = 4;
+        System.out.println("Program in remove old posts.");
 
-        List<Post> list = service.findAll();
+        List<Post> posts = postService.getOldPosts();
 
-        for (Post post : list) {
-
-            if (Math.abs(date.getDate() - post.getCreated().getDate()) >= dayDiff) {
-
-                if (post.getContentType() != null && post.getContentType().equals("video") && post.getVimeoUrl() != null) {
-
-                    Vimeo vimeo = new Vimeo(VIMEO_TOKEN);
-
-                    String videoEndPoint = "/videos" + post.getVimeoUrl().substring(17);
-
-                    try {
-                        vimeo.removeVideo(videoEndPoint);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                service.delete(post);
-            }
+        for (Post post : posts) {
+            postService.delete(post);
         }
         System.out.println("Deleting old posts done!");
+    }
+
+    private void removeOldFirebaseVideos() throws IOException {
+        System.out.println("Program in remove old firebase videos.");
+
+        FileInputStream serviceAccount =
+                new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
+                .fromStream(serviceAccount)).build().getService();
+        String bucketName = "Your bucket name including .appspot.com";
+
+        List<Post> posts = postService.getOldFirebaseVideos();
+        System.out.println("Post count to be deleted: " + posts.size());
+
+        for (Post post : posts) {
+            String blobName = post.getId() + ".mp4";
+            BlobId blobId = BlobId.of(bucketName, blobName);
+            boolean deleted = storage.delete(blobId);
+            if (deleted) {
+                postService.delete(post);
+            }
+        }
+        System.out.println("Deleting old firebase videos done!");
     }
 }
 

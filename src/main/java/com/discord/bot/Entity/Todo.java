@@ -1,10 +1,15 @@
 package com.discord.bot.Entity;
 
+import lombok.*;
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "todo")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Todo {
 
     @Id
@@ -21,54 +26,17 @@ public class Todo {
     @Column(name = "created")
     private Date created;
 
-    public Todo() {
+    @Column(name = "is_completed")
+    private boolean isCompleted;
 
-    }
-    public Todo(String discordUser, String todoRow, Date created) {
+    @Column(name = "user_with_tag")
+    private String userWithTag;
+
+    public Todo(String discordUser, String todoRow, Date created, boolean isCompleted, String userWithTag) {
         this.discordUser = discordUser;
         this.todoRow = todoRow;
         this.created = created;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDiscordUser() {
-        return discordUser;
-    }
-
-    public void setDiscordUser(String discordUser) {
-        this.discordUser = discordUser;
-    }
-
-    public String getTodoRow() {
-        return todoRow;
-    }
-
-    public void setTodoRow(String todoRow) {
-        this.todoRow = todoRow;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    @Override
-    public String toString() {
-        return "Todo{" +
-                "id=" + id +
-                ", discordUser='" + discordUser + '\'' +
-                ", todoRow='" + todoRow + '\'' +
-                ", created=" + created +
-                '}';
+        this.isCompleted = isCompleted;
+        this.userWithTag = userWithTag;
     }
 }

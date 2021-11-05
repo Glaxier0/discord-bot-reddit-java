@@ -8,7 +8,9 @@ public interface PostService {
      void save(Post post);
      void delete(Post post);
      String getByUrl(String url);
-     List<Post> getVideoNullVimeo ();
+     List<Post> getVideoNullFirebase();
+     List<Post> getOldPosts();
+     List<Post> getOldFirebaseVideos();
      List<Post> getPosts(String subreddit);
      List<String> getSubredditCount();
      List<Post> getHentai();
