@@ -42,7 +42,7 @@ public class Post {
     @Column(name = "perma_url")
     private String permaUrl;
 
-    @Column(name = "download_url")
+    @Column(name = "download_url", length = 512)
     private String downloadUrl;
 
     public Post(String url, String subreddit, String title, String author, Date created) {
