@@ -1,17 +1,12 @@
 # discord-bot-reddit-java
- A discord bot project that gathers posts from reddit and post them in discord channel.
+ A multi-functional discord bot mainly focused to reddit that gathers posts from reddit and post them in discord channel.
  
 ### Used APIs ###
 Reddit API - [JRAW Wrapper](https://github.com/mattbdean/JRAW)
 
-Vimeo API - [clickntap Java SDK](https://github.com/clickntap/Vimeo) 
+[Firebase Storage API](https://console.firebase.google.com/)
 
-Vimeo API let us watch reddit videos directly in discord via embed. Any video hosting site can be used instead of Vimeo
-
-Keep in mind vimeo has free 10 daily video upload quota (if you use vimeo, plus upgrade required for bot to work 24/7 and can hold lots of videos). 
-
-[Free version of this project that can hold 10 video at time](https://github.com/Glaxier0/discord-bot-reddit-java-free-version)
-
+Firebase Storage let us watch reddit videos directly in discord via embed. Any video hosting site can be used instead of Firebase Storage.
 
 Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 
@@ -22,7 +17,12 @@ Don't forget to edit application.properties in resources folder.
 Reddit username, reddit password, reddit personal use script from [here](https://www.reddit.com/prefs/apps) 
 Reddit client_id, client_secret.
 
-Vimeo API TOKEN from [here](https://developer.vimeo.com/apps) with auth(you) public, private, create, edit, delete, upload scopes
+Firebase Storage ADMIN SDK KEY from [here](https://console.firebase.google.com/) 
+
+from Firebase console > your project > settings > users and permissions > service accounts > generate private key > download the key.
+
+Copy key path then edit this lines [[1]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/c847cbb908ebb0bce6a540bbe50bcbe38cdd5fbd/src/main/java/com/discord/bot/Bot.java#L206)
+[[2]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/c847cbb908ebb0bce6a540bbe50bcbe38cdd5fbd/src/main/java/com/discord/bot/Bot.java#L247)
 
 Discord API BOT TOKEN from [here](https://discord.com/developers/applications)
 
