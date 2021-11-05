@@ -56,13 +56,14 @@ public class Bot {
     private String REDDIT_CLIENT_SECRET;
     @Value("${discord_bot_token}")
     private String DISCORD_TOKEN;
+    @Value("${firebase_storage_bucket_name}")
+    private String BUCKET_NAME;
 
     public Bot(PostService postService, TodoService todoService, UserService userService) {
         this.postService = postService;
         this.todoService = todoService;
         this.userService = userService;
     }
-
 
     @Bean
     public void startDiscordBot() {
@@ -201,21 +202,20 @@ public class Bot {
     }
 
     private void uploadToFirebaseStorage(Post post) throws IOException {
-        FileInputStream serviceAccount =
+        FileInputStream pathToAdminSDK =
                 new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
         String fileName = String.valueOf(post.getId());
-        String bucketName = "Your bucket name including .appspot.com";
         Map<String, String> map = new HashMap<>();
         map.put("firebaseStorageDownloadTokens", fileName);
         InputStream file = new FileInputStream("temp.mp4");
-        BlobId blobId = BlobId.of(bucketName, fileName + ".mp4");
+        BlobId blobId = BlobId.of(BUCKET_NAME, fileName + ".mp4");
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setMetadata(map).setContentType("video/mp4").build();
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
-                .fromStream(serviceAccount)).build().getService();
+                .fromStream(pathToAdminSDK)).build().getService();
 
         try {
             Blob blob = storage.create(blobInfo, file);
-            String firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + bucketName + "/o/"
+            String firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/"
                     + fileName + ".mp4" + "?alt=media&token=" + blob.getMetadata().get("firebaseStorageDownloadTokens");
             System.out.println("Uploaded file: " + firebaseUrl);
             post.setFirebaseUrl(firebaseUrl);
@@ -243,18 +243,17 @@ public class Bot {
     private void removeOldFirebaseVideos() throws IOException {
         System.out.println("Program in remove old firebase videos.");
 
-        FileInputStream serviceAccount =
+        FileInputStream pathToAdminSDK =
                 new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
-                .fromStream(serviceAccount)).build().getService();
-        String bucketName = "Your bucket name including .appspot.com";
+                .fromStream(pathToAdminSDK)).build().getService();
 
         List<Post> posts = postService.getOldFirebaseVideos();
         System.out.println("Post count to be deleted: " + posts.size());
 
         for (Post post : posts) {
             String blobName = post.getId() + ".mp4";
-            BlobId blobId = BlobId.of(bucketName, blobName);
+            BlobId blobId = BlobId.of(BUCKET_NAME, blobName);
             boolean deleted = storage.delete(blobId);
             if (deleted) {
                 postService.delete(post);
