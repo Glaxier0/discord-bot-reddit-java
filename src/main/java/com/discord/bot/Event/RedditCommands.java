@@ -27,11 +27,11 @@ public class RedditCommands extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
         String messageSent = event.getMessage().getContentRaw();
-        boolean isBot = Objects.requireNonNull(event.getMember()).getUser().isBot();
+        boolean isBot = event.getMember().getUser().isBot();
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         if (subreddit.contains(messageSent.toLowerCase()) && !isBot) {
-            String userId = Objects.requireNonNull(event.getMember()).getUser().getId();
+            String userId = event.getMember().getUser().getId();
             String userWithTag = event.getMember().getUser().getAsTag();
             User user = userService.getUser(userId);
             if (user == null) {

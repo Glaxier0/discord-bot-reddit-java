@@ -25,7 +25,7 @@ public class NsfwCommands extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
         String messageSent = event.getMessage().getContentRaw();
-        boolean isBot = Objects.requireNonNull(event.getMember()).getUser().isBot();
+        boolean isBot = event.getMember().getUser().isBot();
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         if (subreddit.contains(messageSent.toLowerCase()) && !isBot) {

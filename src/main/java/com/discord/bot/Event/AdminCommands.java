@@ -23,9 +23,9 @@ public class AdminCommands extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String messageSent = event.getMessage().getContentRaw();
-        String userId = Objects.requireNonNull(event.getMember()).getUser().getId();
+        String userId = event.getMember().getUser().getId();
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        boolean isBot = Objects.requireNonNull(event.getMember()).getUser().isBot();
+        boolean isBot = event.getMember().getUser().isBot();
 
         if (messageSent.equalsIgnoreCase("!Guilds") &&
                 userId.equals(ADMIN) && !isBot) {

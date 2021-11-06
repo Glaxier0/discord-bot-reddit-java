@@ -40,7 +40,7 @@ public class ToDoCommands extends ListenerAdapter {
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
             } else if (add.length() < 213) {
                 if (todoService.todoList(userId).size() < 30) {
-                    Date createdDate = java.sql.Date.valueOf(event.getMessage().getTimeCreated().toLocalDate());
+                    Date createdDate = Date.valueOf(event.getMessage().getTimeCreated().toLocalDate());
                     todoService.save(new Todo(userId, add, createdDate, false, userWithTag));
                     embedBuilder.setDescription("Successfully added to your to-do list").setColor(Color.GREEN);
                 } else {
