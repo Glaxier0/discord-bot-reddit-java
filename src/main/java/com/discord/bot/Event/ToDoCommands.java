@@ -26,16 +26,17 @@ public class ToDoCommands extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String messageSent = event.getMessage().getContentRaw();
-        boolean isBot = Objects.requireNonNull(event.getMember()).getUser().isBot();
-        String userId = Objects.requireNonNull(event.getMember()).getUser().getId();
-        String userWithTag = Objects.requireNonNull(event.getMember()).getUser().getAsTag();
+        boolean isBot = event.getMember().getUser().isBot();
+        String userId = event.getMember().getUser().getId();
+        String userWithTag = event.getMember().getUser().getAsTag();
         EmbedBuilder embedBuilder = new EmbedBuilder();
+        String user = event.getMessage().getMember().getAsMention();
+
 
         if (messageSent.startsWith("!todo add") && !isBot) {
             counter(userId, userWithTag);
             String add = messageSent.replaceAll("\\s+", " ").substring(9);
             if (add.isEmpty()) {
-                String user = Objects.requireNonNull(event.getMessage().getMember()).getAsMention();
                 embedBuilder.setDescription(user + " Can't add your future to to-do list.");
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
             } else if (add.length() < 213) {
@@ -44,13 +45,11 @@ public class ToDoCommands extends ListenerAdapter {
                     todoService.save(new Todo(userId, add, createdDate, false, userWithTag));
                     embedBuilder.setDescription("Successfully added to your to-do list").setColor(Color.GREEN);
                 } else {
-                    String user = Objects.requireNonNull(event.getMessage().getMember()).getAsMention();
                     embedBuilder.setDescription(user + " To-do list limit is 30 row." +
                             "\nPlease remove some rows before adding another one.").setColor(Color.RED);
                 }
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
             } else {
-                String user = Objects.requireNonNull(event.getMessage().getMember()).getAsMention();
                 embedBuilder.setDescription(user + " to-do row must be less than 213 characters").setColor(Color.RED);
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
             }
@@ -60,7 +59,6 @@ public class ToDoCommands extends ListenerAdapter {
             counter(userId, userWithTag);
             List<Todo> todoList = todoService.todoList(userId);
             if (todoList.isEmpty()) {
-                String user = Objects.requireNonNull(event.getMessage().getMember()).getAsMention();
                 embedBuilder.setDescription(user + " Your to-do list is empty as my future!");
             } else {
                 int i = 1;
@@ -86,7 +84,6 @@ public class ToDoCommands extends ListenerAdapter {
             String remove = messageSent.replaceAll("\\s+", " ").substring(12);
 
             if (remove.isEmpty()) {
-                String user = Objects.requireNonNull(event.getMessage().getMember()).getAsMention();
                 embedBuilder.setDescription(user + " Please write something after !todo remove command." +
                         "\ne.g. !todo remove 1").setColor(Color.RED);
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
@@ -136,7 +133,6 @@ public class ToDoCommands extends ListenerAdapter {
             counter(userId, userWithTag);
             String update = messageSent.replaceAll("\\s+", " ").substring(12);
             if (update.isEmpty()) {
-                String user = Objects.requireNonNull(event.getMessage().getMember()).getAsMention();
                 embedBuilder.setDescription(user + " Please write something after !todo update command." +
                         "\ne.g. !todo update 1 text goes here").setColor(Color.RED);
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
@@ -170,7 +166,6 @@ public class ToDoCommands extends ListenerAdapter {
             counter(userId, userWithTag);
             String complete = messageSent.replaceAll("\\s", "").substring(13);
             if (complete.isEmpty()) {
-                String user = Objects.requireNonNull(event.getMessage().getMember()).getAsMention();
                 embedBuilder.setDescription(user + " Please write something after !todo complete command." +
                         "\ne.g. !todo complete 1").setColor(Color.RED);
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
