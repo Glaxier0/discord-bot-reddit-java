@@ -8,6 +8,7 @@ public interface PostService {
      void save(Post post);
      void delete(Post post);
      String getByUrl(String url);
+     String getByPermaUrl(String permaUrl);
      List<Post> getVideoNullFirebase();
      List<Post> getOldPosts();
      List<Post> getOldFirebaseVideos();
