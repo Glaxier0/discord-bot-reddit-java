@@ -52,9 +52,11 @@ public class Bot {
         try {
             JDA jda = JDABuilder.createDefault(DISCORD_TOKEN).build();
             jda.getPresence().setActivity(Activity.playing("Type !help"));
-            jda.addEventListener(new RedditCommands(postService, userService), new TextCommands(userService),
+            jda.addEventListener(new RedditCommands(postService, userService),
+                    new TextCommands(userService),
                     new AdminCommands(postService, userService),
-                    new NsfwCommands(postService, userService), new ToDoCommands(todoService, userService));
+                    new NsfwCommands(postService, userService),
+                    new ToDoCommands(todoService, userService));
 
             System.out.println("Starting bot is done!");
         } catch (LoginException e) {
@@ -62,8 +64,8 @@ public class Bot {
         }
     }
 
-    @Scheduled(fixedDelay = 3600000)
-    public void hourDelay() {
+    @Scheduled(fixedDelay = 7200000)
+    public void twoHourDelay() {
         redditSearchService.searchReddit(postService, REDDIT_USERNAME, REDDIT_PASSWORD, REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET);
         downloadVideosService.downloadVideos(postService, BUCKET_NAME);
     }

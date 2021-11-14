@@ -32,7 +32,7 @@ public class RemoveOldPosts {
         System.out.println("Program in remove old firebase videos.");
 
         FileInputStream serviceAccount =
-                new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
+                new FileInputStream("r3dd-1-firebase-adminsdk-h0reo-019535d8b2.json");
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
                 .fromStream(serviceAccount)).build().getService();
 

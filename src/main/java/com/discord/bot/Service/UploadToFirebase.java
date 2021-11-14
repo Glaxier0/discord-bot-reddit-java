@@ -15,7 +15,7 @@ public class UploadToFirebase {
 
     public void uploadToFirebaseStorage(PostService postService, String BUCKET_NAME, Post post) throws IOException {
         FileInputStream serviceAccount =
-                new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
+                new FileInputStream("r3dd-1-firebase-adminsdk-h0reo-019535d8b2.json");
         String fileName = String.valueOf(post.getId());
         Map<String, String> map = new HashMap<>();
         map.put("firebaseStorageDownloadTokens", fileName);

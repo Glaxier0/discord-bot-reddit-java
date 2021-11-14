@@ -33,6 +33,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public String getByPermaUrl(String permaUrl) {
+        return repository.getByPermaUrl(permaUrl);
+    }
+
+    @Override
     public List<Post> getVideoNullFirebase() {
         return repository.getVideoNullFirebase();
     }

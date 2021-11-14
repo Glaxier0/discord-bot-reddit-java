@@ -10,6 +10,9 @@ public interface PostRepositoryCustom {
     @Query(value = "SELECT url from posts where url = :url", nativeQuery = true)
     String getByUrl(@Param("url") String url);
 
+    @Query(value = "SELECT perma_url from posts where perma_url = :url", nativeQuery = true)
+    String getByPermaUrl(@Param("url") String permaUrl);
+
     @Query(value = "SELECT * FROM posts WHERE type = 'video' AND firebase_url IS NULL", nativeQuery = true)
     List<Post> getVideoNullFirebase();
 

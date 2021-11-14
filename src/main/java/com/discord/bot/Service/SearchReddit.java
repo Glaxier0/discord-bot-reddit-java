@@ -38,8 +38,9 @@ public class SearchReddit {
         //Embedded link need to be embedable in discord to nsfw videos work. Like redgifs.com or gyfcat.
         //Keep in mind these things adding more nsfw subreddits to list.
         List<String> subreddits = Arrays.asList("Unexpected", "memes", "dankmemes", "greentext",
-                "hentai", "HENTAI_GIF", "rule34", "porninaminute",
-                "porninfifteenseconds", "porn", "anal_gifs", "porn_gifs");
+                "blursedimages", "perfectlycutscreams", "interestingasfuck", "facepalm",
+                "hentai", "HENTAI_GIF", "rule34", "porninaminute", "porninfifteenseconds",
+                "porn", "anal_gifs", "porn_gifs");
 
         List<DefaultPaginator<Submission>> paginatorList = new ArrayList<>();
 
@@ -59,40 +60,42 @@ public class SearchReddit {
                 post.setPermaUrl("https://reddit.com" + s.getPermalink());
 
                 if (!s.isNsfw()) {
-                    if (s.getUrl().contains("https://v.redd.it") && Objects.requireNonNull(Objects.requireNonNull
-                            (s.getEmbeddedMedia()).getRedditVideo()).getDuration() <= 60) {
-                        post.setContentType("video");
-                        //Can be done in 1 variable but this way string is easier to edit, and it is easier to read.
-                        String fallbackUrl = Objects.requireNonNull(Objects.requireNonNull(s.getEmbeddedMedia())
-                                .getRedditVideo()).getFallbackUrl();
-                        String fallbackVideo = fallbackUrl.substring(0, fallbackUrl.indexOf("?"));
-                        String fallbackAudio = fallbackVideo.substring(0, fallbackVideo.indexOf("_") + 1) + "audio.mp4";
-                        String baseDownloadUrl = "https://ds.redditsave.com/download.php?permalink=https://reddit.com";
-                        String videoDownloadUrl = baseDownloadUrl + s.getPermalink() + "&video_url=";
-                        String fallbackVideoDownloadUrl = videoDownloadUrl + fallbackUrl + "&audio_url=";
-                        String fallbackVideoWithAudioDownloadUrl = fallbackVideoDownloadUrl
-                                + fallbackAudio + "?source=fallback";
-                        post.setDownloadUrl(fallbackVideoWithAudioDownloadUrl);
+                    if (s.getUrl().contains("https://v.redd.it") && !(s.getEmbeddedMedia() == null) &&
+                            Objects.requireNonNull(s.getEmbeddedMedia().getRedditVideo()).getDuration() <= 60) {
+                            post.setContentType("video");
+
+                            //Can be done in 1 variable but this way string is easier to edit, and it is easier to read.
+                            String fallbackUrl = Objects.requireNonNull(Objects.requireNonNull(s.getEmbeddedMedia())
+                                    .getRedditVideo()).getFallbackUrl();
+                            String fallbackVideo = fallbackUrl.substring(0, fallbackUrl.indexOf("?"));
+                            String fallbackAudio = fallbackVideo.substring(0, fallbackVideo.indexOf("_") + 1) + "audio.mp4";
+                            String baseDownloadUrl = "https://ds.redditsave.com/download.php?permalink=https://reddit.com";
+                            String videoDownloadUrl = baseDownloadUrl + s.getPermalink() + "&video_url=";
+                            String fallbackVideoDownloadUrl = videoDownloadUrl + fallbackUrl + "&audio_url=";
+                            String fallbackVideoWithAudioDownloadUrl = fallbackVideoDownloadUrl
+                                    + fallbackAudio + "?source=fallback";
+                            post.setDownloadUrl(fallbackVideoWithAudioDownloadUrl);
                     } else if (s.getUrl().contains(".gif") || s.getUrl().contains("gfycat.com")) {
                         post.setContentType("gif");
                     } else if (s.getUrl().contains(".jpg") || s.getUrl().contains(".png")) {
                         post.setContentType("image");
                     } else if (s.getUrl().contains("https://www.reddit.com/")) {
-                        post.setContentType("text");
+                        continue;
                     }
                 } else {
-                    if (s.getUrl().contains("https://www.reddit.com/gallery/")) {
-                        post.setContentType("text");
+                    if (s.getUrl().contains("https://www.reddit.com/")) {
+                        continue;
                     } else {
                         post.setContentType("image");
                     }
                 }
 
-                String queryPost = postService.getByUrl(post.getUrl());
+                String postServiceByUrl = postService.getByUrl(post.getUrl());
+                String postServiceByPermaUrl = postService.getByPermaUrl(post.getPermaUrl());
 
-                if (!post.getUrl().equals(queryPost)) {
+                if (postServiceByUrl == null && postServiceByPermaUrl == null) {
                     postService.save(post);
-                    System.out.println("URL saved to database: " + post.getUrl());
+                    System.out.println("URL saved to database: " + post.getPermaUrl());
                 }
             }
             try {//30 sec wait because of reddit timeout if too many request occurs.
