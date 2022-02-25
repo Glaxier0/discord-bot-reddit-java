@@ -34,7 +34,7 @@ reddit_bot database needs posts table.
 
 Some error may occur while creating table from script so an sql knowledge needed.
 
-[Example bot created by me](https://discord.com/api/oauth2/authorize?client_id=855806720834928641&permissions=2147936320&scope=bot)
+[Example bot created by me](https://discord.com/api/oauth2/authorize?client_id=855806720834928641&permissions=139623589952&scope=bot%20applications.commands)
 
 [top.gg](https://top.gg/bot/855806720834928641)
 
