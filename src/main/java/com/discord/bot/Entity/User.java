@@ -1,4 +1,4 @@
-package com.discord.bot.Entity;
+package com.discord.bot.entity;
 
 import lombok.*;
 import javax.persistence.*;
@@ -37,7 +37,11 @@ public class User {
     @Column(name = "user_with_tag")
     private String userWithTag;
 
-    public User(String userId, int textCount, int hCount, int pCount, int redditCount, int todoCount, String userWithTag) {
+    @Column(name = "music_count")
+    private int musicCount;
+
+    public User(String userId, int textCount, int hCount, int pCount, int redditCount,
+                int todoCount, String userWithTag, int musicCount) {
         this.userId = userId;
         this.textCount = textCount;
         this.hCount = hCount;
@@ -45,5 +49,6 @@ public class User {
         this.redditCount = redditCount;
         this.todoCount = todoCount;
         this.userWithTag = userWithTag;
+        this.musicCount = musicCount;
     }
 }

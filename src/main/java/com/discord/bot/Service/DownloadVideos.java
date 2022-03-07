@@ -1,8 +1,9 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
-import com.discord.bot.Entity.Post;
+import com.discord.bot.entity.Post;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

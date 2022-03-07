@@ -1,9 +1,10 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
-import com.discord.bot.Entity.Post;
-import com.discord.bot.Dao.PostRepository;
+import com.discord.bot.dao.PostRepository;
+import com.discord.bot.entity.Post;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -68,5 +69,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public  List<Post> getPorn() {return repository.getPorn();}
+    public List<Post> getPorn() {
+        return repository.getPorn();
+    }
 }

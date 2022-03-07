@@ -36,3 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 /gradle/
+/src/main/java/com/discord/bot/Event/CustomCommands.java
+guilds.txt
+gradle/wrapper/gradle-wrapper.properties
+r3dd-1-firebase-adminsdk-h0reo-019535d8b2.json

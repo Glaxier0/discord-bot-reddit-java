@@ -1,6 +1,9 @@
 # discord-bot-reddit-java
+
+A multi-functional discord bot mainly focused to reddit that gathers posts from reddit and post them in discord channel.
+
  A multi-functional discord bot mainly focused to reddit that gathers posts from reddit and post them in discord channel.
- 
+
 ### Used APIs ###
 Reddit API - [JRAW Wrapper](https://github.com/mattbdean/JRAW)
 
@@ -14,15 +17,15 @@ Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 
 Don't forget to edit [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/main/src/main/resources/application.properties).
 
-Reddit username, reddit password, reddit personal use script from [here](https://www.reddit.com/prefs/apps) 
+Reddit username, reddit password, reddit personal use script from [here](https://www.reddit.com/prefs/apps)
 Reddit client_id, client_secret.
 
-Firebase Storage ADMIN SDK KEY from [here](https://console.firebase.google.com/) 
+Firebase Storage ADMIN SDK KEY from [here](https://console.firebase.google.com/)
 
 from Firebase console > your project > settings > users and permissions > service accounts > generate private key > download the key.
 
-Copy key path then edit this lines [[1]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/046b30dccb174eb0d66855a98ce8a5bcb053c9b4/src/main/java/com/discord/bot/Service/RemoveOldPosts.java#L35)
-[[2]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/046b30dccb174eb0d66855a98ce8a5bcb053c9b4/src/main/java/com/discord/bot/Service/UploadToFirebase.java#L18)
+Copy key path then edit this lines [[1]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/c847cbb908ebb0bce6a540bbe50bcbe38cdd5fbd/src/main/java/com/discord/bot/Bot.java#L206)
+[[2]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/c847cbb908ebb0bce6a540bbe50bcbe38cdd5fbd/src/main/java/com/discord/bot/Bot.java#L247)
 
 Discord API BOT TOKEN from [here](https://discord.com/developers/applications)
 
