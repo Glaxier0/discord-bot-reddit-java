@@ -1,11 +1,12 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
-import com.discord.bot.Entity.Post;
+import com.discord.bot.entity.Post;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import org.springframework.stereotype.Service;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +33,7 @@ public class RemoveOldPosts {
         System.out.println("Program in remove old firebase videos.");
 
         FileInputStream serviceAccount =
-                new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
+                new FileInputStream("r3dd-1-firebase-adminsdk-h0reo-019535d8b2.json");
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
                 .fromStream(serviceAccount)).build().getService();
 

@@ -1,14 +1,15 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
-import com.discord.bot.Dao.TodoRepository;
-import com.discord.bot.Entity.Todo;
+import com.discord.bot.dao.TodoRepository;
+import com.discord.bot.entity.Todo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TodoServiceImpl implements TodoService{
+public class TodoServiceImpl implements TodoService {
 
     TodoRepository repository;
 
@@ -30,5 +31,10 @@ public class TodoServiceImpl implements TodoService{
     @Override
     public List<Todo> todoList(String discordUser) {
         return repository.todoList(discordUser);
+    }
+
+    @Override
+    public void deleteAll(String discordUser) {
+        repository.deleteAll(discordUser);
     }
 }

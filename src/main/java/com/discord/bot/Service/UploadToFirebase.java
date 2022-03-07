@@ -1,9 +1,10 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
-import com.discord.bot.Entity.Post;
+import com.discord.bot.entity.Post;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import org.springframework.stereotype.Service;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +16,7 @@ public class UploadToFirebase {
 
     public void uploadToFirebaseStorage(PostService postService, String BUCKET_NAME, Post post) throws IOException {
         FileInputStream serviceAccount =
-                new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
+                new FileInputStream("r3dd-1-firebase-adminsdk-h0reo-019535d8b2.json");
         String fileName = String.valueOf(post.getId());
         Map<String, String> map = new HashMap<>();
         map.put("firebaseStorageDownloadTokens", fileName);
@@ -29,7 +30,6 @@ public class UploadToFirebase {
             Blob blob = storage.create(blobInfo, file);
             String firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/"
                     + fileName + ".mp4" + "?alt=media&token=" + blob.getMetadata().get("firebaseStorageDownloadTokens");
-            System.out.println("Uploaded file: " + firebaseUrl);
             post.setFirebaseUrl(firebaseUrl);
             postService.save(post);
         } catch (Exception e) {
