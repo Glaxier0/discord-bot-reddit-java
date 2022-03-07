@@ -73,7 +73,7 @@ public class Bot {
                             new ToDoCommands(todoService, userService),
                             new VoiceCommands(guildService, restService, userService),
                             new PermissionCommands(guildService))
-                    .setActivity(Activity.playing("Please check bot description and new prefix /help")).build();
+                    .setActivity(Activity.playing("Type /help")).build();
 
             addCommands(jda);
             System.out.println("Starting bot is done!");
