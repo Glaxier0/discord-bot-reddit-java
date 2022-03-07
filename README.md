@@ -24,8 +24,8 @@ Firebase Storage ADMIN SDK KEY from [here](https://console.firebase.google.com/)
 
 from Firebase console > your project > settings > users and permissions > service accounts > generate private key > download the key.
 
-Copy key path then edit this lines [[1]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/c847cbb908ebb0bce6a540bbe50bcbe38cdd5fbd/src/main/java/com/discord/bot/Bot.java#L206)
-[[2]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/c847cbb908ebb0bce6a540bbe50bcbe38cdd5fbd/src/main/java/com/discord/bot/Bot.java#L247)
+Copy key path then edit this lines [[1]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/7ac2606c0bc97d621ebc4eb2f11a97cc8201d6a6/src/main/java/com/discord/bot/Service/UploadToFirebase.java#L19)
+[[2]](https://github.com/Glaxier0/discord-bot-reddit-java/blob/7ac2606c0bc97d621ebc4eb2f11a97cc8201d6a6/src/main/java/com/discord/bot/Service/RemoveOldPosts.java#L36)
 
 Discord API BOT TOKEN from [here](https://discord.com/developers/applications)
 
