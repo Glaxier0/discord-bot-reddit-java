@@ -1,6 +1,6 @@
 package com.discord.bot;
 
-import com.discord.bot.commands.*;
+import com.discord.bot.commands.CommandManager;
 import com.discord.bot.service.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -66,13 +66,7 @@ public class Bot {
     public void startDiscordBot() {
         try {
             JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
-                    .addEventListeners(new RedditCommands(postService, userService),
-                            new TextCommands(userService),
-                            new AdminCommands(postService, userService, guildService, ADMIN),
-                            new NsfwCommands(postService, userService),
-                            new ToDoCommands(todoService, userService),
-                            new VoiceCommands(guildService, restService, userService),
-                            new PermissionCommands(guildService))
+                    .addEventListeners(new CommandManager(postService, todoService, userService, guildService, restService))
                     .setActivity(Activity.playing("Type /help")).build();
 
             addCommands(jda);
