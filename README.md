@@ -50,7 +50,7 @@ https://user-images.githubusercontent.com/55876415/133401787-96db0fea-80a7-4b94-
 
 # MUSIC COMMANDS 
 
-### DON'T FORGET TO ADD YOURSELF AS ADMIN, TO DO SO GET YOUR DISCORD USER ID AND ADD IT TO THE [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/12be07f1dcabd12f65370a29975bf42f568b8dfd/src/main/resources/application.properties#L10)
+### DON'T FORGET TO ADD YOURSELF AS ADMIN, TO DO SO GET YOUR DISCORD USER ID AND ADD IT TO THE [admin commands](https://github.com/Glaxier0/discord-bot-reddit-java/tree/main/src/main/java/com/discord/bot/commands/admincommands)
 
 ### ALSO DON'T FORGET TO EDIT YOUR TEST SERVER ID AND ADD IT TO THE [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/12be07f1dcabd12f65370a29975bf42f568b8dfd/src/main/resources/application.properties#L9). EVERY COMMAND USABLE IN TEST SERVER
 
