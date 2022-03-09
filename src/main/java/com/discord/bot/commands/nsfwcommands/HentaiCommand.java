@@ -1,41 +1,33 @@
-package com.discord.bot.commands;
+package com.discord.bot.commands.nsfwcommands;
 
-import com.discord.bot.service.PostService;
+import com.discord.bot.commands.ISlashCommand;
 import com.discord.bot.entity.Post;
 import com.discord.bot.entity.User;
+import com.discord.bot.service.PostService;
 import com.discord.bot.service.UserService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
-public class NsfwCommands extends ListenerAdapter {
-
+public class HentaiCommand implements ISlashCommand {
     PostService postService;
     UserService userService;
+
     Random random = new Random();
 
-    public NsfwCommands(PostService postService, UserService userService) {
+    public HentaiCommand(PostService postService, UserService userService) {
         this.postService = postService;
         this.userService = userService;
     }
 
     @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        switch (event.getName()) {
-            case "hentai" -> hentai(event);
-            case "porn" -> porn(event);
-        }
-    }
-
-    private void hentai(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         if (event.getTextChannel().isNSFW()) {
             net.dv8tion.jda.api.entities.User user = event.getUser();
-            counter(user.getId(), user.getAsTag(), true);
+            counter(user.getId(), user.getAsTag());
             List<Post> postList = postService.getHentai();
             Post post = postList.get(random.nextInt(postList.size()));
             checkTypeAndPost(event, post);
@@ -43,33 +35,17 @@ public class NsfwCommands extends ListenerAdapter {
             event.replyEmbeds(new EmbedBuilder().setDescription("Channel is not nsfw.")
                     .setColor(Color.RED).build()).queue();
         }
-
     }
 
-    private void porn(SlashCommandInteractionEvent event) {
-        if (event.getTextChannel().isNSFW()) {
-            net.dv8tion.jda.api.entities.User user = event.getUser();
-            counter(user.getId(), user.getAsTag(), false);
-            List<Post> postList = postService.getPorn();
-            Post post = postList.get(random.nextInt(postList.size()));
-            checkTypeAndPost(event, post);
-        } else {
-            event.replyEmbeds(new EmbedBuilder().setDescription("Channel is not nsfw. Please write command in nsfw channel.")
-                    .setColor(Color.RED).build()).queue();
-        }
-    }
-
-    private void counter(String userId, String userWithTag, boolean isHentai) {
+    private void counter(String userId, String userWithTag) {
         User user = userService.getUser(userId);
         if (user == null) {
             user = new User(userId, 0, 0, 0, 0, 0, userWithTag, 0);
         }
 
-        if (isHentai) {
-            user.setHCount(user.getHCount() + 1);
-        } else {
-            user.setPCount(user.getPCount() + 1);
-        }
+
+        user.setHCount(user.getHCount() + 1);
+
         userService.save(user);
     }
 
