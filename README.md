@@ -54,13 +54,6 @@ https://user-images.githubusercontent.com/55876415/133401787-96db0fea-80a7-4b94-
 
 ### ALSO DON'T FORGET TO EDIT YOUR TEST SERVER ID AND ADD IT TO THE [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/12be07f1dcabd12f65370a29975bf42f568b8dfd/src/main/resources/application.properties#L9). EVERY COMMAND USABLE IN TEST SERVER
 
-If you want to give permission to any discord server for music commands (because i made them as premium feature).
-
-First you have to type /getguild for getting server id or /guilds and find server id there.
-
-Second type /addpermission guildid guildname command to give permission to discord server
-
-Now music commands will open in that server. If you want to take permission back use /retrievepermission guildid command.
 
 
 
