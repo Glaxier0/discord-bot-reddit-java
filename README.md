@@ -10,11 +10,6 @@ Firebase Storage let us watch reddit videos directly in discord via embed. Any v
 
 Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 
-[Youtube API](https://developers.google.com/youtube/v3)
-
-
-[Spotify API](https://developer.spotify.com/documentation/web-api/)
-
 ### Things needed for project to work ###
 
 Don't forget to edit [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/main/src/main/resources/application.properties).
