@@ -1,7 +1,6 @@
 # discord-bot-reddit-java
 
-A multi-functional discord bot mainly focused to reddit that gathers posts from reddit and post them in discord channel, [now with music commands!](https://github.com/Glaxier0/discord-bot-reddit-java#music-commands).
-
+A multi-functional discord bot mainly focused to reddit that gathers posts from reddit and post them in discord channel.
 ### Used APIs ###
 Reddit API - [JRAW Wrapper](https://github.com/mattbdean/JRAW)
 
