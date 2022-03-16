@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TodoServiceImpl implements TodoService {
+public class TodoServiceImpl implements TodoService{
 
     TodoRepository repository;
 

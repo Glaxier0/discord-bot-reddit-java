@@ -69,7 +69,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPorn() {
-        return repository.getPorn();
+    public  List<Post> getPorn() {return repository.getPorn();}
+
+    @Override
+    public List<Post> getTits() {
+        return repository.getTits();
     }
 }

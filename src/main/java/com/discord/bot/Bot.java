@@ -22,15 +22,15 @@ import java.io.IOException;
 @Configuration
 @EnableScheduling
 public class Bot {
-
     PostService postService;
     TodoService todoService;
     UserService userService;
     GuildService guildService;
+    RestService restService;
+
     SearchReddit redditSearchService;
     DownloadVideos downloadVideosService;
     RemoveOldPosts removeOldPostsService;
-    RestService restService;
 
     @Value("${reddit_username}")
     private String REDDIT_USERNAME;
@@ -46,8 +46,6 @@ public class Bot {
     private String BUCKET_NAME;
     @Value("${test_server_id}")
     private String TEST_SERVER;
-    @Value("${discord_admin_id}")
-    private String ADMIN;
 
     public Bot(PostService postService, TodoService todoService, UserService userService, GuildService guildService,
                SearchReddit redditSearchService, DownloadVideos downloadVideosService,
@@ -66,7 +64,8 @@ public class Bot {
     public void startDiscordBot() {
         try {
             JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
-                    .addEventListeners(new CommandManager(postService, todoService, userService, guildService, restService))
+                    .addEventListeners(
+                            new CommandManager(postService, todoService, userService, guildService, restService))
                     .setActivity(Activity.playing("Type /help")).build();
 
             addCommands(jda);
@@ -87,6 +86,7 @@ public class Bot {
 
         Guild testServer = jda.getGuildById(TEST_SERVER);
 
+        assert testServer != null;
         CommandListUpdateAction testServerCommands = testServer.updateCommands();
         CommandListUpdateAction globalCommands = jda.updateCommands();
 
@@ -117,29 +117,14 @@ public class Bot {
                 Commands.slash("removeguild", "Remove guild from premium list.")
                         .addOptions(new OptionData(OptionType.STRING, "guildid", "Guild ID.")
                                 .setRequired(true)),
-                Commands.slash("getguilds", "Get premium guilds."),
-                //Music Commands
-                Commands.slash("play", "Play a song on your voice channel.")
-                        .addOptions(new OptionData(OptionType.STRING, "query", "Song url or name.")
-                                .setRequired(true)),
-                Commands.slash("skip", "Skip the current song."),
-                Commands.slash("pause", "Pause the current song."),
-                Commands.slash("resume", "Resume paused song."),
-                Commands.slash("leave", "Make bot leave voice channel."),
-                Commands.slash("queue", "List song queue."),
-                Commands.slash("swap", "Swap order of two songs in queue")
-                        .addOptions(new OptionData(OptionType.INTEGER, "songnum1",
-                                        "Song number in the queue to be changed.").setRequired(true),
-                                new OptionData(OptionType.INTEGER, "songnum2",
-                                        "Song number in queue to be changed.").setRequired(true)),
-                Commands.slash("shuffle", "Shuffle the queue."),
-                Commands.slash("mhelp", "Help page for music commands.")
+                Commands.slash("getguilds", "Get premium guilds.")
         ).queue();
 
         globalCommands.addCommands(
                 //nsfw commands
                 Commands.slash("hentai", "Get random hentai image/gif/video."),
                 Commands.slash("porn", "Get random porn image/gif/video."),
+                Commands.slash("tits", "Get random tits image/gif/video."),
                 //reddit commands
                 Commands.slash("unexpected", "Get top r/unexpected posts."),
                 Commands.slash("dankmemes", "Get top r/dankmemes posts."),
@@ -187,7 +172,7 @@ public class Bot {
     }
 
     @Scheduled(fixedDelay = 86400000)
-    public void dayDelay() throws IOException {
+    private void dayDelay() throws IOException {
         removeOldPostsService.removeOldPosts(postService);
         removeOldPostsService.removeOldFirebaseVideos(postService, BUCKET_NAME);
     }

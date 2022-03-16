@@ -40,9 +40,14 @@ public class SearchReddit {
         //Keep in mind these things adding more nsfw subreddits to list.
         List<String> subreddits = Arrays.asList("Unexpected", "memes", "dankmemes", "greentext",
                 "blursedimages", "perfectlycutscreams", "interestingasfuck", "facepalm",
+                //Hentai Subreddits
                 "hentai", "HENTAI_GIF", "rule34", "Tentai", "hentaibondage",
+                //Porn Subreddits
                 "porninaminute", "porninfifteenseconds", "porn", "NSFW_GIF",
-                "nsfw_gifs", "porn_gifs", "anal_gifs", "Doggystyle_NSFW");
+                "nsfw_gifs", "porn_gifs", "anal_gifs", "Doggystyle_NSFW",
+                //Tits Subreddits
+                "Boobies", "TittyDrop", "boobs");
+
 
         List<DefaultPaginator<Submission>> paginatorList = new ArrayList<>();
 

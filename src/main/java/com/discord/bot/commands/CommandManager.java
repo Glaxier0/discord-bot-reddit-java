@@ -1,9 +1,10 @@
 package com.discord.bot.commands;
 
 import com.discord.bot.commands.admincommands.*;
-import com.discord.bot.commands.musiccommands.*;
 import com.discord.bot.commands.nsfwcommands.HentaiCommand;
+import com.discord.bot.commands.nsfwcommands.NsfwCommandUtils;
 import com.discord.bot.commands.nsfwcommands.PornCommand;
+import com.discord.bot.commands.nsfwcommands.TitsCommand;
 import com.discord.bot.commands.redditcommands.*;
 import com.discord.bot.commands.textcommands.*;
 import com.discord.bot.commands.todocommands.*;
@@ -25,7 +26,7 @@ public class CommandManager extends ListenerAdapter {
     RedditCommandUtils redditCommandUtils;
     TextCommandUtils textCommandUtils;
     ToDoCommandUtils toDoCommandUtils;
-    MusicCommandUtils musicCommandUtils;
+    NsfwCommandUtils nsfwCommandUtils;
     private Map<String, ISlashCommand> commandsMap;
 
     public CommandManager(PostService postService, TodoService todoService, UserService userService,
@@ -38,7 +39,7 @@ public class CommandManager extends ListenerAdapter {
         this.redditCommandUtils = new RedditCommandUtils(userService);
         this.textCommandUtils = new TextCommandUtils(userService);
         this.toDoCommandUtils = new ToDoCommandUtils(userService);
-        this.musicCommandUtils = new MusicCommandUtils(userService);
+        this.nsfwCommandUtils = new NsfwCommandUtils(userService);
         commandMapper();
     }
 
@@ -54,16 +55,6 @@ public class CommandManager extends ListenerAdapter {
 
     private void commandMapper() {
         commandsMap = new ConcurrentHashMap<>();
-        //Music Commands
-        commandsMap.put("play", new PlayCommand(restService, musicCommandUtils));
-        commandsMap.put("skip", new SkipCommand(musicCommandUtils));
-        commandsMap.put("pause", new PauseCommand(musicCommandUtils));
-        commandsMap.put("resume", new ResumeCommand(musicCommandUtils));
-        commandsMap.put("leave", new LeaveCommand(musicCommandUtils));
-        commandsMap.put("queue", new QueueCommand(musicCommandUtils));
-        commandsMap.put("swap", new SwapCommand(musicCommandUtils));
-        commandsMap.put("shuffle", new ShuffleCommand(musicCommandUtils));
-        commandsMap.put("mhelp", new MusicHelpCommand(musicCommandUtils));
         //Admin Commands
         commandsMap.put("guilds", new GuildsCommand());
         commandsMap.put("status", new StatusCommand(postService));
@@ -77,8 +68,9 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("givepermission", new GivePermissionCommand(guildService));
         commandsMap.put("retrievepermission", new RetrievePermissionCommand(guildService));
         //NSFW Commands
-        commandsMap.put("hentai", new HentaiCommand(postService, userService));
-        commandsMap.put("porn", new PornCommand(postService, userService));
+        commandsMap.put("hentai", new HentaiCommand(postService, nsfwCommandUtils));
+        commandsMap.put("porn", new PornCommand(postService, nsfwCommandUtils));
+        commandsMap.put("tits", new TitsCommand(postService, nsfwCommandUtils));
         //Reddit Commands
         commandsMap.put("blursedimages", new BlursedImagesCommand(postService, redditCommandUtils));
         commandsMap.put("dankmemes", new DankmemesCommand(postService, redditCommandUtils));

@@ -3,6 +3,7 @@ package com.discord.bot.dao;
 import com.discord.bot.entity.Post;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 public interface PostRepositoryCustom {
@@ -33,6 +34,9 @@ public interface PostRepositoryCustom {
     @Query(value = "SELECT * FROM posts WHERE subreddit IN ('porninaminute', 'porninfifteenseconds', 'porn', " +
             "'NSFW_GIF', 'nsfw_gifs', 'porn_gifs', 'anal_gifs', 'Doggystyle_NSFW')", nativeQuery = true)
     List<Post> getPorn();
+
+    @Query(value = "SELECT * FROM posts WHERE subreddit IN ('Boobies', 'TittyDrop', 'boobs')", nativeQuery = true)
+    List<Post> getTits();
 
     @Query(value = "SELECT subreddit, COUNT(subreddit) FROM posts GROUP BY subreddit", nativeQuery = true)
     List<String> getSubredditCount();

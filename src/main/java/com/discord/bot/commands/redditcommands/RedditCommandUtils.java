@@ -42,10 +42,17 @@ public class RedditCommandUtils {
                 event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
             }
             case "gif", "image" -> {
-                embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
-                        .setImage(post.getUrl())
-                        .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
-                event.replyEmbeds(embedBuilder.build()).queue();
+                if (post.getUrl().contains(".gifv")) {
+                    embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
+                            .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
+                    event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+                    event.reply(post.getUrl()).queue();
+                } else {
+                    embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
+                            .setImage(post.getUrl())
+                            .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
+                    event.replyEmbeds(embedBuilder.build()).queue();
+                }
             }
         }
     }

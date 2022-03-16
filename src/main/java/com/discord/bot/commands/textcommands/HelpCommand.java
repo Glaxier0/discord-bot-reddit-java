@@ -14,6 +14,7 @@ public class HelpCommand implements ISlashCommand {
             - greentext
             - hentai
             - porn
+            - tits
             - blursedimages
             - perfectlycutscreams
             - interestingasfuck
@@ -30,16 +31,16 @@ public class HelpCommand implements ISlashCommand {
 
         embedBuilder.setTitle("Commands").setDescription("""
                         - /[subreddit_name]
-                        - /howgay [user]
-                        - /errrkek [user]
+                        - /howgay
+                        - /errrkek
                         - /monke
                         - /github
                         - /top.gg
-                        - /todoadd [to-do sentence]
+                        - /todoadd
                         - /todolist
-                        - /todoremove [todo row id/ids seperated with space]
-                        - /todocomplete [row id]
-                        - /todoupdate [row id]
+                        - /todoremove
+                        - /todocomplete
+                        - /todoupdate
                         """)
                 .addField("Subreddits", subreddits, false);
 

@@ -6,12 +6,8 @@ import java.util.List;
 
 public interface TodoService {
     List<Todo> findAll();
-
     void save(Todo todo);
-
     void delete(Todo todo);
-
     List<Todo> todoList(String discordUser);
-
     void deleteAll(String discordUser);
 }
