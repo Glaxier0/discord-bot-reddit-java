@@ -1,15 +1,12 @@
 package com.discord.bot;
 
 import com.discord.bot.commands.CommandManager;
+import com.discord.bot.commands.JdaCommands;
+import com.discord.bot.commands.TestCommands;
 import com.discord.bot.service.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +22,6 @@ public class Bot {
     PostService postService;
     TodoService todoService;
     UserService userService;
-    GuildService guildService;
-    RestService restService;
 
     SearchReddit redditSearchService;
     DownloadVideos downloadVideosService;
@@ -47,17 +42,15 @@ public class Bot {
     @Value("${test_server_id}")
     private String TEST_SERVER;
 
-    public Bot(PostService postService, TodoService todoService, UserService userService, GuildService guildService,
+    public Bot(PostService postService, TodoService todoService, UserService userService,
                SearchReddit redditSearchService, DownloadVideos downloadVideosService,
-               RemoveOldPosts removeOldPostsService, RestService restService) {
+               RemoveOldPosts removeOldPostsService) {
         this.postService = postService;
         this.todoService = todoService;
         this.userService = userService;
-        this.guildService = guildService;
         this.redditSearchService = redditSearchService;
         this.downloadVideosService = downloadVideosService;
         this.removeOldPostsService = removeOldPostsService;
-        this.restService = restService;
     }
 
     @Bean
@@ -65,104 +58,15 @@ public class Bot {
         try {
             JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
                     .addEventListeners(
-                            new CommandManager(postService, todoService, userService, guildService, restService))
+                            new CommandManager(postService, todoService, userService))
                     .setActivity(Activity.playing("Type /help")).build();
 
-            addCommands(jda);
+            new JdaCommands().addJdaCommands(jda);
+            new TestCommands().addTestCommands(jda, TEST_SERVER);
             System.out.println("Starting bot is done!");
         } catch (LoginException e) {
             e.printStackTrace();
         }
-    }
-
-    private void addCommands(JDA jda) {
-        while (jda.getGuildById(TEST_SERVER) == null) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Guild testServer = jda.getGuildById(TEST_SERVER);
-
-        assert testServer != null;
-        CommandListUpdateAction testServerCommands = testServer.updateCommands();
-        CommandListUpdateAction globalCommands = jda.updateCommands();
-
-        testServerCommands.addCommands(
-                //admin commands
-                Commands.slash("givepermission", "Give permission to guild")
-                        .addOptions(new OptionData(OptionType.STRING, "guildid", "Guild id.")
-                                        .setRequired(true),
-                                new OptionData(OptionType.STRING, "guildname", "Guild name.")
-                                        .setRequired(false)),
-                Commands.slash("retrievepermission", "Retrieve permission from guild")
-                        .addOptions(new OptionData(OptionType.STRING, "guildid", "Guild id.")
-                                .setRequired(true)),
-                Commands.slash("guilds", "Get guild list that bot is in."),
-                Commands.slash("status", "Get reddit post statuses."),
-                Commands.slash("stats", "Get user stats.")
-                        .addOptions(new OptionData(OptionType.MENTIONABLE, "user", "User with mention.")
-                                .setRequired(true)),
-                Commands.slash("users", "Get bot users."),
-                Commands.slash("logs", "Get logs."),
-                Commands.slash("getguild", "Get guild id."),
-                Commands.slash("addguild", "Add guild to the premium list.")
-                        .addOptions(new OptionData(OptionType.STRING, "guildname", "Guild name.")
-                                .setRequired(true))
-                        .addOptions(new OptionData(OptionType.STRING, "guildid", "Guild ID.")
-                                .setRequired(true)
-                        ),
-                Commands.slash("removeguild", "Remove guild from premium list.")
-                        .addOptions(new OptionData(OptionType.STRING, "guildid", "Guild ID.")
-                                .setRequired(true)),
-                Commands.slash("getguilds", "Get premium guilds.")
-        ).queue();
-
-        globalCommands.addCommands(
-                //nsfw commands
-                Commands.slash("hentai", "Get random hentai image/gif/video."),
-                Commands.slash("porn", "Get random porn image/gif/video."),
-                Commands.slash("tits", "Get random tits image/gif/video."),
-                //reddit commands
-                Commands.slash("unexpected", "Get top r/unexpected posts."),
-                Commands.slash("dankmemes", "Get top r/dankmemes posts."),
-                Commands.slash("memes", "Get top r/memes posts."),
-                Commands.slash("greentext", "Get top r/greentext posts."),
-                Commands.slash("blursedimages", "Get top r/blursedimages posts."),
-                Commands.slash("perfectlycutscreams", "Get top r/perfectlycutscreams posts."),
-                Commands.slash("interestingasfuck", "Get top r/interestingasfuck posts."),
-                Commands.slash("facepalm", "Get top r/facepalm posts."),
-                //test commands
-                Commands.slash("help", "Info page about bot commands"),
-                Commands.slash("monke", "Get my favorite random monke video."),
-                Commands.slash("github", "My github page and source code of bot."),
-                Commands.slash("howgay", "Calculate how gay is someone.")
-                        .addOptions(new OptionData(OptionType.USER, "user", "User to calculate how gay.")
-                                .setRequired(true)),
-                Commands.slash("errrkek", "Calculate how man is someone.")
-                        .addOptions(new OptionData(OptionType.USER, "user", "User to calculate how man.")
-                                .setRequired(true)),
-                Commands.slash("topgg", "Top.gg page of Glaxier bot."),
-                //to-do commands
-                Commands.slash("todoadd", "Add a task to your to-do list.")
-                        .addOptions(new OptionData(OptionType.STRING, "task",
-                                "A to-do task.").setRequired(true)),
-                Commands.slash("todolist", "Shows your to-do list."),
-                Commands.slash("todoremove", "Remove a task from your to-do list.")
-                        .addOptions(new OptionData(OptionType.INTEGER, "taskid",
-                                "To-do task id to remove.").setRequired(true)),
-                Commands.slash("todoupdate", "Update a task in your to-do list.")
-                        .addOptions(new OptionData(OptionType.INTEGER, "taskid",
-                                        "To-do task id to remove.").setRequired(true),
-                                new OptionData(OptionType.STRING, "task",
-                                        "Updated to-do task.").setRequired(true)),
-                Commands.slash("todocomplete", "Complete a task in your to-do list.")
-                        .addOptions(new OptionData(OptionType.INTEGER, "taskid",
-                                "To-do task id to remove.").setRequired(true)),
-                Commands.slash("todoclear", "Clears your to-do list.")
-        ).queue();
     }
 
     @Scheduled(fixedDelay = 7200000)

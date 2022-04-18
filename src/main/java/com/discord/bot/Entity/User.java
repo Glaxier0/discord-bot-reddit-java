@@ -1,6 +1,10 @@
 package com.discord.bot.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
@@ -37,11 +41,8 @@ public class User {
     @Column(name = "user_with_tag")
     private String userWithTag;
 
-    @Column(name = "music_count")
-    private int musicCount;
-
     public User(String userId, int textCount, int hCount, int pCount, int redditCount,
-                int todoCount, String userWithTag, int musicCount) {
+                int todoCount, String userWithTag) {
         this.userId = userId;
         this.textCount = textCount;
         this.hCount = hCount;
@@ -49,6 +50,5 @@ public class User {
         this.redditCount = redditCount;
         this.todoCount = todoCount;
         this.userWithTag = userWithTag;
-        this.musicCount = musicCount;
     }
 }

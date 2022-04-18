@@ -39,7 +39,7 @@ public class UsersCommand implements ISlashCommand {
                         writer.append("\n" + user.getUserId() + " " + user.getUserWithTag() + " "
                                 + user.getTextCount() + " " + user.getHCount() + " "
                                 + user.getPCount() + " " + user.getRedditCount() + " "
-                                + user.getTodoCount() + " " + user.getMusicCount());
+                                + user.getTodoCount());
                     }
                     writer.close();
                     event.replyFile(usersFile).queue();

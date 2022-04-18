@@ -28,7 +28,7 @@ public class TitsCommand implements ISlashCommand {
             Post post = postList.get(random.nextInt(postList.size()));
             utils.checkTypeAndPost(event, post);
             net.dv8tion.jda.api.entities.User user = event.getUser();
-            utils.counter(user.getId(), user.getAsTag());
+            utils.counter(user.getId(), user.getAsTag(), true);
         } else {
             event.replyEmbeds(new EmbedBuilder().setDescription("Channel is not nsfw. Please write command in nsfw channel.")
                     .setColor(Color.RED).build()).queue();

@@ -13,13 +13,17 @@ public class NsfwCommandUtils {
         this.userService = userService;
     }
 
-    public void counter(String userId, String userWithTag) {
+    public void counter(String userId, String userWithTag, boolean isPorn) {
         User user = userService.getUser(userId);
         if (user == null) {
-            user = new User(userId, 0, 0, 0, 0, 0, userWithTag, 0);
+            user = new User(userId, 0, 0, 0, 0, 0, userWithTag);
         }
 
-        user.setPCount(user.getPCount() + 1);
+        if (isPorn) {
+            user.setPCount(user.getPCount() + 1);
+        } else {
+            user.setHCount(user.getHCount() +1);
+        }
 
         userService.save(user);
     }

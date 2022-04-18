@@ -29,8 +29,7 @@ public class StatsCommand implements ISlashCommand {
                         "\nHentai commands: " + user.getHCount() +
                         "\nPorn commands: " + user.getPCount() +
                         "\nReddit commands: " + user.getRedditCount() +
-                        "\nTodo commands: " + user.getTodoCount() +
-                        "\nMusic commands: " + user.getMusicCount());
+                        "\nTodo commands: " + user.getTodoCount());
             }
             event.replyEmbeds(embedBuilder.build()).queue();
         }

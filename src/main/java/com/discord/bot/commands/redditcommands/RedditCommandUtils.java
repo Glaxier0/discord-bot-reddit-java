@@ -21,7 +21,7 @@ public class RedditCommandUtils {
     public void counter(String userId, String userWithTag) {
         User user = userService.getUser(userId);
         if (user == null) {
-            user = new User(userId, 0, 0, 0, 0, 0, userWithTag, 0);
+            user = new User(userId, 0, 0, 0, 0, 0, userWithTag);
         }
         user.setRedditCount(user.getRedditCount() + 1);
         userService.save(user);
