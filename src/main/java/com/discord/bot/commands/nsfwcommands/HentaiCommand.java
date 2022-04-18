@@ -28,7 +28,7 @@ public class HentaiCommand implements ISlashCommand {
             Post post = postList.get(random.nextInt(postList.size()));
             utils.checkTypeAndPost(event, post);
             net.dv8tion.jda.api.entities.User user = event.getUser();
-            utils.counter(user.getId(), user.getAsTag());
+            utils.counter(user.getId(), user.getAsTag(), false);
         } else {
             event.replyEmbeds(new EmbedBuilder().setDescription("Channel is not nsfw.")
                     .setColor(Color.RED).build()).queue();

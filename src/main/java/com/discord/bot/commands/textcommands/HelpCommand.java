@@ -41,6 +41,7 @@ public class HelpCommand implements ISlashCommand {
                         - /todoremove
                         - /todocomplete
                         - /todoupdate
+                        - /redgifs
                         """)
                 .addField("Subreddits", subreddits, false);
 

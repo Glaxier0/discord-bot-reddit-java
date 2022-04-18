@@ -1,14 +1,13 @@
 package com.discord.bot.commands;
 
 import com.discord.bot.commands.admincommands.*;
-import com.discord.bot.commands.nsfwcommands.HentaiCommand;
-import com.discord.bot.commands.nsfwcommands.NsfwCommandUtils;
-import com.discord.bot.commands.nsfwcommands.PornCommand;
-import com.discord.bot.commands.nsfwcommands.TitsCommand;
+import com.discord.bot.commands.nsfwcommands.*;
 import com.discord.bot.commands.redditcommands.*;
 import com.discord.bot.commands.textcommands.*;
 import com.discord.bot.commands.todocommands.*;
-import com.discord.bot.service.*;
+import com.discord.bot.service.PostService;
+import com.discord.bot.service.TodoService;
+import com.discord.bot.service.UserService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -21,21 +20,16 @@ public class CommandManager extends ListenerAdapter {
     PostService postService;
     TodoService todoService;
     UserService userService;
-    GuildService guildService;
-    RestService restService;
     RedditCommandUtils redditCommandUtils;
     TextCommandUtils textCommandUtils;
     ToDoCommandUtils toDoCommandUtils;
     NsfwCommandUtils nsfwCommandUtils;
     private Map<String, ISlashCommand> commandsMap;
 
-    public CommandManager(PostService postService, TodoService todoService, UserService userService,
-                          GuildService guildService, RestService restService) {
+    public CommandManager(PostService postService, TodoService todoService, UserService userService) {
         this.postService = postService;
         this.todoService = todoService;
         this.userService = userService;
-        this.guildService = guildService;
-        this.restService = restService;
         this.redditCommandUtils = new RedditCommandUtils(userService);
         this.textCommandUtils = new TextCommandUtils(userService);
         this.toDoCommandUtils = new ToDoCommandUtils(userService);
@@ -61,16 +55,11 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("stats", new StatsCommand(userService));
         commandsMap.put("users", new UsersCommand(userService));
         commandsMap.put("logs", new LogsCommand());
-        commandsMap.put("getguild", new GetGuildCommand());
-        commandsMap.put("addguild", new AddGuildCommand(guildService));
-        commandsMap.put("removeguild", new RemoveGuildCommand(guildService));
-        commandsMap.put("getguilds", new GetGuildsCommand(guildService));
-        commandsMap.put("givepermission", new GivePermissionCommand(guildService));
-        commandsMap.put("retrievepermission", new RetrievePermissionCommand(guildService));
         //NSFW Commands
         commandsMap.put("hentai", new HentaiCommand(postService, nsfwCommandUtils));
         commandsMap.put("porn", new PornCommand(postService, nsfwCommandUtils));
         commandsMap.put("tits", new TitsCommand(postService, nsfwCommandUtils));
+        commandsMap.put("redgifs", new RedgifsCommand(nsfwCommandUtils));
         //Reddit Commands
         commandsMap.put("blursedimages", new BlursedImagesCommand(postService, redditCommandUtils));
         commandsMap.put("dankmemes", new DankmemesCommand(postService, redditCommandUtils));

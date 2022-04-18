@@ -62,7 +62,6 @@ public class SearchReddit {
         for (DefaultPaginator<Submission> d : paginatorList) {
             Listing<Submission> submissions = d.next();
             for (Submission s : submissions) {
-
                 Post post = new Post(s.getUrl(), s.getSubreddit(), s.getTitle(), s.getAuthor(), s.getCreated());
                 post.setPermaUrl("https://reddit.com" + s.getPermalink());
 
