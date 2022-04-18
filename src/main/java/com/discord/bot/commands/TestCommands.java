@@ -28,9 +28,7 @@ public class TestCommands {
                         .addOptions(new OptionData(OptionType.MENTIONABLE, "user", "User with mention.")
                                 .setRequired(true)),
                 Commands.slash("users", "Get bot users."),
-                Commands.slash("logs", "Get logs."),
-                //Custom Commands
-                Commands.slash("formylove", "For special one.")
+                Commands.slash("logs", "Get logs.")
         ).queue();
     }
 }
