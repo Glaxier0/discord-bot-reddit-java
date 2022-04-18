@@ -14,8 +14,9 @@ Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 
 Don't forget to edit [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/main/src/main/resources/application.properties).
 
-Reddit username, reddit password, reddit personal use script from [here](https://www.reddit.com/prefs/apps)
-Reddit client_id, client_secret.
+Reddit username, reddit password
+
+Create reddit personal use script from [here](https://www.reddit.com/prefs/apps) than get Reddit client_id and client_secret.
 
 Firebase Storage ADMIN SDK KEY from [here](https://console.firebase.google.com/)
 
