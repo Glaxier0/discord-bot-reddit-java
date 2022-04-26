@@ -33,8 +33,8 @@ public class UsersCommand implements ISlashCommand {
                     File usersFile = new File("users.txt");
                     BufferedWriter writer = new BufferedWriter(new FileWriter(usersFile, true));
                     writer.write("USER COUNT: " + users.size() + "\nT: Text   H: Hentai   P: Porn   " +
-                            "R: Reddit   T: Todo     M: Music" +
-                            "\n        ID             USER      T H P R T M");
+                            "R: Reddit   T: Todo" +
+                            "\n        ID             USER      T H P R T");
                     for (User user : users) {
                         writer.append("\n" + user.getUserId() + " " + user.getUserWithTag() + " "
                                 + user.getTextCount() + " " + user.getHCount() + " "

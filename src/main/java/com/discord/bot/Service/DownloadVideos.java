@@ -1,7 +1,7 @@
 package com.discord.bot.service;
 
 import com.discord.bot.entity.Post;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
@@ -15,11 +15,18 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@AllArgsConstructor
 public class DownloadVideos {
     UploadToFirebase uploadToFirebaseService;
+    PostService postService;
+    @Value("${firebase_storage_bucket_name}")
+    private String BUCKET_NAME;
 
-    public void downloadVideos(PostService postService, String BUCKET_NAME) {
+    public DownloadVideos(UploadToFirebase uploadToFirebaseService, PostService postService) {
+        this.uploadToFirebaseService = uploadToFirebaseService;
+        this.postService = postService;
+    }
+
+    public void downloadVideos() {
         System.out.println("Program in download videos");
 
         List<Post> list = postService.getVideoNullFirebase();

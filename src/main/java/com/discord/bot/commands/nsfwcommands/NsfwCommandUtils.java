@@ -39,7 +39,7 @@ public class NsfwCommandUtils {
         switch (post.getContentType()) {
             case "video" -> event.reply(post.getUrl()).queue();
             case "image" -> {
-                embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
+                embedBuilder.setTitle(post.getTitle(), post.getPermalink())
                         .setImage(post.getUrl())
                         .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
                 event.replyEmbeds(embedBuilder.build()).queue();

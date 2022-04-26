@@ -3,6 +3,7 @@ package com.discord.bot.service;
 import com.discord.bot.entity.Post;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
@@ -13,10 +14,12 @@ import java.util.Map;
 
 @Service
 public class UploadToFirebase {
+    @Value("${firebase_adminsdk_file_name}")
+    private String FILE_NAME;
 
     public void uploadToFirebaseStorage(PostService postService, String BUCKET_NAME, Post post) throws IOException {
         FileInputStream serviceAccount =
-                new FileInputStream("{path/to/firebasestorage/adminsdk.json}");
+                new FileInputStream(FILE_NAME);
         String fileName = String.valueOf(post.getId());
         Map<String, String> map = new HashMap<>();
         map.put("firebaseStorageDownloadTokens", fileName);
