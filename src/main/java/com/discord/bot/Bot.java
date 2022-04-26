@@ -14,41 +14,32 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
 
 @Configuration
 @EnableScheduling
 public class Bot {
-    PostService postService;
     TodoService todoService;
     UserService userService;
+    PostService postService;
 
     SearchReddit redditSearchService;
     DownloadVideos downloadVideosService;
     RemoveOldPosts removeOldPostsService;
+    RedditTokenService redditTokenService;
 
-    @Value("${reddit_username}")
-    private String REDDIT_USERNAME;
-    @Value("${reddit_password}")
-    private String REDDIT_PASSWORD;
-    @Value("${reddit_client_id}")
-    private String REDDIT_CLIENT_ID;
-    @Value("${reddit_client_secret}")
-    private String REDDIT_CLIENT_SECRET;
     @Value("${discord_bot_token}")
     private String DISCORD_TOKEN;
-    @Value("${firebase_storage_bucket_name}")
-    private String BUCKET_NAME;
     @Value("${test_server_id}")
     private String TEST_SERVER;
 
     public Bot(PostService postService, TodoService todoService, UserService userService,
-               SearchReddit redditSearchService, DownloadVideos downloadVideosService,
+               SearchReddit redditSearchService, RedditTokenService redditTokenService, DownloadVideos downloadVideosService,
                RemoveOldPosts removeOldPostsService) {
         this.postService = postService;
         this.todoService = todoService;
         this.userService = userService;
         this.redditSearchService = redditSearchService;
+        this.redditTokenService = redditTokenService;
         this.downloadVideosService = downloadVideosService;
         this.removeOldPostsService = removeOldPostsService;
     }
@@ -60,7 +51,6 @@ public class Bot {
                     .addEventListeners(
                             new CommandManager(postService, todoService, userService))
                     .setActivity(Activity.playing("Type /help")).build();
-
             new JdaCommands().addJdaCommands(jda);
             new TestCommands().addTestCommands(jda, TEST_SERVER);
             System.out.println("Starting bot is done!");
@@ -71,14 +61,15 @@ public class Bot {
 
     @Scheduled(fixedDelay = 7200000)
     private void twoHourDelay() {
-        redditSearchService.searchReddit(postService, REDDIT_USERNAME, REDDIT_PASSWORD, REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET);
-        downloadVideosService.downloadVideos(postService, BUCKET_NAME);
+        redditTokenService.getAccessToken();
+        redditSearchService.searchReddit();
+        downloadVideosService.downloadVideos();
     }
 
     @Scheduled(fixedDelay = 86400000)
-    private void dayDelay() throws IOException {
-        removeOldPostsService.removeOldPosts(postService);
-        removeOldPostsService.removeOldFirebaseVideos(postService, BUCKET_NAME);
+    private void dayDelay() {
+        removeOldPostsService.removeOldPosts();
+        removeOldPostsService.removeOldFirebaseVideos();
     }
 }
 

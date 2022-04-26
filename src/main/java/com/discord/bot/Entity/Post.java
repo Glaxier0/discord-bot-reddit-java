@@ -41,16 +41,17 @@ public class Post {
     private String firebaseUrl;
 
     @Column(name = "perma_url")
-    private String permaUrl;
+    private String permalink;
 
     @Column(name = "download_url", length = 512)
     private String downloadUrl;
 
-    public Post(String url, String subreddit, String title, String author, Date created) {
+    public Post(String url, String subreddit, String title, String author, Date created, String permalink) {
         this.url = url;
         this.subreddit = subreddit;
         this.title = title;
         this.author = author;
         this.created = created;
+        this.permalink = permalink;
     }
 }

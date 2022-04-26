@@ -23,10 +23,3 @@ CREATE TABLE users ( id SERIAL PRIMARY KEY, user_id VARCHAR(256) UNIQUE, text_co
 
 ALTER TABLE users OWNER to postgres; GRANT ALL ON TABLE users TO postgres; GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO postgres;
 
-CREATE TABLE public.guilds ( id integer NOT NULL, guild_id character varying(64) COLLATE pg_catalog."default" NOT NULL, guild_name character varying(64) COLLATE pg_catalog."default" NOT NULL, CONSTRAINT guilds_pkey PRIMARY KEY (id), CONSTRAINT guilds_guild_id_key UNIQUE (guild_id), CONSTRAINT guilds_guild_name_key UNIQUE (guild_name) )
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.guilds OWNER to postgres;
-
-GRANT ALL ON TABLE public.guilds TO postgres;

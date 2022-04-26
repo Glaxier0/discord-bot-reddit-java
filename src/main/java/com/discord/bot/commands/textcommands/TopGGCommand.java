@@ -15,7 +15,7 @@ public class TopGGCommand implements ISlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        embedBuilder.setTitle("Bot's Top.gg Page", "https://top.gg/bot/855806720834928641")
+        embedBuilder.setTitle("Bot's Top.gg Page", "https://top.gg/bot/863361433807093792")
                 .setFooter("Please send feedback.");
         event.replyEmbeds(embedBuilder.build()).queue();
 

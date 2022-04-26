@@ -36,19 +36,19 @@ public class RedditCommandUtils {
                 while (post.getFirebaseUrl() == null && (post.getContentType().equals("video"))) {
                     post = list.get(random.nextInt(list.size()));
                 }
-                embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
+                embedBuilder.setTitle(post.getTitle(), post.getPermalink())
                         .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
                 event.reply(post.getFirebaseUrl()).queue();
                 event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
             }
             case "gif", "image" -> {
                 if (post.getUrl().contains(".gifv")) {
-                    embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
+                    embedBuilder.setTitle(post.getTitle(), post.getPermalink())
                             .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
                     event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
                     event.reply(post.getUrl()).queue();
                 } else {
-                    embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
+                    embedBuilder.setTitle(post.getTitle(), post.getPermalink())
                             .setImage(post.getUrl())
                             .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
                     event.replyEmbeds(embedBuilder.build()).queue();
