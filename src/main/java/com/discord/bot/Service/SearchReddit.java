@@ -32,7 +32,7 @@ public class SearchReddit {
             //Hentai Subreddits
             "hentai", "HENTAI_GIF", "rule34", "Tentai", "hentaibondage",
             //Porn Subreddits
-            "porninaminute"/*, "porninfifteenseconds"*/, "porn", "NSFW_GIF",
+            "porninaminute", "porninfifteenseconds", "porn", "NSFW_GIF",
             "nsfw_gifs", "porn_gifs", "anal_gifs", "Doggystyle_NSFW",
             //Tits Subreddits
             "Boobies", "TittyDrop", "boobs");
