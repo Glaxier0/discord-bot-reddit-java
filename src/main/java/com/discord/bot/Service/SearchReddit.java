@@ -75,7 +75,7 @@ public class SearchReddit {
                 Date created = new Date(new Timestamp(timestamp).getTime());
                 String permalink = redditPost.getAsJsonObject().get("permalink").getAsString();
                 boolean isNSFW = redditPost.getAsJsonObject().get("over_18").getAsBoolean();
-                Post post = new Post(url, subreddit, title, author, created, permalink);
+                Post post = new Post(url, subreddit, title, author, created, "https://reddit.com" + permalink);
                 if (!isNSFW) {
                     JsonElement media = redditPost.getAsJsonObject().get("media");
                     if (url.contains("https://v.redd.it") && !media.isJsonNull()) {
