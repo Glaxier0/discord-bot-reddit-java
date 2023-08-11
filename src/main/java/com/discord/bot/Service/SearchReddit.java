@@ -37,7 +37,7 @@ public class SearchReddit {
             //Tits Subreddits
             "Boobies", "TittyDrop", "boobs");
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
     PostService postService;
 
     public SearchReddit(PostService postService) {
@@ -91,8 +91,8 @@ public class SearchReddit {
                                 String downloadURL = baseDownloadUrl + permalink + "&video_url=" + fallbackVideoUrl + "&audio_url="
                                         + fallbackAudioUrl;
                                 post.setDownloadUrl(downloadURL);
-                            }
-
+                            } else
+                                continue;
                         }
                     }
                     if (url.contains(".gif") || url.contains("gfycat.com")) {

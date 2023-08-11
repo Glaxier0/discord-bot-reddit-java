@@ -22,7 +22,7 @@ public class NsfwCommandUtils {
         if (isPorn) {
             user.setPCount(user.getPCount() + 1);
         } else {
-            user.setHCount(user.getHCount() +1);
+            user.setHCount(user.getHCount() + 1);
         }
 
         userService.save(user);

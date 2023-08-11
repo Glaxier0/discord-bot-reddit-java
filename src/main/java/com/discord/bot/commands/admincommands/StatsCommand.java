@@ -6,9 +6,11 @@ import com.discord.bot.service.UserService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+import java.util.Objects;
+
 public class StatsCommand implements ISlashCommand {
     UserService userService;
-    String ADMIN = "315403352496275456";
+    String ADMIN = "your_discord_id";
 
     public StatsCommand(UserService userService) {
         this.userService = userService;
@@ -18,7 +20,8 @@ public class StatsCommand implements ISlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         if (event.getUser().getId().equals(ADMIN)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            net.dv8tion.jda.api.entities.User userStats = event.getOption("user").getAsUser();
+            net.dv8tion.jda.api.entities.User userStats = Objects.requireNonNull(event.getOption("user"))
+                    .getAsUser();
 
             User user = userService.getUser(userStats.getId());
             if (user == null) {

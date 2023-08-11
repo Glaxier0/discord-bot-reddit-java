@@ -1,10 +1,9 @@
 package com.discord.bot.service;
 
-import com.discord.bot.dao.PostRepository;
 import com.discord.bot.entity.Post;
+import com.discord.bot.dao.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

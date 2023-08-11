@@ -1,7 +1,6 @@
 package com.discord.bot.service;
 
 import com.discord.bot.entity.Post;
-
 import java.util.List;
 
 public interface PostService {

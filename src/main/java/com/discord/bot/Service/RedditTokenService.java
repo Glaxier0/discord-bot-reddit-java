@@ -22,7 +22,7 @@ public class RedditTokenService {
     private String REDDIT_CLIENT_ID;
     @Value("${reddit_client_secret}")
     private String REDDIT_CLIENT_SECRET;
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public RedditTokenService() {
         restTemplate = new RestTemplateBuilder().build();

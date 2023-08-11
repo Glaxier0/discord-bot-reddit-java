@@ -3,7 +3,6 @@ package com.discord.bot.dao;
 import com.discord.bot.entity.Post;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 
 public interface PostRepositoryCustom {

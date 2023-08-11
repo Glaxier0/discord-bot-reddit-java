@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.security.auth.login.LoginException;
-
 @Configuration
 @EnableScheduling
 public class Bot {
@@ -26,6 +24,7 @@ public class Bot {
     DownloadVideos downloadVideosService;
     RemoveOldPosts removeOldPostsService;
     RedditTokenService redditTokenService;
+    RedgifsTokenService redgifsTokenService;
 
     @Value("${discord_bot_token}")
     private String DISCORD_TOKEN;
@@ -34,7 +33,7 @@ public class Bot {
 
     public Bot(PostService postService, TodoService todoService, UserService userService,
                SearchReddit redditSearchService, RedditTokenService redditTokenService, DownloadVideos downloadVideosService,
-               RemoveOldPosts removeOldPostsService) {
+               RemoveOldPosts removeOldPostsService, RedgifsTokenService redgifsTokenService) {
         this.postService = postService;
         this.todoService = todoService;
         this.userService = userService;
@@ -42,21 +41,23 @@ public class Bot {
         this.redditTokenService = redditTokenService;
         this.downloadVideosService = downloadVideosService;
         this.removeOldPostsService = removeOldPostsService;
+        this.redgifsTokenService = redgifsTokenService;
     }
 
     @Bean
     public void startDiscordBot() {
-        try {
-            JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
-                    .addEventListeners(
-                            new CommandManager(postService, todoService, userService))
-                    .setActivity(Activity.playing("Type /help")).build();
-            new JdaCommands().addJdaCommands(jda);
-            new TestCommands().addTestCommands(jda, TEST_SERVER);
-            System.out.println("Starting bot is done!");
-        } catch (LoginException e) {
-            e.printStackTrace();
-        }
+        JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
+                .addEventListeners(
+                        new CommandManager(postService, todoService, userService))
+                .setActivity(Activity.playing("Type /help")).build();
+        new JdaCommands().addJdaCommands(jda);
+        new TestCommands().addTestCommands(jda, TEST_SERVER);
+        System.out.println("Starting bot is done!");
+    }
+
+    @Scheduled(fixedDelay = 57600000)
+    private void sixTeenHourDelay() {
+        redgifsTokenService.getAccessToken();
     }
 
     @Scheduled(fixedDelay = 7200000)

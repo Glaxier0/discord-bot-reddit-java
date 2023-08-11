@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 public class ToDoCompleteCommand implements ISlashCommand {
     ToDoCommandUtils utils;
@@ -25,7 +26,7 @@ public class ToDoCompleteCommand implements ISlashCommand {
         String userId = user.getId();
         String userWithTag = user.getAsTag();
 
-        int rowId = event.getOption("taskid").getAsInt();
+        int rowId = Objects.requireNonNull(event.getOption("taskid")).getAsInt();
         List<Todo> todoList = todoService.todoList(userId);
         if (rowId > 0 && rowId <= todoList.size()) {
             todoList.get(rowId - 1).setCompleted(true);

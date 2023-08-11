@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import java.awt.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class ToDoAddCommand implements ISlashCommand {
     ToDoCommandUtils utils;
@@ -25,7 +26,7 @@ public class ToDoAddCommand implements ISlashCommand {
         net.dv8tion.jda.api.entities.User user = event.getUser();
         String userId = user.getId();
         String userWithTag = user.getAsTag();
-        String add = event.getOption("task").getAsString();
+        String add = Objects.requireNonNull(event.getOption("task")).getAsString();
 
         if (add.isEmpty()) {
             embedBuilder.setDescription("Can't add your future to to-do list.");
