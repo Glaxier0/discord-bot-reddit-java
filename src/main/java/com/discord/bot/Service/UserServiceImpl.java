@@ -4,7 +4,6 @@ import com.discord.bot.dao.UserRepository;
 import com.discord.bot.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

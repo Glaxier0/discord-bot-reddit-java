@@ -9,7 +9,7 @@ import java.util.List;
 
 public class StatusCommand implements ISlashCommand {
     PostService postService;
-    String ADMIN = "315403352496275456";
+    String ADMIN = "your_discord_id";
 
     public StatusCommand(PostService postService) {
         this.postService = postService;
@@ -22,9 +22,7 @@ public class StatusCommand implements ISlashCommand {
             int videoCount = postService.getVideoNullFirebase().size();
             List<String> subredditPostCount = postService.getSubredditCount();
 
-            for (int i = 0; i < subredditPostCount.size(); i++) {
-                subredditPostCount.set(i, subredditPostCount.get(i).replace(",", ": "));
-            }
+            subredditPostCount.replaceAll(s -> s.replace(",", ": "));
 
             embedBuilder.setTitle("Status")
                     .setDescription("Video count to be uploaded: " + videoCount)

@@ -7,10 +7,13 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
+import java.util.Objects;
+
 public class TestCommands {
     public void addTestCommands(JDA jda, String TEST_SERVER) {
         while (jda.getGuildById(TEST_SERVER) == null) {
             try {
+                //noinspection BusyWait
                 Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -18,7 +21,7 @@ public class TestCommands {
         }
 
         Guild testServer = jda.getGuildById(TEST_SERVER);
-        CommandListUpdateAction testServerCommands = testServer.updateCommands();
+        CommandListUpdateAction testServerCommands = Objects.requireNonNull(testServer).updateCommands();
 
         testServerCommands.addCommands(
                 //admin commands

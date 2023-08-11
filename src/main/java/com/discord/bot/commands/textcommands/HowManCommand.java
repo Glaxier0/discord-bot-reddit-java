@@ -4,6 +4,7 @@ import com.discord.bot.commands.ISlashCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class HowManCommand implements ISlashCommand {
@@ -18,7 +19,7 @@ public class HowManCommand implements ISlashCommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        net.dv8tion.jda.api.entities.User userToCalculate = event.getOption("user").getAsUser();
+        net.dv8tion.jda.api.entities.User userToCalculate = Objects.requireNonNull(event.getOption("user")).getAsUser();
 
         embedBuilder.setDescription(userToCalculate.getAsMention() + "is " + random.nextInt(100)
                 + "% errrkek :muscle: :muscle: :muscle:");

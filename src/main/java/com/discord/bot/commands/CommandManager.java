@@ -5,18 +5,14 @@ import com.discord.bot.commands.nsfwcommands.*;
 import com.discord.bot.commands.redditcommands.*;
 import com.discord.bot.commands.textcommands.*;
 import com.discord.bot.commands.todocommands.*;
-import com.discord.bot.service.PostService;
-import com.discord.bot.service.TodoService;
-import com.discord.bot.service.UserService;
+import com.discord.bot.service.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager extends ListenerAdapter {
-
     PostService postService;
     TodoService todoService;
     UserService userService;
@@ -38,7 +34,7 @@ public class CommandManager extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         String commandName = event.getName();
 
         ISlashCommand command;

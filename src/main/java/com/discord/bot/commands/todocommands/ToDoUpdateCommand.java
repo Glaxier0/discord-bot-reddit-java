@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 public class ToDoUpdateCommand implements ISlashCommand {
     ToDoCommandUtils utils;
@@ -25,8 +26,8 @@ public class ToDoUpdateCommand implements ISlashCommand {
         String userId = user.getId();
         String userWithTag = user.getAsTag();
 
-        int rowId = event.getOption("taskid").getAsInt();
-        String updateTask = event.getOption("task").getAsString();
+        int rowId = Objects.requireNonNull(event.getOption("taskid")).getAsInt();
+        String updateTask = Objects.requireNonNull(event.getOption("task")).getAsString();
 
         List<Todo> todoList = todoService.todoList(userId);
         if (rowId > 0 && rowId <= todoList.size()) {

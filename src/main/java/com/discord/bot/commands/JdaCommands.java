@@ -13,11 +13,11 @@ public class JdaCommands {
 
         globalCommands.addCommands(
                 //NSFW Commands
-                Commands.slash("hentai", "Get random hentai image/gif/video."),
-                Commands.slash("porn", "Get random porn image/gif/video."),
-                Commands.slash("tits", "Get random tits image/gif/video."),
-                Commands.slash("redgifs", "Get random trending gif of chosen tag")
-                        .addOptions(new OptionData(OptionType.STRING,"sort", "Sort by popularity")
+                Commands.slash("hentai", "Get random hentai image/gif/video.").setNSFW(true),
+                Commands.slash("porn", "Get random porn image/gif/video.").setNSFW(true),
+                Commands.slash("tits", "Get random tits image/gif/video.").setNSFW(true),
+                Commands.slash("redgifs", "Get random trending gif of chosen tag").setNSFW(true)
+                        .addOptions(new OptionData(OptionType.STRING, "sort", "Sort by popularity")
                                         .addChoices(new Command.Choice("Trending", 1),
                                                 new Command.Choice("Top", 2)).setRequired(true),
                                 new OptionData(OptionType.STRING, "tag", "Chosen tag or a.k.a category")

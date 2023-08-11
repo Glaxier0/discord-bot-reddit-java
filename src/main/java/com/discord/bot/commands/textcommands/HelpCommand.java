@@ -50,5 +50,4 @@ public class HelpCommand implements ISlashCommand {
         net.dv8tion.jda.api.entities.User user = event.getUser();
         utils.counter(user.getId(), user.getAsTag());
     }
-
 }
