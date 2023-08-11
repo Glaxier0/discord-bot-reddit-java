@@ -13,6 +13,7 @@ Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 ### Things needed for project to work ###
 
 Edit admin ids in classes under [admincommands](https://github.com/Glaxier0/discord-bot-reddit-java/tree/main/src/main/java/com/discord/bot/commands/admincommands)
+
 Also don't forget to edit [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/main/src/main/resources/application.properties).
 
 Reddit username, reddit password
