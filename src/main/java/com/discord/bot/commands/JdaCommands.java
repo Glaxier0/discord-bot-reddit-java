@@ -34,6 +34,7 @@ public class JdaCommands {
                 Commands.slash("facepalm", "Get top r/facepalm posts."),
                 //Text Commands
                 Commands.slash("help", "Info page about bot commands"),
+                Commands.slash("nhelp", "Info page about bot nsfw commands").setNSFW(true),
                 Commands.slash("monke", "Get my favorite random monke video."),
                 Commands.slash("github", "My github page and source code of bot."),
                 Commands.slash("howgay", "Calculate how gay is someone.")
