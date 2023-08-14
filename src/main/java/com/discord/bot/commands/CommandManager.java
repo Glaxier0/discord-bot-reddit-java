@@ -72,6 +72,7 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("topgg", new TopGGCommand(textCommandUtils));
         commandsMap.put("github", new GithubCommand(textCommandUtils));
         commandsMap.put("help", new HelpCommand(textCommandUtils));
+        commandsMap.put("nhelp", new NHelpCommand(textCommandUtils));
         //To-do Commands
         commandsMap.put("todoadd", new ToDoAddCommand(toDoCommandUtils, todoService));
         commandsMap.put("todolist", new ToDoListCommand(toDoCommandUtils, todoService));

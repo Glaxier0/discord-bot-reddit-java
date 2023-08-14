@@ -4,21 +4,16 @@ import com.discord.bot.commands.ISlashCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public class HelpCommand implements ISlashCommand {
+public class NHelpCommand implements ISlashCommand {
     TextCommandUtils utils;
 
     String subreddits = """
-            - Unexpected
-            - dankmemes
-            - memes
-            - greentext
-            - blursedimages
-            - perfectlycutscreams
-            - interestingasfuck
-            - facepalm
+            - hentai
+            - porn
+            - tits
             """;
 
-    public HelpCommand(TextCommandUtils utils) {
+    public NHelpCommand(TextCommandUtils utils) {
         this.utils = utils;
     }
 
@@ -28,20 +23,9 @@ public class HelpCommand implements ISlashCommand {
 
         embedBuilder.setTitle("Commands").setDescription("""
                         - /[subreddit_name]
-                        - /howgay
-                        - /errrkek
-                        - /monke
                         - /github
                         - /top.gg
-                        - /todoadd
-                        - /todolist
-                        - /todoremove
-                        - /todocomplete
-                        - /todoupdate
-                        - ||For NSFW||
-                        - ||Use /nhelp||
-                        - ||in age restricted||
-                        - ||channel||
+                        - /redgifs
                         """)
                 .addField("Subreddits", subreddits, false);
 
