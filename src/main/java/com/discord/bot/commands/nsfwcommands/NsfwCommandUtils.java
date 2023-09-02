@@ -3,15 +3,13 @@ package com.discord.bot.commands.nsfwcommands;
 import com.discord.bot.entity.Post;
 import com.discord.bot.entity.User;
 import com.discord.bot.service.UserService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+@AllArgsConstructor
 public class NsfwCommandUtils {
     UserService userService;
-
-    public NsfwCommandUtils(UserService userService) {
-        this.userService = userService;
-    }
 
     public void counter(String userId, String userWithTag, boolean isPorn) {
         User user = userService.getUser(userId);
