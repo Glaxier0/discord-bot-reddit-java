@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @Service
 public class RedgifsTokenService {
@@ -33,8 +34,9 @@ public class RedgifsTokenService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("User-Agent", "Mozilla:com.glaxier.discordbot:v2 (by /u/" + REDDIT_USERNAME + ")");
         HttpEntity entity = new HttpEntity(headers);
-        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-        RedgifsCommand.TOKEN = new JsonParser().parse(response.getBody()).getAsJsonObject()
+        ResponseEntity<String> response = restTemplate.exchange(Objects.requireNonNull(uri),
+                HttpMethod.GET, entity, String.class);
+        RedgifsCommand.TOKEN = new JsonParser().parse(Objects.requireNonNull(response.getBody())).getAsJsonObject()
                 .get("token").getAsString();
         RedgifsCommand.REDDIT_USERNAME = REDDIT_USERNAME;
     }

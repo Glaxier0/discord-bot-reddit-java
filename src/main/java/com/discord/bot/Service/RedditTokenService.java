@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @Service
 public class RedditTokenService {
@@ -44,8 +45,9 @@ public class RedditTokenService {
         bodyParamMap.add("grant_type", "refresh_token");
         bodyParamMap.add("refresh_token", REDDIT_REFRESH_TOKEN);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(bodyParamMap, headers);
-        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
-        SearchReddit.ACCESS_TOKEN = new JsonParser().parse(response.getBody()).getAsJsonObject()
+        ResponseEntity<String> response = restTemplate.exchange(Objects.requireNonNull(uri),
+                HttpMethod.POST, entity, String.class);
+        SearchReddit.ACCESS_TOKEN = new JsonParser().parse(Objects.requireNonNull(response.getBody())).getAsJsonObject()
                 .get("access_token").getAsString();
     }
 }

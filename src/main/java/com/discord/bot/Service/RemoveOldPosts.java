@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RemoveOldPosts {
@@ -59,7 +60,7 @@ public class RemoveOldPosts {
         for (Post post : posts) {
             String blobName = post.getId() + ".mp4";
             BlobId blobId = BlobId.of(BUCKET_NAME, blobName);
-            boolean deleted = storage.delete(blobId);
+            boolean deleted = Objects.requireNonNull(storage).delete(blobId);
             if (deleted) {
                 postService.delete(post);
             }
