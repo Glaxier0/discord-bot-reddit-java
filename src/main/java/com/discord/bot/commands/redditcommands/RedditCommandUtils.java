@@ -6,6 +6,7 @@ import com.discord.bot.service.UserService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
@@ -29,6 +30,14 @@ public class RedditCommandUtils {
 
     public void checkTypeAndPost(SlashCommandInteractionEvent event, List<Post> list) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
+
+        if (list.isEmpty()) {
+            embedBuilder.setDescription("Currently bot has 0 posts from that subreddit.")
+                    .setColor(Color.RED);
+            event.replyEmbeds(embedBuilder.build()).queue();
+            return;
+        }
+
         Post post = list.get(random.nextInt(list.size()));
 
         switch (post.getContentType()) {
