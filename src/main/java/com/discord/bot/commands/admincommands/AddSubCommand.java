@@ -15,7 +15,7 @@ public class AddSubCommand implements ISlashCommand {
         this.subredditService = subredditService;
     }
 
-    String ADMIN = "315403352496275456";
+    String ADMIN = "your_discord_id";
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {

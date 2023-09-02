@@ -11,7 +11,7 @@ import java.awt.*;
 public class DeleteSubCommand implements ISlashCommand {
     SubredditService subredditService;
 
-    String ADMIN = "315403352496275456";
+    String ADMIN = "your_discord_id";
 
     public DeleteSubCommand(SubredditService subredditService) {
         this.subredditService = subredditService;

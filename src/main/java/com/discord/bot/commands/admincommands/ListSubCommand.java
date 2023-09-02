@@ -15,7 +15,7 @@ import java.util.List;
 public class ListSubCommand implements ISlashCommand {
     SubredditService subredditService;
 
-    String ADMIN = "315403352496275456";
+    String ADMIN = "your_discord_id";
 
     public ListSubCommand(SubredditService subredditService) {
         this.subredditService = subredditService;
