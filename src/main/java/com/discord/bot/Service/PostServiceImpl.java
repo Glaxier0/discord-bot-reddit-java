@@ -9,7 +9,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
-
     PostRepository repository;
 
     @Override
@@ -62,16 +61,7 @@ public class PostServiceImpl implements PostService {
         return repository.getSubredditCount();
     }
 
-    @Override
-    public List<Post> getHentai() {
-        return repository.getHentai();
-    }
-
-    @Override
-    public  List<Post> getPorn() {return repository.getPorn();}
-
-    @Override
-    public List<Post> getTits() {
-        return repository.getTits();
+    public List<Post> getBySubreddits(List<String> subreddits) {
+        return repository.getBySubreddits(subreddits);
     }
 }

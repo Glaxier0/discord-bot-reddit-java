@@ -24,14 +24,23 @@ public class TestCommands {
         CommandListUpdateAction testServerCommands = Objects.requireNonNull(testServer).updateCommands();
 
         testServerCommands.addCommands(
-                //admin commands
+                //Admin Commands
                 Commands.slash("guilds", "Get guild list that bot is in."),
                 Commands.slash("status", "Get reddit post statuses."),
                 Commands.slash("stats", "Get user stats.")
                         .addOptions(new OptionData(OptionType.MENTIONABLE, "user", "User with mention.")
                                 .setRequired(true)),
                 Commands.slash("users", "Get bot users."),
-                Commands.slash("logs", "Get logs.")
+                Commands.slash("logs", "Get logs."),
+                //Reddit Admin Commands
+                Commands.slash("add", "Add a subreddit.").addOptions(
+                        new OptionData(OptionType.STRING, "name", "Name of the subreddit.", true),
+                        new OptionData(OptionType.STRING, "genre", "Sub genre of the subreddit " +
+                                "(reddit, porn, tits or hentai).", true),
+                        new OptionData(OptionType.BOOLEAN, "nsfw", "Is subreddit nsfw?", true)),
+                Commands.slash("list", "List subreddits."),
+                Commands.slash("delete", "Delete a subreddit.")
+                        .addOption(OptionType.STRING, "name", "Name of the subreddit.", true)
         ).queue();
     }
 }

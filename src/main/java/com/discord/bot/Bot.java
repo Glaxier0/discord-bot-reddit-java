@@ -19,22 +19,22 @@ public class Bot {
     TodoService todoService;
     UserService userService;
     PostService postService;
-
+    SubredditService subredditService;
     SearchReddit redditSearchService;
     DownloadVideos downloadVideosService;
     RemoveOldPosts removeOldPostsService;
     RedditTokenService redditTokenService;
     RedgifsTokenService redgifsTokenService;
-
     @Value("${discord_bot_token}")
     private String DISCORD_TOKEN;
     @Value("${test_server_id}")
     private String TEST_SERVER;
 
-    public Bot(PostService postService, TodoService todoService, UserService userService,
+    public Bot(PostService postService, SubredditService subredditService, TodoService todoService, UserService userService,
                SearchReddit redditSearchService, RedditTokenService redditTokenService, DownloadVideos downloadVideosService,
                RemoveOldPosts removeOldPostsService, RedgifsTokenService redgifsTokenService) {
         this.postService = postService;
+        this.subredditService = subredditService;
         this.todoService = todoService;
         this.userService = userService;
         this.redditSearchService = redditSearchService;
@@ -48,7 +48,7 @@ public class Bot {
     public void startDiscordBot() {
         JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
                 .addEventListeners(
-                        new CommandManager(postService, todoService, userService))
+                        new CommandManager(postService, subredditService, todoService, userService))
                 .setActivity(Activity.playing("Type /help")).build();
         new JdaCommands().addJdaCommands(jda);
         new TestCommands().addTestCommands(jda, TEST_SERVER);
@@ -73,7 +73,3 @@ public class Bot {
         removeOldPostsService.removeOldFirebaseVideos();
     }
 }
-
-
-
-

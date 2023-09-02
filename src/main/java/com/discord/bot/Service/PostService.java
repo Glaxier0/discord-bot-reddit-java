@@ -1,6 +1,7 @@
 package com.discord.bot.service;
 
 import com.discord.bot.entity.Post;
+
 import java.util.List;
 
 public interface PostService {
@@ -14,7 +15,5 @@ public interface PostService {
      List<Post> getOldFirebaseVideos();
      List<Post> getPosts(String subreddit);
      List<String> getSubredditCount();
-     List<Post> getHentai();
-     List<Post> getPorn();
-     List<Post> getTits();
+     List<Post> getBySubreddits(List<String> subreddits);
 }

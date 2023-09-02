@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface TodoRepositoryCustom {
-
     @Query(value = "SELECT * FROM todo WHERE discord_user = :user", nativeQuery = true)
     List<Todo> todoList(@Param("user") String discordUser);
 

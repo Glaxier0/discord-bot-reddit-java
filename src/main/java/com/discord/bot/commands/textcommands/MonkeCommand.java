@@ -27,7 +27,8 @@ public class MonkeCommand implements ISlashCommand {
             "https://www.youtube.com/watch?v=qdIBGoO6pMk",
             "https://www.youtube.com/watch?v=0GCmXOT428s",
             "https://www.youtube.com/watch?v=1J5Mwajm60A",
-            "https://www.youtube.com/watch?v=uBxRLw_YuSw");
+            "https://www.youtube.com/watch?v=uBxRLw_YuSw",
+            "https://www.youtube.com/watch?v=JBEOypYwpw0");
 
     public MonkeCommand(TextCommandUtils utils) {
         this.utils = utils;

@@ -1,6 +1,7 @@
 package com.discord.bot.service;
 
 import com.discord.bot.entity.Post;
+import com.discord.bot.entity.Subreddit;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,8 +19,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SearchReddit {
@@ -27,55 +28,52 @@ public class SearchReddit {
     @Value("${reddit_username}")
     private String REDDIT_USERNAME;
 
-    List<String> subreddits = Arrays.asList("Unexpected", "memes", "dankmemes", "greentext",
-            "blursedimages", "perfectlycutscreams", "interestingasfuck", "facepalm",
-            //Hentai Subreddits
-            "hentai", "HENTAI_GIF", "rule34", "Tentai", "hentaibondage",
-            //Porn Subreddits
-            "porninaminute", "porninfifteenseconds", "porn", "NSFW_GIF",
-            "nsfw_gifs", "porn_gifs", "anal_gifs", "Doggystyle_NSFW",
-            //Tits Subreddits
-            "Boobies", "TittyDrop", "boobs");
-
     private final RestTemplate restTemplate;
     PostService postService;
+    SubredditService subredditService;
 
-    public SearchReddit(PostService postService) {
+    public SearchReddit(PostService postService, SubredditService subredditService) {
         restTemplate = new RestTemplateBuilder().build();
         this.postService = postService;
+        this.subredditService = subredditService;
     }
 
     public void searchReddit() {
+        List<Subreddit> subreddits = subredditService.getSubreddits();
+
         System.out.println("Program in search reddit.");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(ACCESS_TOKEN);
         httpHeaders.set("User-Agent", "Mozilla:com.glaxier.discordbot:v2 (by /u/" + REDDIT_USERNAME + ")");
         HttpEntity<String> bearerHeader = new HttpEntity<>(null, httpHeaders);
+
         String REDDIT_URL;
         String baseDownloadUrl = "https://sd.redditsave.com/download.php?permalink=https://reddit.com";
-        for (String subredditName : subreddits) {
-            REDDIT_URL = "https://oauth.reddit.com/r/" + subredditName + "/top.json?limit=25&t=day&raw_json=1";
+
+        for (Subreddit subreddit : subreddits) {
+            REDDIT_URL = "https://oauth.reddit.com/r/" + subreddit.getName() + "/top.json?limit=25&t=day&raw_json=1";
             URI reddit_uri = null;
             try {
                 reddit_uri = new URI(REDDIT_URL);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            ResponseEntity<String> responseEntity = restTemplate.exchange(reddit_uri, HttpMethod.GET, bearerHeader, String.class);
-            JsonArray redditPosts = new JsonParser().parse(responseEntity.getBody()).getAsJsonObject()
-                    .get("data").getAsJsonObject().getAsJsonArray("children");
+            ResponseEntity<String> responseEntity = restTemplate.exchange(Objects.requireNonNull(reddit_uri),
+                    HttpMethod.GET, bearerHeader, String.class);
+            JsonArray redditPosts = new JsonParser().parse(Objects.requireNonNull(responseEntity.getBody()))
+                    .getAsJsonObject().get("data").getAsJsonObject().getAsJsonArray("children");
 
             for (JsonElement jsonElement : redditPosts) {
                 JsonElement redditPost = jsonElement.getAsJsonObject().get("data");
                 String url = redditPost.getAsJsonObject().get("url").getAsString();
-                String subreddit = redditPost.getAsJsonObject().get("subreddit").getAsString();
+                String subredditName = redditPost.getAsJsonObject().get("subreddit").getAsString();
                 String title = redditPost.getAsJsonObject().get("title").getAsString();
                 String author = redditPost.getAsJsonObject().get("author").getAsString();
                 long timestamp = redditPost.getAsJsonObject().get("created_utc").getAsLong() * 1000L;
                 Date created = new Date(new Timestamp(timestamp).getTime());
                 String permalink = redditPost.getAsJsonObject().get("permalink").getAsString();
                 boolean isNSFW = redditPost.getAsJsonObject().get("over_18").getAsBoolean();
-                Post post = new Post(url, subreddit, title, author, created, "https://reddit.com" + permalink);
+                Post post = new Post(url, subredditName, title, author, created, "https://reddit.com" + permalink);
                 if (!isNSFW) {
                     JsonElement media = redditPost.getAsJsonObject().get("media");
                     if (url.contains("https://v.redd.it") && !media.isJsonNull()) {
