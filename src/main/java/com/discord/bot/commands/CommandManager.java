@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager extends ListenerAdapter {
     PostService postService;
+    SubredditService subredditService;
     TodoService todoService;
     UserService userService;
     RedditCommandUtils redditCommandUtils;
@@ -22,8 +23,10 @@ public class CommandManager extends ListenerAdapter {
     NsfwCommandUtils nsfwCommandUtils;
     private Map<String, ISlashCommand> commandsMap;
 
-    public CommandManager(PostService postService, TodoService todoService, UserService userService) {
+    public CommandManager(PostService postService, SubredditService subredditService,
+                          TodoService todoService, UserService userService) {
         this.postService = postService;
+        this.subredditService = subredditService;
         this.todoService = todoService;
         this.userService = userService;
         this.redditCommandUtils = new RedditCommandUtils(userService);
@@ -51,20 +54,23 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("stats", new StatsCommand(userService));
         commandsMap.put("users", new UsersCommand(userService));
         commandsMap.put("logs", new LogsCommand());
+        commandsMap.put("add", new AddSubCommand(subredditService));
+        commandsMap.put("list", new ListSubCommand(subredditService));
+        commandsMap.put("delete", new DeleteSubCommand(subredditService));
         //NSFW Commands
-        commandsMap.put("hentai", new HentaiCommand(postService, nsfwCommandUtils));
-        commandsMap.put("porn", new PornCommand(postService, nsfwCommandUtils));
-        commandsMap.put("tits", new TitsCommand(postService, nsfwCommandUtils));
+        commandsMap.put("hentai", new HentaiCommand(postService, subredditService, nsfwCommandUtils));
+        commandsMap.put("porn", new PornCommand(postService, subredditService, nsfwCommandUtils));
+        commandsMap.put("tits", new TitsCommand(postService, subredditService, nsfwCommandUtils));
         commandsMap.put("redgifs", new RedgifsCommand(nsfwCommandUtils));
         //Reddit Commands
-        commandsMap.put("blursedimages", new BlursedImagesCommand(postService, redditCommandUtils));
-        commandsMap.put("dankmemes", new DankmemesCommand(postService, redditCommandUtils));
-        commandsMap.put("facepalm", new FacepalmCommand(postService, redditCommandUtils));
-        commandsMap.put("greentext", new GreentextCommand(postService, redditCommandUtils));
-        commandsMap.put("interestingasfuck", new InterestingAFCommand(postService, redditCommandUtils));
-        commandsMap.put("memes", new MemesCommand(postService, redditCommandUtils));
-        commandsMap.put("perfectlycutscreams", new PCutScreamsCommand(postService, redditCommandUtils));
-        commandsMap.put("unexpected", new UnexpectedCommand(postService, redditCommandUtils));
+        commandsMap.put("blursedimages", new RedditCommand(postService, subredditService, redditCommandUtils));
+        commandsMap.put("dankmemes", new RedditCommand(postService, subredditService, redditCommandUtils));
+        commandsMap.put("facepalm", new RedditCommand(postService, subredditService, redditCommandUtils));
+        commandsMap.put("greentext", new RedditCommand(postService, subredditService, redditCommandUtils));
+        commandsMap.put("interestingasfuck", new RedditCommand(postService, subredditService, redditCommandUtils));
+        commandsMap.put("memes", new RedditCommand(postService, subredditService, redditCommandUtils));
+        commandsMap.put("perfectlycutscreams", new RedditCommand(postService, subredditService, redditCommandUtils));
+        commandsMap.put("unexpected", new RedditCommand(postService, subredditService, redditCommandUtils));
         //Text Commands
         commandsMap.put("monke", new MonkeCommand(textCommandUtils));
         commandsMap.put("howgay", new HowGayCommand(textCommandUtils));
