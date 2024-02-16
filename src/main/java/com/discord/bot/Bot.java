@@ -1,6 +1,7 @@
 package com.discord.bot;
 
 import com.discord.bot.commands.CommandManager;
+import com.discord.bot.commands.CustomCommands;
 import com.discord.bot.commands.JdaCommands;
 import com.discord.bot.commands.TestCommands;
 import com.discord.bot.service.*;
@@ -20,27 +21,32 @@ public class Bot {
     UserService userService;
     PostService postService;
     SubredditService subredditService;
+
     SearchReddit redditSearchService;
-    DownloadVideos downloadVideosService;
     RemoveOldPosts removeOldPostsService;
+    FirebaseServiceImpl firebaseService;
     RedditTokenService redditTokenService;
     RedgifsTokenService redgifsTokenService;
+
     @Value("${discord_bot_token}")
     private String DISCORD_TOKEN;
+
     @Value("${test_server_id}")
     private String TEST_SERVER;
 
-    public Bot(PostService postService, SubredditService subredditService, TodoService todoService, UserService userService,
-               SearchReddit redditSearchService, RedditTokenService redditTokenService, DownloadVideos downloadVideosService,
-               RemoveOldPosts removeOldPostsService, RedgifsTokenService redgifsTokenService) {
+    public Bot(PostService postService, SubredditService subredditService,
+               TodoService todoService, UserService userService,
+               SearchReddit redditSearchService, RedditTokenService redditTokenService,
+               RemoveOldPosts removeOldPostsService, FirebaseServiceImpl firebaseService,
+               RedgifsTokenService redgifsTokenService) {
         this.postService = postService;
         this.subredditService = subredditService;
         this.todoService = todoService;
         this.userService = userService;
         this.redditSearchService = redditSearchService;
         this.redditTokenService = redditTokenService;
-        this.downloadVideosService = downloadVideosService;
         this.removeOldPostsService = removeOldPostsService;
+        this.firebaseService = firebaseService;
         this.redgifsTokenService = redgifsTokenService;
     }
 
@@ -50,9 +56,17 @@ public class Bot {
                 .addEventListeners(
                         new CommandManager(postService, subredditService, todoService, userService))
                 .setActivity(Activity.playing("Type /help")).build();
+        new CustomCommands().addCustomCommands(jda);
         new JdaCommands().addJdaCommands(jda);
         new TestCommands().addTestCommands(jda, TEST_SERVER);
         System.out.println("Starting bot is done!");
+    }
+
+    @Scheduled(fixedDelay = 7200000)
+    private void twoHourDelay() {
+        redditTokenService.getAccessToken();
+        redditSearchService.searchReddit();
+        firebaseService.downloadVideos();
     }
 
     @Scheduled(fixedDelay = 57600000)
@@ -60,16 +74,9 @@ public class Bot {
         redgifsTokenService.getAccessToken();
     }
 
-    @Scheduled(fixedDelay = 7200000)
-    private void twoHourDelay() {
-        redditTokenService.getAccessToken();
-        redditSearchService.searchReddit();
-        downloadVideosService.downloadVideos();
-    }
-
     @Scheduled(fixedDelay = 86400000)
     private void dayDelay() {
         removeOldPostsService.removeOldPosts();
-        removeOldPostsService.removeOldFirebaseVideos();
+        firebaseService.removeOldFirebaseVideos();
     }
 }

@@ -1,7 +1,7 @@
 package com.discord.bot.service;
 
-import com.discord.bot.dao.SubredditRepository;
 import com.discord.bot.entity.Subreddit;
+import com.discord.bot.repository.SubredditRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class SubredditServiceImpl implements SubredditService {
 
     @Override
     public Subreddit getSubreddit(String name) {
-        return repository.getSubreddit(name);
+        return repository.getSubredditByName(name);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class SubredditServiceImpl implements SubredditService {
     }
 
     public List<String> getSubredditsByGenre(String genre) {
-        return repository.getSubredditsByGenre(genre);
+        return repository.getSubredditNamesByGenre(genre);
     }
 }
