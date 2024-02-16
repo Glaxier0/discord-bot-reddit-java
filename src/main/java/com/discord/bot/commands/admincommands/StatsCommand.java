@@ -3,22 +3,20 @@ package com.discord.bot.commands.admincommands;
 import com.discord.bot.commands.ISlashCommand;
 import com.discord.bot.entity.User;
 import com.discord.bot.service.UserService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.util.Objects;
 
+@AllArgsConstructor
 public class StatsCommand implements ISlashCommand {
-    UserService userService;
-    String ADMIN = "your_discord_id";
-
-    public StatsCommand(UserService userService) {
-        this.userService = userService;
-    }
+    final UserService userService;
+    private final String adminUserId;
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (event.getUser().getId().equals(ADMIN)) {
+        if (event.getUser().getId().equals(adminUserId)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             net.dv8tion.jda.api.entities.User userStats = Objects.requireNonNull(event.getOption("user"))
                     .getAsUser();

@@ -3,6 +3,7 @@ package com.discord.bot.commands.admincommands;
 import com.discord.bot.commands.ISlashCommand;
 import com.discord.bot.entity.Subreddit;
 import com.discord.bot.service.SubredditService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
 
@@ -12,18 +13,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+@AllArgsConstructor
 public class ListSubCommand implements ISlashCommand {
-    SubredditService subredditService;
-
-    String ADMIN = "your_discord_id";
-
-    public ListSubCommand(SubredditService subredditService) {
-        this.subredditService = subredditService;
-    }
+    final SubredditService subredditService;
+    private final String adminUserId;
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (event.getUser().getId().equals(ADMIN)) {
+        if (event.getUser().getId().equals(adminUserId)) {
             List<Subreddit> subreddits = subredditService.getSubreddits();
 
             try {
@@ -46,6 +43,7 @@ public class ListSubCommand implements ISlashCommand {
                 //noinspection ResultOfMethodCallIgnored
                 subredditsFile.delete();
             } catch (IOException | InterruptedException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         }

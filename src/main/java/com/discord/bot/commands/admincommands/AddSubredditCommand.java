@@ -3,19 +3,16 @@ package com.discord.bot.commands.admincommands;
 import com.discord.bot.commands.ISlashCommand;
 import com.discord.bot.entity.Subreddit;
 import com.discord.bot.service.SubredditService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.awt.*;
 
-public class AddSubCommand implements ISlashCommand {
-    SubredditService subredditService;
-
-    public AddSubCommand(SubredditService subredditService) {
-        this.subredditService = subredditService;
-    }
-
-    String ADMIN = "your_discord_id";
+@AllArgsConstructor
+public class AddSubredditCommand implements ISlashCommand {
+    final SubredditService subredditService;
+    private final String adminUserId;
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -33,7 +30,7 @@ public class AddSubCommand implements ISlashCommand {
 
         Subreddit subreddit = new Subreddit(name, genre, nsfw);
 
-        if (event.getUser().getId().equals(ADMIN)) {
+        if (event.getUser().getId().equals(adminUserId)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
             subredditService.save(subreddit);

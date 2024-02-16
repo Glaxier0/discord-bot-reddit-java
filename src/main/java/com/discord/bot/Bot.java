@@ -5,11 +5,11 @@ import com.discord.bot.commands.CustomCommands;
 import com.discord.bot.commands.JdaCommands;
 import com.discord.bot.commands.TestCommands;
 import com.discord.bot.service.*;
+import jakarta.annotation.PostConstruct;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,10 +17,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling
 public class Bot {
-    TodoService todoService;
-    UserService userService;
-    PostService postService;
-    SubredditService subredditService;
+    final TodoService todoService;
+    final UserService userService;
+    final PostService postService;
+    final SubredditService subredditService;
 
     SearchReddit redditSearchService;
     RemoveOldPosts removeOldPostsService;
@@ -33,6 +33,9 @@ public class Bot {
 
     @Value("${test_server_id}")
     private String TEST_SERVER;
+
+    @Value("${admin.user.id}")
+    private String adminUserId;
 
     public Bot(PostService postService, SubredditService subredditService,
                TodoService todoService, UserService userService,
@@ -50,11 +53,11 @@ public class Bot {
         this.redgifsTokenService = redgifsTokenService;
     }
 
-    @Bean
+    @PostConstruct
     public void startDiscordBot() {
         JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
                 .addEventListeners(
-                        new CommandManager(postService, subredditService, todoService, userService))
+                        new CommandManager(postService, subredditService, todoService, userService, adminUserId))
                 .setActivity(Activity.playing("Type /help")).build();
         new CustomCommands().addCustomCommands(jda);
         new JdaCommands().addJdaCommands(jda);
