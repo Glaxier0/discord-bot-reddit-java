@@ -35,6 +35,7 @@ public class RedditTokenService {
             String TOKEN_URL = "https://www.reddit.com/api/v1/access_token";
             uri = new URI(TOKEN_URL);
         } catch (URISyntaxException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
         HttpHeaders headers = new HttpHeaders();

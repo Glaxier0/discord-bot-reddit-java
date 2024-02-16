@@ -1,6 +1,6 @@
 package com.discord.bot.service;
 
-import com.discord.bot.dao.UserRepository;
+import com.discord.bot.repository.UserRepository;
 import com.discord.bot.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String username) {
-        return repository.getUser(username);
+    public User getUser(String userId) {
+        return repository.getUserByUserId(userId);
     }
 
     @Override
