@@ -2,13 +2,11 @@ package com.discord.bot.commands.textcommands;
 
 import com.discord.bot.entity.User;
 import com.discord.bot.service.UserService;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class TextCommandUtils {
     UserService userService;
-
-    public TextCommandUtils(UserService userService) {
-        this.userService = userService;
-    }
 
     public void counter(String userId, String userWithTag) {
         User user = userService.getUser(userId);

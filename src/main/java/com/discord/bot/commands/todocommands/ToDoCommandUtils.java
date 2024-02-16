@@ -2,13 +2,11 @@ package com.discord.bot.commands.todocommands;
 
 import com.discord.bot.entity.User;
 import com.discord.bot.service.UserService;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class ToDoCommandUtils {
     UserService userService;
-
-    public ToDoCommandUtils(UserService userService) {
-        this.userService = userService;
-    }
 
     public void counter(String userId, String userWithTag) {
         User user = userService.getUser(userId);

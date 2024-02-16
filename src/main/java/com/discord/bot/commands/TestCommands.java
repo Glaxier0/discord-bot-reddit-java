@@ -16,6 +16,7 @@ public class TestCommands {
                 //noinspection BusyWait
                 Thread.sleep(200);
             } catch (InterruptedException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         }
@@ -33,14 +34,19 @@ public class TestCommands {
                 Commands.slash("users", "Get bot users."),
                 Commands.slash("logs", "Get logs."),
                 //Reddit Admin Commands
-                Commands.slash("add", "Add a subreddit.").addOptions(
-                        new OptionData(OptionType.STRING, "name", "Name of the subreddit.", true),
-                        new OptionData(OptionType.STRING, "genre", "Sub genre of the subreddit " +
-                                "(reddit, porn, tits or hentai).", true),
-                        new OptionData(OptionType.BOOLEAN, "nsfw", "Is subreddit nsfw?", true)),
+                Commands.slash("add", "Add a subreddit.")
+                        .addOptions(new OptionData(OptionType.STRING, "name", "Name of the subreddit.")
+                                        .setRequired(true),
+                                new OptionData(OptionType.STRING, "genre", "Sub genre of the subreddit " +
+                                        "(reddit, porn, tits or hentai).").setRequired(true),
+                                new OptionData(OptionType.BOOLEAN, "nsfw", "Is subreddit nsfw?")
+                                        .setRequired(true)),
                 Commands.slash("list", "List subreddits."),
                 Commands.slash("delete", "Delete a subreddit.")
-                        .addOption(OptionType.STRING, "name", "Name of the subreddit.", true)
+                        .addOptions(new OptionData(OptionType.STRING, "name", "Name of the subreddit.")
+                                .setRequired(true)),
+                //Custom Commands
+                Commands.slash("formylove", "For the special one.")
         ).queue();
     }
 }

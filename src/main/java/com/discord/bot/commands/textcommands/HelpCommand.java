@@ -2,6 +2,7 @@ package com.discord.bot.commands.textcommands;
 
 import com.discord.bot.commands.ISlashCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class HelpCommand implements ISlashCommand {
@@ -47,7 +48,7 @@ public class HelpCommand implements ISlashCommand {
 
         event.replyEmbeds(embedBuilder.build()).queue();
 
-        net.dv8tion.jda.api.entities.User user = event.getUser();
+        User user = event.getUser();
         utils.counter(user.getId(), user.getAsTag());
     }
 }

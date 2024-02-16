@@ -1,15 +1,14 @@
 package com.discord.bot.commands.textcommands;
 
 import com.discord.bot.commands.ISlashCommand;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+@AllArgsConstructor
 public class TopGGCommand implements ISlashCommand {
     TextCommandUtils utils;
-
-    public TopGGCommand(TextCommandUtils utils) {
-        this.utils = utils;
-    }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -19,7 +18,7 @@ public class TopGGCommand implements ISlashCommand {
                 .setFooter("Please send feedback.");
         event.replyEmbeds(embedBuilder.build()).queue();
 
-        net.dv8tion.jda.api.entities.User user = event.getUser();
+        User user = event.getUser();
         utils.counter(user.getId(), user.getAsTag());
     }
 }
