@@ -40,3 +40,5 @@ out/
 guilds.txt
 gradle/wrapper/gradle-wrapper.properties
 r3dd-1-firebase-adminsdk-h0reo-019535d8b2.json
+src/main/java/com/discord/bot/commands/customcommands
+src/main/java/com/discord/bot/commands/CustomCommands.java

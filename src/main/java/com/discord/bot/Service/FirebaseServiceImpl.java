@@ -54,18 +54,6 @@ public class FirebaseServiceImpl implements FirebaseService {
         }
     }
 
-    private void uploadToFirebase() {
-        FileInputStream serviceAccount = new FileInputStream("path/to/serviceAccountKey.json");
-
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setStorageBucket("<BUCKET_NAME>.appspot.com")
-                .build();
-        FirebaseApp.initializeApp(options);
-
-        Bucket bucket = StorageClient.getInstance().bucket();
-    }
-
     public void downloadVideos() {
         System.out.println("Program in download videos");
 
