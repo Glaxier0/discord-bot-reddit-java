@@ -15,7 +15,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> getPostsByContentTypeAndFirebaseUrlIsNull(String Type);
 
-    List<Post> getPostsByContentTypeIsNotNullAAndSubredditEqualsIgnoreCase(String subreddit);
+    List<Post> getPostsByContentTypeIsNotNullAndSubredditEqualsIgnoreCase(String subreddit);
 
     List<Post> getPostsBySubredditIn(List<String> subreddits);
 
