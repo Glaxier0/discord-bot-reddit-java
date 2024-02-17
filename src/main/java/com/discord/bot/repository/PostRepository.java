@@ -1,6 +1,6 @@
 package com.discord.bot.repository;
 
-import com.discord.bot.entity.Post;
+import com.discord.bot.Entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

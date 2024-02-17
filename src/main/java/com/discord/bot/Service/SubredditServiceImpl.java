@@ -1,7 +1,7 @@
-package com.discord.bot.service;
+package com.discord.bot.Service;
 
 import com.discord.bot.repository.SubredditRepository;
-import com.discord.bot.entity.Subreddit;
+import com.discord.bot.Entity.Subreddit;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.discord.bot.service;
+package com.discord.bot.Service;
 
-import com.discord.bot.entity.Todo;
+import com.discord.bot.Entity.Todo;
 import java.util.List;
 
 public interface TodoService {

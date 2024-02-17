@@ -1,6 +1,6 @@
 package com.discord.bot.repository;
 
-import com.discord.bot.entity.User;
+import com.discord.bot.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

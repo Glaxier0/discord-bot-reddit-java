@@ -1,9 +1,9 @@
 package com.discord.bot.commands.redditcommands;
 
 import com.discord.bot.commands.ISlashCommand;
-import com.discord.bot.entity.Post;
-import com.discord.bot.service.PostService;
-import com.discord.bot.service.SubredditService;
+import com.discord.bot.Entity.Post;
+import com.discord.bot.Service.PostService;
+import com.discord.bot.Service.SubredditService;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

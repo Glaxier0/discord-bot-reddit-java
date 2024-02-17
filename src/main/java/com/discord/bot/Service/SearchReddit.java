@@ -1,7 +1,7 @@
-package com.discord.bot.service;
+package com.discord.bot.Service;
 
-import com.discord.bot.entity.Post;
-import com.discord.bot.entity.Subreddit;
+import com.discord.bot.Entity.Post;
+import com.discord.bot.Entity.Subreddit;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

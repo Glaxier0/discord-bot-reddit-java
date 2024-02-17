@@ -1,4 +1,4 @@
-package com.discord.bot.service;
+package com.discord.bot.Service;
 
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Value;

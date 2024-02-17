@@ -1,4 +1,4 @@
-package com.discord.bot.entity;
+package com.discord.bot.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;

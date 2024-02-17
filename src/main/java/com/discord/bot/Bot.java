@@ -1,10 +1,9 @@
 package com.discord.bot;
 
 import com.discord.bot.commands.CommandManager;
-import com.discord.bot.commands.CustomCommands;
 import com.discord.bot.commands.JdaCommands;
 import com.discord.bot.commands.TestCommands;
-import com.discord.bot.service.*;
+import com.discord.bot.Service.*;
 import jakarta.annotation.PostConstruct;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -60,7 +59,6 @@ public class Bot {
                 .addEventListeners(
                         new CommandManager(postService, subredditService, todoService, userService, adminUserId))
                 .setActivity(Activity.playing("Type /help")).build();
-        new CustomCommands().addCustomCommands(jda);
         new JdaCommands().addJdaCommands(jda);
         new TestCommands().addTestCommands(jda, TEST_SERVER);
         System.out.println("Starting bot is done!");

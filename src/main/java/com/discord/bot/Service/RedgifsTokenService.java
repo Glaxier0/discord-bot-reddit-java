@@ -1,4 +1,4 @@
-package com.discord.bot.service;
+package com.discord.bot.Service;
 
 import com.discord.bot.commands.nsfwcommands.RedgifsCommand;
 import com.google.gson.JsonParser;

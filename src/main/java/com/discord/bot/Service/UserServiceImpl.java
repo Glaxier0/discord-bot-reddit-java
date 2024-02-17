@@ -1,7 +1,7 @@
-package com.discord.bot.service;
+package com.discord.bot.Service;
 
 import com.discord.bot.repository.UserRepository;
-import com.discord.bot.entity.User;
+import com.discord.bot.Entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;

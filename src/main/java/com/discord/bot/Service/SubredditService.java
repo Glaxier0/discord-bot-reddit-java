@@ -1,6 +1,6 @@
-package com.discord.bot.service;
+package com.discord.bot.Service;
 
-import com.discord.bot.entity.Subreddit;
+import com.discord.bot.Entity.Subreddit;
 
 import java.util.List;
 public interface SubredditService {
