@@ -1,0 +1,33 @@
+spring:
+  datasource:
+   url: jdbc:postgresql://localhost:5432/reddit_bot
+   name:
+   password:
+  main:
+    web-application-type: none
+
+# noinspection SpringBootApplicationYaml
+reddit:
+  username:
+  refresh:
+    token:
+  client:
+    id:
+    secret:
+# noinspection SpringBootApplicationYaml
+discord:
+  bot:
+    token:
+  admin:
+    server:
+      id: your_admin_server_id
+    user:
+      id: your_discord_id
+# noinspection SpringBootApplicationYaml
+firebase:
+  storage:
+    bucket:
+      name:
+  adminsdk:
+    file:
+      name:
