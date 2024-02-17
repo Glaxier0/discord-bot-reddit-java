@@ -4,6 +4,7 @@ import com.discord.bot.commands.ISlashCommand;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -26,8 +27,6 @@ public class RedgifsCommand implements ISlashCommand {
     public static String REDDIT_USERNAME;
     NsfwCommandUtils utils;
 
-    Random random = new Random();
-
     public RedgifsCommand(NsfwCommandUtils utils) {
         this.utils = utils;
     }
@@ -49,6 +48,7 @@ public class RedgifsCommand implements ISlashCommand {
             redgifsUri = new URI(redgifsUrl);
         } catch (URISyntaxException e) {
             System.out.println("Error: " + redgifsUrl + " " + tag + " " + encodedTag);
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
 
@@ -62,14 +62,14 @@ public class RedgifsCommand implements ISlashCommand {
 
         if (redgifsEntity.getStatusCodeValue() == 200) {
             JsonArray jsonArray = new JsonParser().parse(Objects.requireNonNull(redgifsEntity.getBody())).getAsJsonObject().getAsJsonArray("gifs");
-            event.reply("https://www.redgifs.com/watch/" + jsonArray.get(random.nextInt(jsonArray.size() - 1))
+            event.reply("https://www.redgifs.com/watch/" + jsonArray.get(new Random().nextInt(jsonArray.size() - 1))
                     .getAsJsonObject().get("id").getAsString()).queue();
         } else {
             event.replyEmbeds(new EmbedBuilder().setDescription("Didn't find any post with " + tag + " tag.")
                     .setColor(Color.RED).build()).queue();
             System.out.println("tag: " + tag + "encoded tag: " + encodedTag);
         }
-        net.dv8tion.jda.api.entities.User user = event.getUser();
+        User user = event.getUser();
         utils.counter(user.getId(), user.getAsTag(), true);
     }
 }

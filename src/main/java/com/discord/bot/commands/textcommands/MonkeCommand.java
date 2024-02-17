@@ -10,7 +10,6 @@ import java.util.Random;
 public class MonkeCommand implements ISlashCommand {
     TextCommandUtils utils;
 
-    Random random = new Random();
     List<String> monkeList = Arrays.asList(
             "https://www.youtube.com/watch?v=5WTgEu5YJmw",
             "https://www.youtube.com/watch?v=Z00nVaTXl_M",
@@ -36,7 +35,7 @@ public class MonkeCommand implements ISlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        event.reply(monkeList.get(random.nextInt(monkeList.size()))).queue();
+        event.reply(monkeList.get(new Random().nextInt(monkeList.size()))).queue();
 
         net.dv8tion.jda.api.entities.User user = event.getUser();
         utils.counter(user.getId(), user.getAsTag());

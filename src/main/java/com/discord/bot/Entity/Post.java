@@ -1,18 +1,17 @@
 package com.discord.bot.entity;
 
 import lombok.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "posts")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 public class Post {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -40,7 +39,7 @@ public class Post {
     private String firebaseUrl;
 
     @Column(name = "perma_url")
-    private String permalink;
+    private String permaUrl;
 
     @Column(name = "download_url", length = 512)
     private String downloadUrl;
@@ -51,6 +50,6 @@ public class Post {
         this.title = title;
         this.author = author;
         this.created = created;
-        this.permalink = permalink;
+        this.permaUrl = permalink;
     }
 }

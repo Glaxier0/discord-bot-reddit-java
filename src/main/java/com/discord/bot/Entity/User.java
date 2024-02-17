@@ -1,8 +1,9 @@
 package com.discord.bot.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-import javax.persistence.*;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -10,7 +11,6 @@ import javax.persistence.*;
 @Setter
 @ToString
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

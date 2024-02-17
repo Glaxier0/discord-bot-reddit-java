@@ -3,26 +3,24 @@ package com.discord.bot.commands.todocommands;
 import com.discord.bot.commands.ISlashCommand;
 import com.discord.bot.entity.Todo;
 import com.discord.bot.service.TodoService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
+@AllArgsConstructor
 public class ToDoUpdateCommand implements ISlashCommand {
     ToDoCommandUtils utils;
     TodoService todoService;
 
-    public ToDoUpdateCommand(ToDoCommandUtils utils, TodoService todoService) {
-        this.utils = utils;
-        this.todoService = todoService;
-    }
-
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        net.dv8tion.jda.api.entities.User user = event.getUser();
+        User user = event.getUser();
         String userId = user.getId();
         String userWithTag = user.getAsTag();
 

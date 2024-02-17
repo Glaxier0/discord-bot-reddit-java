@@ -13,13 +13,15 @@ public class JdaCommands {
 
         globalCommands.addCommands(
                 //NSFW Commands
+                Commands.slash("nhelp", "Info page about bot nsfw commands").setNSFW(true),
                 Commands.slash("hentai", "Get random hentai image/gif/video.").setNSFW(true),
                 Commands.slash("porn", "Get random porn image/gif/video.").setNSFW(true),
                 Commands.slash("tits", "Get random tits image/gif/video.").setNSFW(true),
                 Commands.slash("redgifs", "Get random trending gif of chosen tag").setNSFW(true)
                         .addOptions(new OptionData(OptionType.STRING, "sort", "Sort by popularity")
                                         .addChoices(new Command.Choice("Trending", 1),
-                                                new Command.Choice("Top", 2)).setRequired(true),
+                                                new Command.Choice("Top", 2))
+                                        .setRequired(true),
                                 new OptionData(OptionType.STRING, "tag", "Chosen tag or a.k.a category")
                                         .setRequired(true)
                         ),
@@ -34,7 +36,6 @@ public class JdaCommands {
                 Commands.slash("facepalm", "Get top r/facepalm posts."),
                 //Text Commands
                 Commands.slash("help", "Info page about bot commands"),
-                Commands.slash("nhelp", "Info page about bot nsfw commands").setNSFW(true),
                 Commands.slash("monke", "Get my favorite random monke video."),
                 Commands.slash("github", "My github page and source code of bot."),
                 Commands.slash("howgay", "Calculate how gay is someone.")
@@ -46,20 +47,21 @@ public class JdaCommands {
                 Commands.slash("topgg", "Top.gg page of Glaxier bot."),
                 //To-do Commands
                 Commands.slash("todoadd", "Add a task to your to-do list.")
-                        .addOptions(new OptionData(OptionType.STRING, "task",
-                                "A to-do task.").setRequired(true)),
+                        .addOptions(new OptionData(OptionType.STRING, "task", "A to-do task.")
+                                .setRequired(true)),
                 Commands.slash("todolist", "Shows your to-do list."),
                 Commands.slash("todoremove", "Remove a task from your to-do list.")
-                        .addOptions(new OptionData(OptionType.INTEGER, "taskid",
-                                "To-do task id to remove.").setRequired(true)),
+                        .addOptions(new OptionData(OptionType.INTEGER, "taskid", "To-do task id to remove.")
+                                .setRequired(true)),
                 Commands.slash("todoupdate", "Update a task in your to-do list.")
-                        .addOptions(new OptionData(OptionType.INTEGER, "taskid",
-                                        "To-do task id to remove.").setRequired(true),
+                        .addOptions(new OptionData(OptionType.INTEGER, "taskid", "To-do task id to remove.")
+                                        .setRequired(true),
                                 new OptionData(OptionType.STRING, "task",
-                                        "Updated to-do task.").setRequired(true)),
+                                        "Updated to-do task.")
+                                        .setRequired(true)),
                 Commands.slash("todocomplete", "Complete a task in your to-do list.")
-                        .addOptions(new OptionData(OptionType.INTEGER, "taskid",
-                                "To-do task id to remove.").setRequired(true)),
+                        .addOptions(new OptionData(OptionType.INTEGER, "taskid", "To-do task id to remove.")
+                                .setRequired(true)),
                 Commands.slash("todoclear", "Clears your to-do list.")
         ).queue();
     }

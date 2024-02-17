@@ -1,7 +1,7 @@
 package com.discord.bot.service;
 
 import com.discord.bot.entity.Post;
-import com.discord.bot.dao.PostRepository;
+import com.discord.bot.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -28,17 +28,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public String getByUrl(String url) {
-        return repository.getByUrl(url);
+        return repository.getPostByUrl(url);
     }
 
     @Override
     public String getByPermaUrl(String permaUrl) {
-        return repository.getByPermaUrl(permaUrl);
+        return repository.getPostByPermaUrl(permaUrl);
     }
 
     @Override
     public List<Post> getVideoNullFirebase() {
-        return repository.getVideoNullFirebase();
+        return repository.getPostsByContentTypeAndFirebaseUrlIsNull("video");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPosts(String subreddit) {
-        return repository.getPosts(subreddit);
+        return repository.getPostsByContentTypeIsNotNullAndSubredditEqualsIgnoreCase(subreddit);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class PostServiceImpl implements PostService {
     }
 
     public List<Post> getBySubreddits(List<String> subreddits) {
-        return repository.getBySubreddits(subreddits);
+        return repository.getPostsBySubredditIn(subreddits);
     }
 }

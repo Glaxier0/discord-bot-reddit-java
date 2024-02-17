@@ -1,6 +1,7 @@
 package com.discord.bot.commands.admincommands;
 
 import com.discord.bot.commands.ISlashCommand;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
@@ -10,12 +11,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+@AllArgsConstructor
 public class GuildsCommand implements ISlashCommand {
-    String ADMIN = "your_discord_id";
+    private final String adminUserId;
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (event.getUser().getId().equals(ADMIN)) {
+        if (event.getUser().getId().equals(adminUserId)) {
             try {
                 File guildsFile = new File("guilds.txt");
                 BufferedWriter writer = new BufferedWriter(new FileWriter(guildsFile, true));
@@ -32,6 +34,7 @@ public class GuildsCommand implements ISlashCommand {
                 //noinspection ResultOfMethodCallIgnored
                 guildsFile.delete();
             } catch (IOException | InterruptedException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         }

@@ -3,6 +3,7 @@ package com.discord.bot.commands.admincommands;
 import com.discord.bot.commands.ISlashCommand;
 import com.discord.bot.entity.User;
 import com.discord.bot.service.UserService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
@@ -13,17 +14,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+@AllArgsConstructor
 public class UsersCommand implements ISlashCommand {
-    UserService userService;
-    String ADMIN = "your_discord_id";
-
-    public UsersCommand(UserService userService) {
-        this.userService = userService;
-    }
+    final UserService userService;
+    private final String adminUserId;
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (event.getUser().getId().equals(ADMIN)) {
+        if (event.getUser().getId().equals(adminUserId)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             List<User> users = userService.getUsers();
             if (users.isEmpty()) {
@@ -51,6 +49,7 @@ public class UsersCommand implements ISlashCommand {
                     //noinspection ResultOfMethodCallIgnored
                     usersFile.delete();
                 } catch (IOException | InterruptedException e) {
+                    //noinspection CallToPrintStackTrace
                     e.printStackTrace();
                 }
             }

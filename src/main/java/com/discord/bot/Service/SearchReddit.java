@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -52,30 +53,42 @@ public class SearchReddit {
 
         for (Subreddit subreddit : subreddits) {
             REDDIT_URL = "https://oauth.reddit.com/r/" + subreddit.getName() + "/top.json?limit=25&t=day&raw_json=1";
-            URI reddit_uri = null;
+            URI reddit_uri;
             try {
                 reddit_uri = new URI(REDDIT_URL);
             } catch (URISyntaxException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
+                continue;
             }
-            ResponseEntity<String> responseEntity = restTemplate.exchange(Objects.requireNonNull(reddit_uri),
-                    HttpMethod.GET, bearerHeader, String.class);
+
+            ResponseEntity<String> responseEntity;
+            try {
+                responseEntity = restTemplate.exchange(Objects.requireNonNull(reddit_uri),
+                        HttpMethod.GET, bearerHeader, String.class);
+            } catch (HttpClientErrorException.NotFound e) {
+                System.out.println("Subreddit not found: " + subreddit);
+                //noinspection CallToPrintStackTrace
+                e.printStackTrace();
+                continue;
+            }
+
             JsonArray redditPosts = new JsonParser().parse(Objects.requireNonNull(responseEntity.getBody()))
                     .getAsJsonObject().get("data").getAsJsonObject().getAsJsonArray("children");
 
             for (JsonElement jsonElement : redditPosts) {
-                JsonElement redditPost = jsonElement.getAsJsonObject().get("data");
-                String url = redditPost.getAsJsonObject().get("url").getAsString();
-                String subredditName = redditPost.getAsJsonObject().get("subreddit").getAsString();
-                String title = redditPost.getAsJsonObject().get("title").getAsString();
-                String author = redditPost.getAsJsonObject().get("author").getAsString();
-                long timestamp = redditPost.getAsJsonObject().get("created_utc").getAsLong() * 1000L;
+                JsonObject redditPost = jsonElement.getAsJsonObject().get("data").getAsJsonObject();
+                String url = redditPost.get("url").getAsString();
+                String subredditName = redditPost.get("subreddit").getAsString();
+                String title = redditPost.get("title").getAsString();
+                String author = redditPost.get("author").getAsString();
+                long timestamp = redditPost.get("created_utc").getAsLong() * 1000L;
                 Date created = new Date(new Timestamp(timestamp).getTime());
-                String permalink = redditPost.getAsJsonObject().get("permalink").getAsString();
-                boolean isNSFW = redditPost.getAsJsonObject().get("over_18").getAsBoolean();
+                String permalink = redditPost.get("permalink").getAsString();
+                boolean isNSFW = redditPost.get("over_18").getAsBoolean();
                 Post post = new Post(url, subredditName, title, author, created, "https://reddit.com" + permalink);
                 if (!isNSFW) {
-                    JsonElement media = redditPost.getAsJsonObject().get("media");
+                    JsonElement media = redditPost.get("media");
                     if (url.contains("https://v.redd.it") && !media.isJsonNull()) {
                         if (!(media.getAsJsonObject().get("reddit_video") == null)) {
                             JsonObject redditVideo = media.getAsJsonObject()
@@ -108,7 +121,7 @@ public class SearchReddit {
                     }
                 }
                 String postServiceByUrl = postService.getByUrl(post.getUrl());
-                String postServiceByPermalink = postService.getByPermaUrl(post.getPermalink());
+                String postServiceByPermalink = postService.getByPermaUrl(post.getPermaUrl());
 
                 if (postServiceByUrl == null && postServiceByPermalink == null) {
                     postService.save(post);

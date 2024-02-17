@@ -3,6 +3,7 @@ package com.discord.bot.commands.redditcommands;
 import com.discord.bot.entity.Post;
 import com.discord.bot.entity.User;
 import com.discord.bot.service.UserService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -10,14 +11,9 @@ import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
+@AllArgsConstructor
 public class RedditCommandUtils {
     UserService userService;
-
-    Random random = new Random();
-
-    public RedditCommandUtils(UserService userService) {
-        this.userService = userService;
-    }
 
     public void counter(String userId, String userWithTag) {
         User user = userService.getUser(userId);
@@ -38,6 +34,7 @@ public class RedditCommandUtils {
             return;
         }
 
+        Random random = new Random();
         Post post = list.get(random.nextInt(list.size()));
 
         switch (post.getContentType()) {
@@ -45,19 +42,19 @@ public class RedditCommandUtils {
                 while (post.getFirebaseUrl() == null && (post.getContentType().equals("video"))) {
                     post = list.get(random.nextInt(list.size()));
                 }
-                embedBuilder.setTitle(post.getTitle(), post.getPermalink())
+                embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
                         .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
                 event.reply(post.getFirebaseUrl()).queue();
                 event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
             }
             case "gif", "image" -> {
                 if (post.getUrl().contains(".gifv")) {
-                    embedBuilder.setTitle(post.getTitle(), post.getPermalink())
+                    embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
                             .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
                     event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
                     event.reply(post.getUrl()).queue();
                 } else {
-                    embedBuilder.setTitle(post.getTitle(), post.getPermalink())
+                    embedBuilder.setTitle(post.getTitle(), post.getPermaUrl())
                             .setImage(post.getUrl())
                             .setFooter("Posted in r/" + post.getSubreddit() + " by u/" + post.getAuthor());
                     event.replyEmbeds(embedBuilder.build()).queue();

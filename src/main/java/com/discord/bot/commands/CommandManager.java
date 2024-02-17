@@ -1,6 +1,7 @@
 package com.discord.bot.commands;
 
 import com.discord.bot.commands.admincommands.*;
+import com.discord.bot.commands.customcommands.CustomCommand;
 import com.discord.bot.commands.nsfwcommands.*;
 import com.discord.bot.commands.redditcommands.*;
 import com.discord.bot.commands.textcommands.*;
@@ -21,10 +22,11 @@ public class CommandManager extends ListenerAdapter {
     TextCommandUtils textCommandUtils;
     ToDoCommandUtils toDoCommandUtils;
     NsfwCommandUtils nsfwCommandUtils;
+    private final String adminUserId;
     private Map<String, ISlashCommand> commandsMap;
 
     public CommandManager(PostService postService, SubredditService subredditService,
-                          TodoService todoService, UserService userService) {
+                          TodoService todoService, UserService userService, String adminUserId) {
         this.postService = postService;
         this.subredditService = subredditService;
         this.todoService = todoService;
@@ -33,6 +35,7 @@ public class CommandManager extends ListenerAdapter {
         this.textCommandUtils = new TextCommandUtils(userService);
         this.toDoCommandUtils = new ToDoCommandUtils(userService);
         this.nsfwCommandUtils = new NsfwCommandUtils(userService);
+        this.adminUserId = adminUserId;
         commandMapper();
     }
 
@@ -48,15 +51,17 @@ public class CommandManager extends ListenerAdapter {
 
     private void commandMapper() {
         commandsMap = new ConcurrentHashMap<>();
+        //Custom Commands
+        commandsMap.put("formylove", new CustomCommand());
         //Admin Commands
-        commandsMap.put("guilds", new GuildsCommand());
-        commandsMap.put("status", new StatusCommand(postService));
-        commandsMap.put("stats", new StatsCommand(userService));
-        commandsMap.put("users", new UsersCommand(userService));
-        commandsMap.put("logs", new LogsCommand());
-        commandsMap.put("add", new AddSubCommand(subredditService));
-        commandsMap.put("list", new ListSubCommand(subredditService));
-        commandsMap.put("delete", new DeleteSubCommand(subredditService));
+        commandsMap.put("guilds", new GuildsCommand(adminUserId));
+        commandsMap.put("status", new StatusCommand(postService, adminUserId));
+        commandsMap.put("stats", new StatsCommand(userService, adminUserId));
+        commandsMap.put("users", new UsersCommand(userService, adminUserId));
+        commandsMap.put("logs", new LogsCommand(adminUserId));
+        commandsMap.put("add", new AddSubredditCommand(subredditService, adminUserId));
+        commandsMap.put("list", new ListSubCommand(subredditService, adminUserId));
+        commandsMap.put("delete", new DeleteSubCommand(subredditService, adminUserId));
         //NSFW Commands
         commandsMap.put("hentai", new HentaiCommand(postService, subredditService, nsfwCommandUtils));
         commandsMap.put("porn", new PornCommand(postService, subredditService, nsfwCommandUtils));

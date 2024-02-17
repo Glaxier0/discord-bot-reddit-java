@@ -1,9 +1,10 @@
 package com.discord.bot.entity;
 
 import lombok.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Date;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "todo")
 @NoArgsConstructor
@@ -11,7 +12,6 @@ import java.sql.Date;
 @Setter
 @ToString
 public class Todo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

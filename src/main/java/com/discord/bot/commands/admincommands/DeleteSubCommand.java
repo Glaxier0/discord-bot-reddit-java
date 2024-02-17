@@ -3,23 +3,20 @@ package com.discord.bot.commands.admincommands;
 import com.discord.bot.commands.ISlashCommand;
 import com.discord.bot.entity.Subreddit;
 import com.discord.bot.service.SubredditService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.awt.*;
 
+@AllArgsConstructor
 public class DeleteSubCommand implements ISlashCommand {
-    SubredditService subredditService;
-
-    String ADMIN = "your_discord_id";
-
-    public DeleteSubCommand(SubredditService subredditService) {
-        this.subredditService = subredditService;
-    }
+    final SubredditService subredditService;
+    private final String adminUserId;
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (event.getUser().getId().equals(ADMIN)) {
+        if (event.getUser().getId().equals(adminUserId)) {
             var nameOption = event.getOption("name");
 
             if (nameOption == null) {
@@ -28,7 +25,7 @@ public class DeleteSubCommand implements ISlashCommand {
 
             String name = nameOption.getAsString().trim();
 
-            if (event.getUser().getId().equals(ADMIN)) {
+            if (event.getUser().getId().equals(adminUserId)) {
                 EmbedBuilder embedBuilder = new EmbedBuilder();
 
                 Subreddit subreddit = subredditService.getSubreddit(name);

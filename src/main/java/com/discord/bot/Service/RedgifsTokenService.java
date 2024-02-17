@@ -28,6 +28,7 @@ public class RedgifsTokenService {
             String TOKEN_URL = "https://api.redgifs.com/v2/auth/temporary";
             uri = new URI(TOKEN_URL);
         } catch (URISyntaxException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
         HttpHeaders headers = new HttpHeaders();
