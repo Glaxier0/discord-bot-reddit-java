@@ -1,8 +1,8 @@
 package com.discord.bot.commands.redditcommands;
 
-import com.discord.bot.Entity.Post;
-import com.discord.bot.Entity.User;
-import com.discord.bot.Service.UserService;
+import com.discord.bot.entity.Post;
+import com.discord.bot.entity.User;
+import com.discord.bot.service.UserService;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

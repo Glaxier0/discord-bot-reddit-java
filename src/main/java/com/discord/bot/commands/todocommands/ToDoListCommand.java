@@ -1,8 +1,8 @@
 package com.discord.bot.commands.todocommands;
 
 import com.discord.bot.commands.ISlashCommand;
-import com.discord.bot.Entity.Todo;
-import com.discord.bot.Service.TodoService;
+import com.discord.bot.entity.Todo;
+import com.discord.bot.service.TodoService;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;

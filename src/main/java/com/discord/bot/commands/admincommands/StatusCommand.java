@@ -1,7 +1,7 @@
 package com.discord.bot.commands.admincommands;
 
 import com.discord.bot.commands.ISlashCommand;
-import com.discord.bot.Service.PostService;
+import com.discord.bot.service.PostService;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

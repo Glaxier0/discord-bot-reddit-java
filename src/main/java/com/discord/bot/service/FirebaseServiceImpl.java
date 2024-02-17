@@ -1,6 +1,6 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
-import com.discord.bot.Entity.Post;
+import com.discord.bot.entity.Post;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import org.springframework.beans.factory.annotation.Value;

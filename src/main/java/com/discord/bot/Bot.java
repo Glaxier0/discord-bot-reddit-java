@@ -3,7 +3,7 @@ package com.discord.bot;
 import com.discord.bot.commands.CommandManager;
 import com.discord.bot.commands.JdaCommands;
 import com.discord.bot.commands.TestCommands;
-import com.discord.bot.Service.*;
+import com.discord.bot.service.*;
 import jakarta.annotation.PostConstruct;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;

@@ -1,6 +1,6 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
-import com.discord.bot.Entity.User;
+import com.discord.bot.entity.User;
 
 import java.util.List;
 

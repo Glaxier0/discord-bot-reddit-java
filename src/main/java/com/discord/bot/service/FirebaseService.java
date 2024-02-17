@@ -1,4 +1,4 @@
-package com.discord.bot.Service;
+package com.discord.bot.service;
 
 public interface FirebaseService {
     void downloadVideos();

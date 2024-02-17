@@ -6,7 +6,7 @@ import com.discord.bot.commands.nsfwcommands.*;
 import com.discord.bot.commands.redditcommands.*;
 import com.discord.bot.commands.textcommands.*;
 import com.discord.bot.commands.todocommands.*;
-import com.discord.bot.Service.*;
+import com.discord.bot.service.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

@@ -1,7 +1,7 @@
 package com.discord.bot.commands.todocommands;
 
-import com.discord.bot.Entity.User;
-import com.discord.bot.Service.UserService;
+import com.discord.bot.entity.User;
+import com.discord.bot.service.UserService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
