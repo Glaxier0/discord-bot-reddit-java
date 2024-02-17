@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @AllArgsConstructor
-public class ListSubCommand implements ISlashCommand {
+public class ListSubredditCommand implements ISlashCommand {
     final SubredditService subredditService;
     private final String adminUserId;
 
@@ -39,10 +39,12 @@ public class ListSubCommand implements ISlashCommand {
 
                 writer.close();
                 event.replyFiles(FileUpload.fromData(subredditsFile)).queue();
-                Thread.sleep(100);
-                //noinspection ResultOfMethodCallIgnored
-                subredditsFile.delete();
-            } catch (IOException | InterruptedException e) {
+
+                if (event.isAcknowledged()) {
+                    //noinspection ResultOfMethodCallIgnored
+                    subredditsFile.delete();
+                }
+            } catch (IOException e) {
                 //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }

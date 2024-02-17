@@ -1,8 +1,9 @@
 package com.discord.bot;
 
 import com.discord.bot.commands.CommandManager;
+import com.discord.bot.commands.CustomCommands;
 import com.discord.bot.commands.JdaCommands;
-import com.discord.bot.commands.TestCommands;
+import com.discord.bot.commands.AdminCommands;
 import com.discord.bot.service.*;
 import jakarta.annotation.PostConstruct;
 import net.dv8tion.jda.api.JDA;
@@ -28,13 +29,13 @@ public class Bot {
     RedditTokenService redditTokenService;
     RedgifsTokenService redgifsTokenService;
 
-    @Value("${discord_bot_token}")
-    private String DISCORD_TOKEN;
+    @Value("${discord.bot.token}")
+    private String discordToken;
 
-    @Value("${test_server_id}")
-    private String TEST_SERVER;
+    @Value("${discord.admin.server.id}")
+    private String adminServer;
 
-    @Value("${admin.user.id}")
+    @Value("${discord.admin.user.id}")
     private String adminUserId;
 
     public Bot(PostService postService, SubredditService subredditService,
@@ -54,13 +55,14 @@ public class Bot {
     }
 
     @PostConstruct
-    public void startDiscordBot() {
-        JDA jda = JDABuilder.createDefault(DISCORD_TOKEN)
+    public void startDiscordBot() throws InterruptedException {
+        JDA jda = JDABuilder.createDefault(discordToken)
                 .addEventListeners(
                         new CommandManager(postService, subredditService, todoService, userService, adminUserId))
                 .setActivity(Activity.playing("Type /help")).build();
+        jda.awaitReady();
         new JdaCommands().addJdaCommands(jda);
-        new TestCommands().addTestCommands(jda, TEST_SERVER);
+        new AdminCommands().addAdminCommands(jda, adminServer);
         System.out.println("Starting bot is done!");
     }
 

@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-import java.util.Objects;
-
 @AllArgsConstructor
 public class StatsCommand implements ISlashCommand {
     final UserService userService;
@@ -17,15 +15,17 @@ public class StatsCommand implements ISlashCommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         if (event.getUser().getId().equals(adminUserId)) {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            net.dv8tion.jda.api.entities.User userStats = Objects.requireNonNull(event.getOption("user"))
-                    .getAsUser();
+            var userOption = event.getOption("user");
+            if (userOption == null) return;
 
-            User user = userService.getUser(userStats.getId());
+            String userId = userOption.getAsString();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            User user = userService.getUser(userId);
             if (user == null) {
-                embedBuilder.setDescription("No data found on user " + userStats.getAsMention());
+                embedBuilder.setDescription("No data found on user <@" + userId + ">");
             } else {
-                embedBuilder.setDescription("User: " + userStats.getAsMention() +
+                embedBuilder.setDescription("User: <@" + userId + ">" +
                         "\nText commands: " + user.getTextCount() +
                         "\nHentai commands: " + user.getHCount() +
                         "\nPorn commands: " + user.getPCount() +

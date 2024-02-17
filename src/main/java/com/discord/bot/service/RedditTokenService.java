@@ -1,6 +1,6 @@
 package com.discord.bot.service;
 
-import com.google.gson.JsonParser;
+import com.discord.bot.dto.response.reddit.RedditTokenResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -11,17 +11,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Objects;
 
 @Service
 public class RedditTokenService {
-    @Value("${reddit_username}")
+    @Value("${reddit.username}")
     private String REDDIT_USERNAME;
-    @Value("${reddit_refresh_token}")
+    @Value("${reddit.refresh.token}")
     private String REDDIT_REFRESH_TOKEN;
-    @Value("${reddit_client_id}")
+    @Value("${reddit.client.id}")
     private String REDDIT_CLIENT_ID;
-    @Value("${reddit_client_secret}")
+    @Value("${reddit.client.secret}")
     private String REDDIT_CLIENT_SECRET;
     private final RestTemplate restTemplate;
 
@@ -30,14 +29,7 @@ public class RedditTokenService {
     }
 
     public void getAccessToken() {
-        URI uri = null;
-        try {
-            String TOKEN_URL = "https://www.reddit.com/api/v1/access_token";
-            uri = new URI(TOKEN_URL);
-        } catch (URISyntaxException e) {
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
-        }
+        URI uri = createUri();
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET);
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -46,9 +38,17 @@ public class RedditTokenService {
         bodyParamMap.add("grant_type", "refresh_token");
         bodyParamMap.add("refresh_token", REDDIT_REFRESH_TOKEN);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(bodyParamMap, headers);
-        ResponseEntity<String> response = restTemplate.exchange(Objects.requireNonNull(uri),
-                HttpMethod.POST, entity, String.class);
-        SearchReddit.ACCESS_TOKEN = new JsonParser().parse(Objects.requireNonNull(response.getBody())).getAsJsonObject()
-                .get("access_token").getAsString();
+
+        var redditTokenResponse = restTemplate.exchange(uri, HttpMethod.POST, entity, RedditTokenResponse.class).getBody();
+        assert redditTokenResponse != null;
+        SearchReddit.accessToken = redditTokenResponse.getToken();
+    }
+
+    private URI createUri() {
+        try {
+            return new URI("https://www.reddit.com/api/v1/access_token");
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid URL: " + "https://www.reddit.com/api/v1/access_token", e);
+        }
     }
 }

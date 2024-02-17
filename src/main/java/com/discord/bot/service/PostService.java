@@ -16,4 +16,5 @@ public interface PostService {
      List<Post> getPosts(String subreddit);
      List<String> getSubredditCount();
      List<Post> getBySubreddits(List<String> subreddits);
+     boolean existsByUrlAndPermaUrl(String url, String permaUrl);
 }
