@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -63,6 +64,11 @@ public class Bot {
         new JdaCommands().addJdaCommands(jda);
         new TestCommands().addTestCommands(jda, TEST_SERVER);
         System.out.println("Starting bot is done!");
+    }
+
+    @Bean
+    public String adminUserId() {
+        return adminUserId;
     }
 
     @Scheduled(fixedDelay = 7200000)
