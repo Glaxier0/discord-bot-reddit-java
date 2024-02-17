@@ -68,14 +68,15 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("tits", new TitsCommand(postService, subredditService, nsfwCommandUtils));
         commandsMap.put("redgifs", new RedgifsCommand(nsfwCommandUtils));
         //Reddit Commands
-        commandsMap.put("blursedimages", new RedditCommand(postService, subredditService, redditCommandUtils));
-        commandsMap.put("dankmemes", new RedditCommand(postService, subredditService, redditCommandUtils));
-        commandsMap.put("facepalm", new RedditCommand(postService, subredditService, redditCommandUtils));
-        commandsMap.put("greentext", new RedditCommand(postService, subredditService, redditCommandUtils));
-        commandsMap.put("interestingasfuck", new RedditCommand(postService, subredditService, redditCommandUtils));
-        commandsMap.put("memes", new RedditCommand(postService, subredditService, redditCommandUtils));
-        commandsMap.put("perfectlycutscreams", new RedditCommand(postService, subredditService, redditCommandUtils));
-        commandsMap.put("unexpected", new RedditCommand(postService, subredditService, redditCommandUtils));
+        RedditCommand redditCommand = new RedditCommand(postService, subredditService, redditCommandUtils);
+        commandsMap.put("blursedimages", redditCommand);
+        commandsMap.put("dankmemes", redditCommand);
+        commandsMap.put("facepalm", redditCommand);
+        commandsMap.put("greentext", redditCommand);
+        commandsMap.put("interestingasfuck", redditCommand);
+        commandsMap.put("memes", redditCommand);
+        commandsMap.put("perfectlycutscreams", redditCommand);
+        commandsMap.put("unexpected", redditCommand);
         //Text Commands
         commandsMap.put("monke", new MonkeCommand(textCommandUtils));
         commandsMap.put("howgay", new HowGayCommand(textCommandUtils));

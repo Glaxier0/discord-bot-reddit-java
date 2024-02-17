@@ -16,7 +16,6 @@ public class RedditCommand implements ISlashCommand {
     SubredditService subredditService;
     RedditCommandUtils utils;
 
-
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         String subreddit = event.getFullCommandName();

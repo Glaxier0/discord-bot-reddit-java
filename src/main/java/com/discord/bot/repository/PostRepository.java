@@ -9,15 +9,18 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    String getPostByUrl(String url);
-
-    String getPostByPermaUrl(String permaUrl);
 
     List<Post> getPostsByContentTypeAndFirebaseUrlIsNull(String Type);
 
     List<Post> getPostsByContentTypeIsNotNullAndSubredditEqualsIgnoreCase(String subreddit);
 
     List<Post> getPostsBySubredditIn(List<String> subreddits);
+
+    @Query(value = "SELECT url from posts where url = :url", nativeQuery = true)
+    String getPostByUrl(String url);
+
+    @Query(value = "SELECT perma_url from posts where perma_url = :permaUrl", nativeQuery = true)
+    String getPostByPermaUrl(String permaUrl);
 
     @Query(value = "SELECT * FROM posts WHERE created < NOW() - INTERVAL '4 days' AND type != 'video';"
             , nativeQuery = true)

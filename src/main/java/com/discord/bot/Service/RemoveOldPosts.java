@@ -5,6 +5,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +15,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@AllArgsConstructor
 public class RemoveOldPosts {
     PostService postService;
 
-    public RemoveOldPosts(PostService postService) {
-        this.postService = postService;
-    }
-
-    /**
-     * Removes old posts from database
-     */
     public void removeOldPosts() {
         System.out.println("Program in remove old posts.");
 

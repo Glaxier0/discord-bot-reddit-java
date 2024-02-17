@@ -9,7 +9,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class TodoServiceImpl implements TodoService{
-
     TodoRepository repository;
 
     @Override

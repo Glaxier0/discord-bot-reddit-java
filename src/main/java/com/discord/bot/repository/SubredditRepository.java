@@ -11,5 +11,6 @@ import java.util.List;
 @Repository
 public interface SubredditRepository extends JpaRepository<Subreddit, Integer> {
     Subreddit getSubredditByName(String name);
+    @Query(value = "SELECT s.name FROM Subreddit s WHERE s.genre = :genre")
     List<String> getSubredditNamesByGenre(String genre);
 }
