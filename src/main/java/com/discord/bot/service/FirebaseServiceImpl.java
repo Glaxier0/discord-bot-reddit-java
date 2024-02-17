@@ -20,10 +20,10 @@ import java.util.Objects;
 public class FirebaseServiceImpl implements FirebaseService {
     final PostService postService;
 
-    @Value("${firebase_adminsdk_file_name}")
+    @Value("${firebase.adminsdk.file.name}")
     private String FILE_NAME;
 
-    @Value("${firebase_storage_bucket_name}")
+    @Value("${firebase.storage.bucket.name}")
     String BUCKET_NAME;
 
     public FirebaseServiceImpl(PostService postService) {

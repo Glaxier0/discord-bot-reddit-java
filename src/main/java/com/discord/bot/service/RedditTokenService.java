@@ -15,13 +15,13 @@ import java.util.Objects;
 
 @Service
 public class RedditTokenService {
-    @Value("${reddit_username}")
+    @Value("${reddit.username}")
     private String REDDIT_USERNAME;
-    @Value("${reddit_refresh_token}")
+    @Value("${reddit.refresh.token}")
     private String REDDIT_REFRESH_TOKEN;
-    @Value("${reddit_client_id}")
+    @Value("${reddit.client.id}")
     private String REDDIT_CLIENT_ID;
-    @Value("${reddit_client_secret}")
+    @Value("${reddit.client.secret}")
     private String REDDIT_CLIENT_SECRET;
     private final RestTemplate restTemplate;
 
@@ -48,7 +48,7 @@ public class RedditTokenService {
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(bodyParamMap, headers);
         ResponseEntity<String> response = restTemplate.exchange(Objects.requireNonNull(uri),
                 HttpMethod.POST, entity, String.class);
-        SearchReddit.ACCESS_TOKEN = new JsonParser().parse(Objects.requireNonNull(response.getBody())).getAsJsonObject()
+        SearchReddit.accessToken = new JsonParser().parse(Objects.requireNonNull(response.getBody())).getAsJsonObject()
                 .get("access_token").getAsString();
     }
 }

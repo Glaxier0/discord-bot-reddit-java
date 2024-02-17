@@ -25,9 +25,9 @@ import java.util.Objects;
 
 @Service
 public class SearchReddit {
-    public static String ACCESS_TOKEN;
-    @Value("${reddit_username}")
-    private String REDDIT_USERNAME;
+    public static String accessToken;
+    @Value("${reddit.username}")
+    private String redditUsername;
 
     private final RestTemplate restTemplate;
     PostService postService;
@@ -44,8 +44,8 @@ public class SearchReddit {
 
         System.out.println("Program in search reddit.");
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBearerAuth(ACCESS_TOKEN);
-        httpHeaders.set("User-Agent", "Mozilla:com.glaxier.discordbot:v2 (by /u/" + REDDIT_USERNAME + ")");
+        httpHeaders.setBearerAuth(accessToken);
+        httpHeaders.set("User-Agent", "Mozilla:com.glaxier.discordbot:v2 (by /u/" + redditUsername + ")");
         HttpEntity<String> bearerHeader = new HttpEntity<>(null, httpHeaders);
 
         String REDDIT_URL;
