@@ -16,6 +16,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> getPostsBySubredditIn(List<String> subreddits);
 
+    boolean existsByUrlOrPermaUrl(String url, String permaUrl);
+
     @Query(value = "SELECT url from posts where url = :url", nativeQuery = true)
     String getPostByUrl(String url);
 

@@ -64,4 +64,9 @@ public class PostServiceImpl implements PostService {
     public List<Post> getBySubreddits(List<String> subreddits) {
         return repository.getPostsBySubredditIn(subreddits);
     }
+
+    @Override
+    public boolean existsByUrlAndPermaUrl(String url, String permaUrl) {
+        return repository.existsByUrlOrPermaUrl(url, permaUrl);
+    }
 }
