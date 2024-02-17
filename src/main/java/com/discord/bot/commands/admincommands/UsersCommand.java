@@ -24,6 +24,7 @@ public class UsersCommand implements ISlashCommand {
         if (event.getUser().getId().equals(adminUserId)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             List<User> users = userService.getUsers();
+
             if (users.isEmpty()) {
                 embedBuilder.setDescription("No users found.");
                 event.replyEmbeds(embedBuilder.build()).queue();
@@ -34,6 +35,7 @@ public class UsersCommand implements ISlashCommand {
                     writer.write("USER COUNT: " + users.size() + "\nT: Text   H: Hentai   P: Porn   " +
                             "R: Reddit   T: Todo" +
                             "\n        ID             USER      T H P R T");
+
                     for (User user : users) {
                         writer.append("\n").append(user.getUserId())
                                 .append(" ").append(user.getUserWithTag())
@@ -43,12 +45,15 @@ public class UsersCommand implements ISlashCommand {
                                 .append(" ").append(String.valueOf(user.getRedditCount()))
                                 .append(" ").append(String.valueOf(user.getTodoCount()));
                     }
+
                     writer.close();
                     event.replyFiles(FileUpload.fromData(usersFile)).queue();
-                    Thread.sleep(100);
-                    //noinspection ResultOfMethodCallIgnored
-                    usersFile.delete();
-                } catch (IOException | InterruptedException e) {
+
+                    if (event.isAcknowledged()) {
+                        //noinspection ResultOfMethodCallIgnored
+                        usersFile.delete();
+                    }
+                } catch (IOException e) {
                     //noinspection CallToPrintStackTrace
                     e.printStackTrace();
                 }

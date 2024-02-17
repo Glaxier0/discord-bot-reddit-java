@@ -30,10 +30,12 @@ public class GuildsCommand implements ISlashCommand {
 
                 writer.close();
                 event.replyFiles(FileUpload.fromData(guildsFile)).queue();
-                Thread.sleep(100);
-                //noinspection ResultOfMethodCallIgnored
-                guildsFile.delete();
-            } catch (IOException | InterruptedException e) {
+
+                if (event.isAcknowledged()) {
+                    //noinspection ResultOfMethodCallIgnored
+                    guildsFile.delete();
+                }
+            } catch (IOException e) {
                 //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }

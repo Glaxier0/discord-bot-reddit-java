@@ -7,29 +7,24 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
-import java.util.Objects;
+public class AdminCommands {
+    public void addAdminCommands(JDA jda, String adminServerId) {
+        Guild adminServer = jda.getGuildById(adminServerId);
 
-public class TestCommands {
-    public void addTestCommands(JDA jda, String TEST_SERVER) {
-        while (jda.getGuildById(TEST_SERVER) == null) {
-            try {
-                //noinspection BusyWait
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
-            }
+        if (adminServer == null) {
+            System.out.println("Could not find the server with id: " + adminServerId);
+            return;
         }
 
-        Guild testServer = jda.getGuildById(TEST_SERVER);
-        CommandListUpdateAction testServerCommands = Objects.requireNonNull(testServer).updateCommands();
 
-        testServerCommands.addCommands(
+        CommandListUpdateAction adminServerCommands = adminServer.updateCommands();
+
+        adminServerCommands.addCommands(
                 //Admin Commands
                 Commands.slash("guilds", "Get guild list that bot is in."),
                 Commands.slash("status", "Get reddit post statuses."),
                 Commands.slash("stats", "Get user stats.")
-                        .addOptions(new OptionData(OptionType.MENTIONABLE, "user", "User with mention.")
+                        .addOptions(new OptionData(OptionType.STRING, "user", "User id.")
                                 .setRequired(true)),
                 Commands.slash("users", "Get bot users."),
                 Commands.slash("logs", "Get logs."),

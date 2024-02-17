@@ -60,8 +60,8 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("users", new UsersCommand(userService, adminUserId));
         commandsMap.put("logs", new LogsCommand(adminUserId));
         commandsMap.put("add", new AddSubredditCommand(subredditService, adminUserId));
-        commandsMap.put("list", new ListSubCommand(subredditService, adminUserId));
-        commandsMap.put("delete", new DeleteSubCommand(subredditService, adminUserId));
+        commandsMap.put("list", new ListSubredditCommand(subredditService, adminUserId));
+        commandsMap.put("delete", new DeleteSubredditCommand(subredditService, adminUserId));
         //NSFW Commands
         commandsMap.put("hentai", new HentaiCommand(postService, subredditService, nsfwCommandUtils));
         commandsMap.put("porn", new PornCommand(postService, subredditService, nsfwCommandUtils));

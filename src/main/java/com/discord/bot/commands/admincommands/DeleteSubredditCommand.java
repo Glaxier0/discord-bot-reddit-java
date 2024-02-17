@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import java.awt.*;
 
 @AllArgsConstructor
-public class AddSubredditCommand implements ISlashCommand {
+public class DeleteSubredditCommand implements ISlashCommand {
     final SubredditService subredditService;
     private final String adminUserId;
 
@@ -18,23 +18,25 @@ public class AddSubredditCommand implements ISlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         if (event.getUser().getId().equals(adminUserId)) {
             var nameOption = event.getOption("name");
-            var genreOption = event.getOption("genre");
-            var nsfwOption = event.getOption("nsfw");
 
-            if (nameOption == null || genreOption == null || nsfwOption == null) return;
+            if (nameOption == null) return;
 
             String name = nameOption.getAsString();
-            String genre = genreOption.getAsString();
-            boolean nsfw = nsfwOption.getAsBoolean();
-
-            Subreddit subreddit = new Subreddit(name, genre, nsfw);
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
-            subredditService.save(subreddit);
+            Subreddit subreddit = subredditService.getSubreddit(name);
 
-            embedBuilder.setDescription("Subreddit: " + name + " added to the database.")
-                    .setColor(Color.GREEN);
+            if (subreddit == null) {
+                embedBuilder.setDescription("Subreddit: " + name + " not found.")
+                        .setColor(Color.RED);
+            } else {
+                subredditService.delete(subreddit);
+
+                embedBuilder.setDescription("Subreddit: " + name + " deleted from the database.")
+                        .setColor(Color.GREEN);
+            }
+
             event.replyEmbeds(embedBuilder.build()).queue();
         }
     }
