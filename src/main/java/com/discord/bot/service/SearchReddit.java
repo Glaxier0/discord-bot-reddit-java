@@ -26,8 +26,8 @@ public class SearchReddit {
     private String redditUsername;
 
     private final RestTemplate restTemplate;
-    PostService postService;
-    SubredditService subredditService;
+    final PostService postService;
+    final SubredditService subredditService;
 
     public SearchReddit(PostService postService, SubredditService subredditService) {
         restTemplate = new RestTemplateBuilder().build();
@@ -44,11 +44,10 @@ public class SearchReddit {
         httpHeaders.set("User-Agent", "Mozilla:com.glaxier.discordbot:v2 (by /u/" + redditUsername + ")");
         HttpEntity<String> bearerHeader = new HttpEntity<>(null, httpHeaders);
 
-        String redditUrl;
         String baseDownloadUrl = "https://sd.redditsave.com/download.php?permalink=https://reddit.com";
 
         for (Subreddit subreddit : subreddits) {
-            redditUrl = "https://oauth.reddit.com/r/" + subreddit.getName() + "/top.json?limit=25&t=day&raw_json=1";
+            var redditUrl = "https://oauth.reddit.com/r/" + subreddit.getName() + "/top.json?limit=25&t=day&raw_json=1";
             URI reddit_uri = createUri(redditUrl);
 
             ResponseEntity<RedditResponse> response;
@@ -67,6 +66,7 @@ public class SearchReddit {
 
             for (var children : redditPosts) {
                 var redditPost = children.getData();
+
                 String url = redditPost.getUrl();
                 String subredditName = redditPost.getSubreddit();
                 String title = redditPost.getTitle();

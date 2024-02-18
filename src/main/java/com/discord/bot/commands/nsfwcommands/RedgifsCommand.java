@@ -23,7 +23,7 @@ import java.util.Random;
 public class RedgifsCommand implements ISlashCommand {
     public static String TOKEN;
     public static String REDDIT_USERNAME;
-    NsfwCommandUtils utils;
+    final NsfwCommandUtils utils;
 
     public RedgifsCommand(NsfwCommandUtils utils) {
         this.utils = utils;

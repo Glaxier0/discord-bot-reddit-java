@@ -14,14 +14,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager extends ListenerAdapter {
-    PostService postService;
-    SubredditService subredditService;
-    TodoService todoService;
-    UserService userService;
-    RedditCommandUtils redditCommandUtils;
-    TextCommandUtils textCommandUtils;
-    ToDoCommandUtils toDoCommandUtils;
-    NsfwCommandUtils nsfwCommandUtils;
+    final PostService postService;
+    final SubredditService subredditService;
+    final TodoService todoService;
+    final UserService userService;
+    final RedditCommandUtils redditCommandUtils;
+    final TextCommandUtils textCommandUtils;
+    final ToDoCommandUtils toDoCommandUtils;
+    final NsfwCommandUtils nsfwCommandUtils;
     private final String adminUserId;
     private Map<String, ISlashCommand> commandsMap;
 

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Random;
 
 public class MonkeCommand implements ISlashCommand {
-    TextCommandUtils utils;
+    final TextCommandUtils utils;
 
-    List<String> monkeList = Arrays.asList(
+    final List<String> monkeList = Arrays.asList(
             "https://www.youtube.com/watch?v=5WTgEu5YJmw",
             "https://www.youtube.com/watch?v=Z00nVaTXl_M",
             "https://www.youtube.com/watch?v=0pANbBQkhf4",

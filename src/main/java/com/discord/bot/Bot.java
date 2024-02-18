@@ -23,11 +23,11 @@ public class Bot {
     final PostService postService;
     final SubredditService subredditService;
 
-    SearchReddit redditSearchService;
-    RemoveOldPosts removeOldPostsService;
-    FirebaseServiceImpl firebaseService;
-    RedditTokenService redditTokenService;
-    RedgifsTokenService redgifsTokenService;
+    final SearchReddit redditSearchService;
+    final RemoveOldPosts removeOldPostsService;
+    final FirebaseServiceImpl firebaseService;
+    final RedditTokenService redditTokenService;
+    final RedgifsTokenService redgifsTokenService;
 
     @Value("${discord.bot.token}")
     private String discordToken;
@@ -63,6 +63,7 @@ public class Bot {
         jda.awaitReady();
         new JdaCommands().addJdaCommands(jda);
         new AdminCommands().addAdminCommands(jda, adminServer);
+        new CustomCommands().addCustomCommands(jda);
         System.out.println("Starting bot is done!");
     }
 
