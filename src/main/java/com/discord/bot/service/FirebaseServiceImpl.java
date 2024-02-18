@@ -30,30 +30,6 @@ public class FirebaseServiceImpl implements FirebaseService {
         this.postService = postService;
     }
 
-    private void uploadToFirebaseStorage(Post post) throws IOException {
-        FileInputStream serviceAccount = new FileInputStream(FILE_NAME);
-        String fileName = String.valueOf(post.getId());
-        Map<String, String> map = new HashMap<>();
-        map.put("firebaseStorageDownloadTokens", fileName);
-        InputStream file = new FileInputStream("temp.mp4");
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName + ".mp4");
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setMetadata(map).setContentType("video/mp4").build();
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
-                .fromStream(serviceAccount)).build().getService();
-
-        try {
-            Blob blob = storage.create(blobInfo, file);
-            String firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/"
-                    + fileName + ".mp4" + "?alt=media&token=" + blob.getMetadata().get("firebaseStorageDownloadTokens");
-            post.setFirebaseUrl(firebaseUrl);
-            postService.save(post);
-        } catch (Exception e) {
-            System.out.println("File upload failed");
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
-        }
-    }
-
     public void downloadVideos() {
         System.out.println("Program in download videos");
 
@@ -61,18 +37,11 @@ public class FirebaseServiceImpl implements FirebaseService {
         System.out.println("File count: " + list.size());
 
         for (Post post : list) {
-            URL url = null;
-            try {
-                url = new URL(post.getDownloadUrl());
-            } catch (MalformedURLException e) {
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
-            }
+            URL url = createUri(post.getDownloadUrl());
 
-            try {
-                InputStream inputStream = Objects.requireNonNull(url).openStream();
-                ReadableByteChannel readableByteChannel = Channels.newChannel(inputStream);
-                FileOutputStream fileOutputStream = new FileOutputStream("temp.mp4");
+            try (InputStream inputStream = Objects.requireNonNull(url).openStream();
+                 ReadableByteChannel readableByteChannel = Channels.newChannel(inputStream);
+                 FileOutputStream fileOutputStream = new FileOutputStream("temp.mp4")) {
                 fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
                 uploadToFirebaseStorage(post);
             } catch (IOException e) {
@@ -109,5 +78,37 @@ public class FirebaseServiceImpl implements FirebaseService {
             }
         }
         System.out.println("Deleting old firebase videos done!");
+    }
+
+    private void uploadToFirebaseStorage(Post post) throws IOException {
+        FileInputStream serviceAccount = new FileInputStream(FILE_NAME);
+        String fileName = String.valueOf(post.getId());
+        Map<String, String> map = new HashMap<>();
+        map.put("firebaseStorageDownloadTokens", fileName);
+        InputStream file = new FileInputStream("temp.mp4");
+        BlobId blobId = BlobId.of(BUCKET_NAME, fileName + ".mp4");
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setMetadata(map).setContentType("video/mp4").build();
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
+                .fromStream(serviceAccount)).build().getService();
+
+        try {
+            Blob blob = storage.create(blobInfo, file);
+            String firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/"
+                    + fileName + ".mp4" + "?alt=media&token=" + Objects.requireNonNull(blob.getMetadata()).get("firebaseStorageDownloadTokens");
+            post.setFirebaseUrl(firebaseUrl);
+            postService.save(post);
+        } catch (Exception e) {
+            System.out.println("File upload failed");
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+        }
+    }
+
+    private URL createUri(String url) {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid URL: " + url, e);
+        }
     }
 }
