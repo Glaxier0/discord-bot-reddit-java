@@ -1,7 +1,6 @@
 package com.discord.bot.commands;
 
 import com.discord.bot.commands.admincommands.*;
-import com.discord.bot.commands.customcommands.CustomCommand;
 import com.discord.bot.commands.nsfwcommands.*;
 import com.discord.bot.commands.redditcommands.*;
 import com.discord.bot.commands.textcommands.*;
@@ -52,8 +51,6 @@ public class CommandManager extends ListenerAdapter {
 
     private void commandMapper() {
         commandsMap = new ConcurrentHashMap<>();
-        //Custom Commands
-        commandsMap.put("formylove", new CustomCommand());
         //Admin Commands
         commandsMap.put("guilds", new GuildsCommand(adminUserId));
         commandsMap.put("status", new StatusCommand(postService, adminUserId));
