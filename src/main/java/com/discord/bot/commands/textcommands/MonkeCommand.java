@@ -38,6 +38,6 @@ public class MonkeCommand implements ISlashCommand {
         event.reply(monkeList.get(new Random().nextInt(monkeList.size()))).queue();
 
         net.dv8tion.jda.api.entities.User user = event.getUser();
-        utils.counter(user.getId(), user.getAsTag());
+        utils.counter(user.getId(), user.getName());
     }
 }

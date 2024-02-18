@@ -23,6 +23,6 @@ public class TitsCommand implements ISlashCommand {
         Post post = postList.get(new Random().nextInt(postList.size()));
         utils.checkTypeAndPost(event, post);
         net.dv8tion.jda.api.entities.User user = event.getUser();
-        utils.counter(user.getId(), user.getAsTag(), true);
+        utils.counter(user.getId(), user.getName(), true);
     }
 }

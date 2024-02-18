@@ -19,6 +19,6 @@ public class TopGGCommand implements ISlashCommand {
         event.replyEmbeds(embedBuilder.build()).queue();
 
         User user = event.getUser();
-        utils.counter(user.getId(), user.getAsTag());
+        utils.counter(user.getId(), user.getName());
     }
 }

@@ -22,6 +22,6 @@ public class HowGayCommand implements ISlashCommand {
         event.replyEmbeds(embedBuilder.build()).queue();
 
         net.dv8tion.jda.api.entities.User user = event.getUser();
-        utils.counter(user.getId(), user.getAsTag());
+        utils.counter(user.getId(), user.getName());
     }
 }

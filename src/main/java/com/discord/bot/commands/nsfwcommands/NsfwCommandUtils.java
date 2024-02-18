@@ -11,10 +11,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 public class NsfwCommandUtils {
     UserService userService;
 
-    public void counter(String userId, String userWithTag, boolean isPorn) {
+    public void counter(String userId, String userName, boolean isPorn) {
         User user = userService.getUser(userId);
         if (user == null) {
-            user = new User(userId, 0, 0, 0, 0, 0, userWithTag);
+            user = new User(userId, 0, 0, 0, 0, 0, userName);
         }
 
         if (isPorn) {

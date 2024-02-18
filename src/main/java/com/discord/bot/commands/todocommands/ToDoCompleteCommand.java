@@ -22,7 +22,6 @@ public class ToDoCompleteCommand implements ISlashCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         User user = event.getUser();
         String userId = user.getId();
-        String userWithTag = user.getAsTag();
 
         int rowId = Objects.requireNonNull(event.getOption("taskid")).getAsInt();
         List<Todo> todoList = todoService.todoList(userId);
@@ -35,6 +34,6 @@ public class ToDoCompleteCommand implements ISlashCommand {
         }
         event.replyEmbeds(embedBuilder.build()).queue();
 
-        utils.counter(userId, userWithTag);
+        utils.counter(userId, user.getName());
     }
 }
