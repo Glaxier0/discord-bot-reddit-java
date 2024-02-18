@@ -17,9 +17,7 @@ public class RemoveOldPosts {
         List<Post> posts = postService.getOldPosts();
         System.out.println("Post count to be deleted: " + posts.size());
 
-        for (Post post : posts) {
-            postService.delete(post);
-        }
+        postService.deleteAll(posts);
         System.out.println("Deleting old posts done!");
     }
 }

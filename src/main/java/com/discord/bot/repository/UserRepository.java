@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     User getUserByUserId(@Param("userId") String userId);

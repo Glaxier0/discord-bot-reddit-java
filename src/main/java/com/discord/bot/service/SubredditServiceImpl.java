@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Service
 @AllArgsConstructor
 public class SubredditServiceImpl implements SubredditService {

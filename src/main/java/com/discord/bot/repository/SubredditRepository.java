@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Repository
 public interface SubredditRepository extends JpaRepository<Subreddit, Integer> {
     Subreddit getSubredditByName(String name);

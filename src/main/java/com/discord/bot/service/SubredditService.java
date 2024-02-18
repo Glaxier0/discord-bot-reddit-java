@@ -3,6 +3,8 @@ package com.discord.bot.service;
 import com.discord.bot.entity.Subreddit;
 
 import java.util.List;
+
+@SuppressWarnings("unused")
 public interface SubredditService {
     List<Subreddit> findAll();
     void save(Subreddit subreddit);

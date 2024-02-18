@@ -6,9 +6,9 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class HelpCommand implements ISlashCommand {
-    TextCommandUtils utils;
+    final TextCommandUtils utils;
 
-    String subreddits = """
+    final String subreddits = """
             - Unexpected
             - dankmemes
             - memes
