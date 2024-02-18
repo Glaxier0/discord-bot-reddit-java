@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Service
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
@@ -24,6 +25,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public void delete(Post post) {
         repository.delete(post);
+    }
+
+    @Override
+    public void deleteAll(List<Post> posts) {
+        repository.deleteAll(posts);
     }
 
     @Override
