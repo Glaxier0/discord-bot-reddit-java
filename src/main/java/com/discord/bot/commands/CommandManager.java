@@ -37,6 +37,7 @@ public class CommandManager extends ListenerAdapter {
         this.nsfwCommandUtils = new NsfwCommandUtils(userService);
         this.adminUserId = adminUserId;
         commandMapper();
+        redditCommandMapper();
     }
 
     @Override
@@ -67,16 +68,6 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("porn", new PornCommand(postService, subredditService, nsfwCommandUtils));
         commandsMap.put("tits", new TitsCommand(postService, subredditService, nsfwCommandUtils));
         commandsMap.put("redgifs", new RedgifsCommand(nsfwCommandUtils));
-        //Reddit Commands
-        RedditCommand redditCommand = new RedditCommand(postService, subredditService, redditCommandUtils);
-        commandsMap.put("blursedimages", redditCommand);
-        commandsMap.put("dankmemes", redditCommand);
-        commandsMap.put("facepalm", redditCommand);
-        commandsMap.put("greentext", redditCommand);
-        commandsMap.put("interestingasfuck", redditCommand);
-        commandsMap.put("memes", redditCommand);
-        commandsMap.put("perfectlycutscreams", redditCommand);
-        commandsMap.put("unexpected", redditCommand);
         //Text Commands
         commandsMap.put("monke", new MonkeCommand(textCommandUtils));
         commandsMap.put("howgay", new HowGayCommand(textCommandUtils));
@@ -92,5 +83,15 @@ public class CommandManager extends ListenerAdapter {
         commandsMap.put("todoupdate", new ToDoUpdateCommand(toDoCommandUtils, todoService));
         commandsMap.put("todocomplete", new ToDoCompleteCommand(toDoCommandUtils, todoService));
         commandsMap.put("todoclear", new ToDoClearCommand(toDoCommandUtils, todoService));
+    }
+
+    private void redditCommandMapper() {
+        var subreddits = subredditService.getSubredditsByGenre("reddit");
+        RedditCommand redditCommand = new RedditCommand(postService, subredditService, redditCommandUtils);
+
+        for (String subreddit : subreddits) {
+            String commandName = subreddit.toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+            commandsMap.put(commandName, redditCommand);
+        }
     }
 }

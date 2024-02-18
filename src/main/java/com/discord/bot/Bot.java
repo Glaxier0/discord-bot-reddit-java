@@ -1,7 +1,6 @@
 package com.discord.bot;
 
 import com.discord.bot.commands.CommandManager;
-import com.discord.bot.commands.CustomCommands;
 import com.discord.bot.commands.JdaCommands;
 import com.discord.bot.commands.AdminCommands;
 import com.discord.bot.service.*;
@@ -61,9 +60,8 @@ public class Bot {
                         new CommandManager(postService, subredditService, todoService, userService, adminUserId))
                 .setActivity(Activity.playing("Type /help")).build();
         jda.awaitReady();
-        new JdaCommands().addJdaCommands(jda);
+        new JdaCommands(subredditService).addJdaCommands(jda);
         new AdminCommands().addAdminCommands(jda, adminServer);
-        new CustomCommands().addCustomCommands(jda);
         System.out.println("Starting bot is done!");
     }
 
