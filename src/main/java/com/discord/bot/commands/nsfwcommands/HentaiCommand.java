@@ -24,6 +24,6 @@ public class HentaiCommand implements ISlashCommand {
         Post post = postList.get(new Random().nextInt(postList.size()));
         utils.checkTypeAndPost(event, post);
         User user = event.getUser();
-        utils.counter(user.getId(), user.getAsTag(), false);
+        utils.counter(user.getId(), user.getName(), false);
     }
 }

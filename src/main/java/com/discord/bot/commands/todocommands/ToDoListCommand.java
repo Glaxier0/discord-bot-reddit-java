@@ -20,14 +20,14 @@ public class ToDoListCommand implements ISlashCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         User user = event.getUser();
         String userId = user.getId();
-        String userWithTag = user.getAsTag();
+        String userName = user.getName();
 
         List<Todo> todoList = todoService.todoList(userId);
         if (todoList.isEmpty()) {
             embedBuilder.setDescription("Your to-do list is empty as my future!");
         } else {
             int i = 1;
-            embedBuilder.setAuthor(userWithTag)
+            embedBuilder.setAuthor(userName)
                     .setDescription("__**``   ID   DATE    TODO``**__\n");
             for (Todo todoRow : todoList) {
                 String complete = (i + ". " + todoRow.getCreated().toLocalDate()
@@ -42,6 +42,6 @@ public class ToDoListCommand implements ISlashCommand {
             }
         }
         event.replyEmbeds(embedBuilder.build()).queue();
-        utils.counter(userId, userWithTag);
+        utils.counter(userId, userName);
     }
 }

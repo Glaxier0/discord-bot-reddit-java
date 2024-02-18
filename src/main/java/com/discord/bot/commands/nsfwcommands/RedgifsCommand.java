@@ -68,7 +68,7 @@ public class RedgifsCommand implements ISlashCommand {
             logger.warn("Could not find any gifs with tag: " + tag + "encoded tag: " + encodedTag);
         }
         User user = event.getUser();
-        utils.counter(user.getId(), user.getAsTag(), true);
+        utils.counter(user.getId(), user.getName(), true);
     }
 
     private URI createUri(String redgifsUrl) {

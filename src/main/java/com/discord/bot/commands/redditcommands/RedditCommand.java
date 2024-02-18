@@ -22,6 +22,6 @@ public class RedditCommand implements ISlashCommand {
         List<Post> list = postService.getPosts(subreddit);
         utils.checkTypeAndPost(event, list);
         User user = event.getUser();
-        utils.counter(user.getId(), user.getAsTag());
+        utils.counter(user.getId(), user.getName());
     }
 }

@@ -23,7 +23,7 @@ public class ToDoAddCommand implements ISlashCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         User user = event.getUser();
         String userId = user.getId();
-        String userWithTag = user.getAsTag();
+        String userName = user.getName();
         String add = Objects.requireNonNull(event.getOption("task")).getAsString();
 
         if (add.isEmpty()) {
@@ -31,7 +31,7 @@ public class ToDoAddCommand implements ISlashCommand {
         } else if (add.length() < 213) {
             if (todoService.todoList(userId).size() < 30) {
                 Date createdDate = Date.valueOf(LocalDateTime.now().toLocalDate());
-                todoService.save(new Todo(userId, add, createdDate, false, userWithTag));
+                todoService.save(new Todo(userId, add, createdDate, false, userName));
                 embedBuilder.setDescription("Successfully added to your to-do list").setColor(Color.GREEN);
             } else {
                 embedBuilder.setDescription("To-do list limit is 30 row." +
@@ -42,6 +42,6 @@ public class ToDoAddCommand implements ISlashCommand {
         }
         event.replyEmbeds(embedBuilder.build()).queue();
 
-        utils.counter(userId, userWithTag);
+        utils.counter(userId, userName);
     }
 }

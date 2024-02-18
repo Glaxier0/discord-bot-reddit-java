@@ -93,7 +93,7 @@ public class FirebaseServiceImpl implements FirebaseService {
                 .fromStream(serviceAccount)).build().getService();
 
         try {
-            Blob blob = storage.create(blobInfo, file);
+            Blob blob = storage.createFrom(blobInfo, file);
             String firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/"
                     + fileName + ".mp4" + "?alt=media&token=" + Objects.requireNonNull(blob.getMetadata()).get("firebaseStorageDownloadTokens");
             post.setFirebaseUrl(firebaseUrl);

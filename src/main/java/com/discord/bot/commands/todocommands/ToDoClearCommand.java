@@ -18,11 +18,10 @@ public class ToDoClearCommand implements ISlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         User user = event.getUser();
         String userId = user.getId();
-        String userWithTag = user.getAsTag();
 
         todoService.deleteAll(userId);
         event.replyEmbeds(new EmbedBuilder().setDescription("To-do list cleared.").setColor(Color.GREEN).build()).queue();
 
-        utils.counter(userId, userWithTag);
+        utils.counter(userId, user.getName());
     }
 }
