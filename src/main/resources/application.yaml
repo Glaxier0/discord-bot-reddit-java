@@ -1,7 +1,7 @@
 spring:
   datasource:
    url: jdbc:postgresql://localhost:5432/reddit_bot
-   name:
+   username:
    password:
   main:
     web-application-type: none
