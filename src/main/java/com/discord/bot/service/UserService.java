@@ -4,8 +4,8 @@ import com.discord.bot.entity.User;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface UserService {
-    @SuppressWarnings("unused")
     List<User> findAll();
     void save(User user);
     void delete(User user);
