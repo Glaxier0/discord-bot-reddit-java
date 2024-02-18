@@ -5,6 +5,8 @@ import com.discord.bot.dto.response.redgifs.RedgifsResponse;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class RedgifsCommand implements ISlashCommand {
+    private static final Logger logger = LoggerFactory.getLogger(RedgifsCommand.class);
     public static String TOKEN;
     public static String REDDIT_USERNAME;
     final NsfwCommandUtils utils;
@@ -62,7 +65,7 @@ public class RedgifsCommand implements ISlashCommand {
         } else {
             event.replyEmbeds(new EmbedBuilder().setDescription("Didn't find any post with " + tag + " tag.")
                     .setColor(Color.RED).build()).queue();
-            System.out.println("tag: " + tag + "encoded tag: " + encodedTag);
+            logger.warn("Could not find any gifs with tag: " + tag + "encoded tag: " + encodedTag);
         }
         User user = event.getUser();
         utils.counter(user.getId(), user.getAsTag(), true);

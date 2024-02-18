@@ -3,6 +3,8 @@ package com.discord.bot.service;
 import com.discord.bot.dto.response.reddit.RedditResponse;
 import com.discord.bot.entity.Post;
 import com.discord.bot.entity.Subreddit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @Service
 public class SearchReddit {
+    private static final Logger logger = LoggerFactory.getLogger(SearchReddit.class);
     public static String accessToken;
     @Value("${reddit.username}")
     private String redditUsername;
@@ -36,7 +39,7 @@ public class SearchReddit {
     }
 
     public void searchReddit() {
-        System.out.println("Program in search reddit.");
+        logger.info("Program in search reddit.");
         List<Subreddit> subreddits = subredditService.getSubreddits();
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -54,9 +57,7 @@ public class SearchReddit {
             try {
                 response = restTemplate.exchange(reddit_uri, HttpMethod.GET, bearerHeader, RedditResponse.class);
             } catch (HttpClientErrorException e) {
-                System.out.println("Subreddit not found: " + subreddit);
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
+                logger.error("Subreddit not found: " + subreddit, e);
                 continue;
             }
 
@@ -117,7 +118,7 @@ public class SearchReddit {
                 }
             }
         }
-        System.out.println("Reddit search done!");
+        logger.info("Reddit search is done!");
     }
 
     private URI createUri(String redditUrl) {

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class UsersCommand implements ISlashCommand {
+    private static final Logger logger = LoggerFactory.getLogger(UsersCommand.class);
     final UserService userService;
     private final String adminUserId;
 
@@ -54,8 +57,7 @@ public class UsersCommand implements ISlashCommand {
                         usersFile.delete();
                     }
                 } catch (IOException e) {
-                    //noinspection CallToPrintStackTrace
-                    e.printStackTrace();
+                    logger.error("Error occurred while writing or closing the users.txt file", e);
                 }
             }
         }
