@@ -1,5 +1,7 @@
 package com.discord.bot.commands;
 
+import com.discord.bot.service.SubredditService;
+import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -7,9 +9,16 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
+import java.util.List;
+
+@AllArgsConstructor
 public class JdaCommands {
+    final SubredditService subredditService;
     public void addJdaCommands(JDA jda) {
         CommandListUpdateAction globalCommands = jda.updateCommands();
+
+        //Reddit Commands
+        commandBuilder(globalCommands);
 
         globalCommands.addCommands(
                 //NSFW Commands
@@ -25,15 +34,6 @@ public class JdaCommands {
                                 new OptionData(OptionType.STRING, "tag", "Chosen tag or a.k.a category")
                                         .setRequired(true)
                         ),
-                //Reddit Commands
-                Commands.slash("unexpected", "Get top r/unexpected posts."),
-                Commands.slash("dankmemes", "Get top r/dankmemes posts."),
-                Commands.slash("memes", "Get top r/memes posts."),
-                Commands.slash("greentext", "Get top r/greentext posts."),
-                Commands.slash("blursedimages", "Get top r/blursedimages posts."),
-                Commands.slash("perfectlycutscreams", "Get top r/perfectlycutscreams posts."),
-                Commands.slash("interestingasfuck", "Get top r/interestingasfuck posts."),
-                Commands.slash("facepalm", "Get top r/facepalm posts."),
                 //Text Commands
                 Commands.slash("help", "Info page about bot commands"),
                 Commands.slash("monke", "Get my favorite random monke video."),
@@ -64,5 +64,17 @@ public class JdaCommands {
                                 .setRequired(true)),
                 Commands.slash("todoclear", "Clears your to-do list.")
         ).queue();
+    }
+
+    private void commandBuilder(CommandListUpdateAction commandListUpdateAction) {
+        List<String> subreddits = subredditService.getSubredditsByGenre("reddit");
+
+        for (String subreddit : subreddits) {
+            String commandName = subreddit.toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+            String description = "Get top r/" + subreddit + " posts.";
+
+            //noinspection ResultOfMethodCallIgnored
+            commandListUpdateAction.addCommands(Commands.slash(commandName, description));
+        }
     }
 }
