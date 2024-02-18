@@ -36,7 +36,7 @@ reddit_bot database needs posts table.
 
 [Table create script for postgresql](https://github.com/Glaxier0/discord-bot-reddit-java/blob/main/postgresql-create-script.md)
 
-Some error may occur while creating table from script so an sql knowledge needed.
+Some error may occur while creating table from script so an SQL knowledge needed.
 
 [Example bot created by me](https://discord.com/api/oauth2/authorize?client_id=863361433807093792&permissions=139586889792&scope=bot%20applications.commands)
 

@@ -3,6 +3,8 @@ package com.discord.bot.service;
 import com.discord.bot.entity.Post;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.Objects;
 
 @Service
 public class FirebaseServiceImpl implements FirebaseService {
+    private static final Logger logger = LoggerFactory.getLogger(FirebaseServiceImpl.class);
     final PostService postService;
 
     @Value("${firebase.adminsdk.file.name}")
@@ -31,10 +34,10 @@ public class FirebaseServiceImpl implements FirebaseService {
     }
 
     public void downloadVideos() {
-        System.out.println("Program in download videos");
+        logger.info("Program in download videos");
 
         List<Post> list = postService.getVideoNullFirebase();
-        System.out.println("File count: " + list.size());
+        logger.info("File count: " + list.size());
 
         for (Post post : list) {
             URL url = createUri(post.getDownloadUrl());
@@ -45,15 +48,14 @@ public class FirebaseServiceImpl implements FirebaseService {
                 fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
                 uploadToFirebaseStorage(post);
             } catch (IOException e) {
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
+                logger.error("Error occurred while downloading and uploading file", e);
             }
         }
-        System.out.println("Downloading videos is done!");
+        logger.info("Downloading videos is done!");
     }
 
     public void removeOldFirebaseVideos() {
-        System.out.println("Program in remove old firebase videos.");
+        logger.info("Program in remove old firebase videos.");
 
         FileInputStream serviceAccount;
         Storage storage = null;
@@ -62,12 +64,11 @@ public class FirebaseServiceImpl implements FirebaseService {
             storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials
                     .fromStream(serviceAccount)).build().getService();
         } catch (IOException e) {
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
+            logger.error("Error occurred while removing old firebase videos", e);
         }
 
         List<Post> posts = postService.getOldFirebaseVideos();
-        System.out.println("Post count to be deleted: " + posts.size());
+        logger.info("Post count to be deleted: " + posts.size());
 
         for (Post post : posts) {
             String blobName = post.getId() + ".mp4";
@@ -77,7 +78,7 @@ public class FirebaseServiceImpl implements FirebaseService {
                 postService.delete(post);
             }
         }
-        System.out.println("Deleting old firebase videos done!");
+        logger.info("Deleting old firebase videos is done!");
     }
 
     private void uploadToFirebaseStorage(Post post) throws IOException {
@@ -98,9 +99,7 @@ public class FirebaseServiceImpl implements FirebaseService {
             post.setFirebaseUrl(firebaseUrl);
             postService.save(post);
         } catch (Exception e) {
-            System.out.println("File upload failed");
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
+            logger.error("Error occurred while uploading videos to firebase", e);
         }
     }
 

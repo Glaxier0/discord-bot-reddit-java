@@ -6,6 +6,8 @@ import com.discord.bot.service.SubredditService;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class ListSubredditCommand implements ISlashCommand {
+    private static final Logger logger = LoggerFactory.getLogger(ListSubredditCommand.class);
     final SubredditService subredditService;
     private final String adminUserId;
 
@@ -45,8 +48,7 @@ public class ListSubredditCommand implements ISlashCommand {
                     subredditsFile.delete();
                 }
             } catch (IOException e) {
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
+                logger.error("Error occurred while writing or closing the subreddits.txt file", e);
             }
         }
     }

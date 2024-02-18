@@ -6,13 +6,17 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AdminCommands {
+    private static final Logger logger = LoggerFactory.getLogger(AdminCommands.class);
+
     public void addAdminCommands(JDA jda, String adminServerId) {
         Guild adminServer = jda.getGuildById(adminServerId);
 
         if (adminServer == null) {
-            System.out.println("Could not find the server with id: " + adminServerId);
+            logger.error("Could not find the server with id: " + adminServerId);
             return;
         }
 

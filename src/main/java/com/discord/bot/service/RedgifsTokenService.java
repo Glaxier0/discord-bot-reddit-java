@@ -2,6 +2,8 @@ package com.discord.bot.service;
 
 import com.discord.bot.commands.nsfwcommands.RedgifsCommand;
 import com.discord.bot.dto.response.redgifs.RedgifsTokenResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -13,6 +15,7 @@ import java.net.URISyntaxException;
 
 @Service
 public class RedgifsTokenService {
+    private static final Logger logger = LoggerFactory.getLogger(RedgifsTokenService.class);
     @Value("${reddit.username}")
     private String REDDIT_USERNAME;
     private final RestTemplate restTemplate;
@@ -33,8 +36,7 @@ public class RedgifsTokenService {
             redgifsTokenResponse = restTemplate
                     .exchange(uri, HttpMethod.GET, entity, RedgifsTokenResponse.class).getBody();
         } catch (Exception e) {
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
+            logger.error("Error occurred while trying to get access token from redgifs", e);
         }
 
         RedgifsCommand.TOKEN = redgifsTokenResponse != null ? redgifsTokenResponse.getToken() : null;

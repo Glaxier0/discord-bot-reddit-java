@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.io.IOException;
 
 @AllArgsConstructor
 public class GuildsCommand implements ISlashCommand {
+    private static final Logger logger = LoggerFactory.getLogger(GuildsCommand.class);
     private final String adminUserId;
 
     @Override
@@ -36,8 +39,7 @@ public class GuildsCommand implements ISlashCommand {
                     guildsFile.delete();
                 }
             } catch (IOException e) {
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
+                logger.error("Error occurred while writing or closing the guilds.txt file", e);
             }
         }
     }
