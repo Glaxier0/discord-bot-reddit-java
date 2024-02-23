@@ -1,58 +1,87 @@
-# discord-bot-reddit-java
+# Discord Bot for Reddit using Java
 
-A multi-functional discord bot mainly focused to reddit that gathers posts from reddit and post them in discord channel.
-### Used APIs ###
+This is a versatile Discord bot primarily designed for Reddit, capable of fetching posts from Reddit and posting them in Discord channels.
+
+## Used APIs ##
+
 [Reddit API](https://www.reddit.com/dev/api/)
 
 [Firebase Storage API](https://console.firebase.google.com/)
 
-Firebase Storage let us watch reddit videos directly in discord via embed. Any video hosting site can be used instead of Firebase Storage.
+Firebase Storage allows direct embedding of Reddit videos in Discord. Alternatively, any video hosting site can be used.
 
 Discord API - [JDA Wrapper](https://github.com/DV8FromTheWorld/JDA)
 
-### Things needed for project to work ###
+# Requirements for Bot Setup #
 
-Edit admin ids in classes under [admincommands](https://github.com/Glaxier0/discord-bot-reddit-java/tree/main/src/main/java/com/discord/bot/commands/admincommands)
+## Reddit ##
 
-Also don't forget to edit [application.properties](https://github.com/Glaxier0/discord-bot-reddit-java/blob/main/src/main/resources/application.properties).
+Create reddit personal use script [here](https://www.reddit.com/prefs/apps) to obtain `client_id` and `client_secret`.
 
-Reddit username, reddit password
+Obtain a Reddit refresh token following [these instructions](https://github.com/reddit-archive/reddit/wiki/OAuth2).
 
-Create reddit personal use script from [here](https://www.reddit.com/prefs/apps) than get Reddit client_id and client_secret.
+After getting reddit environments edit the [application.yaml](https://github.com/Glaxier0/discord-bot-reddit-java/blob/4ae350a1d9a1ef2bb6738b8d98c5a84d71edd535/src/main/resources/application.yaml#L17).
 
-Get reddit refresh token following [this](https://github.com/reddit-archive/reddit/wiki/OAuth2)
+## Firebase ##
 
-Firebase Storage ADMIN SDK KEY from [here](https://console.firebase.google.com/)
+Obtain the Firebase Storage ADMIN SDK KEY from [here](https://console.firebase.google.com/)
 
-from Firebase console > your project > settings > users and permissions > service accounts > generate private key > download the key.
+From the Firebase console (your project > settings > users and permissions > service accounts), generate a private key and download it then add it to the project root.
 
-Copy key path then edit this [line](https://github.com/Glaxier0/discord-bot-reddit-java/blob/8a78ef0a4e6fa12b1f5c9381860c2312e84bbc37/src/main/resources/application.properties#L11)
+Also from (settings > general) note your `Project ID` and append `.appspot.com` to end of it, it should be something like this.
 
-Discord API BOT TOKEN from [here](https://discord.com/developers/applications)
+```
+your-project-id.appspot.com
+```
 
-An sql database named reddit_bot
+Edit bucket name and file name in [application.yaml](https://github.com/Glaxier0/discord-bot-reddit-java/blob/4ae350a1d9a1ef2bb6738b8d98c5a84d71edd535/src/main/resources/application.yaml#L34).
 
-reddit_bot database needs posts table.
+Example yaml:
+```
+firebase:
+  storage:
+    bucket:
+      name: your-project-id.appspot.com
+  adminsdk:
+    file:
+      name: your-admin-sdk.json
+```
 
-[Table create script for postgresql](https://github.com/Glaxier0/discord-bot-reddit-java/blob/main/postgresql-create-script.md)
+## Discord ##
 
-Some error may occur while creating table from script so an SQL knowledge needed.
+Obtain the Discord API bot token from [here](https://discord.com/developers/applications).
+
+Find the ID of your main/admin server (only admin commands can be used in this server).
+
+Find the ID of your Discord user (this determines who the bot admin is).
+
+### How to find id of the server and user ###
+
+First you need to turn on developer mode in the discord app.
+
+User settings > under app settings > advanced > turn on developer mode.
+
+Now by right clicking any server or user you can get id of them.
+
+After obtaining all necessary environment details, edit [application.yaml](https://github.com/Glaxier0/discord-bot-reddit-java/blob/4ae350a1d9a1ef2bb6738b8d98c5a84d71edd535/src/main/resources/application.yaml#L28).
+
+## Database ##
+
+Simply use the Docker Compose:
+
+```
+docker compose up
+```
+
+If you don't want to use docker then you should create a database called `reddit_bot` manually.
+
+Thanks to Spring Boot JPA it will auto generate tables when the bot first run.
+
 
 [Example bot created by me](https://discord.com/api/oauth2/authorize?client_id=863361433807093792&permissions=139586889792&scope=bot%20applications.commands)
 
-[top.gg](https://top.gg/bot/855806720834928641)
+[Check out the bot on top.gg](https://top.gg/bot/855806720834928641)
 
 ### PREVIEW ###
 
 https://user-images.githubusercontent.com/55876415/133401787-96db0fea-80a7-4b94-b211-3812e4c635c9.mp4
-
-
-
-
-
-
-
-
-
-
-
