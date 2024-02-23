@@ -1,0 +1,1 @@
+CREATE DATABASE reddit_bot;
