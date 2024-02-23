@@ -55,11 +55,6 @@ Find the ID of your main/admin server (only admin commands can be used in this s
 
 Find the ID of your Discord user (this determines who the bot admin is).
 
-If you're unsure how to find IDs, [here's a guide]().
-
-After obtaining all necessary environment details, edit [application.yaml](https://github.com/Glaxier0/discord-bot-reddit-java/blob/4ae350a1d9a1ef2bb6738b8d98c5a84d71edd535/src/main/resources/application.yaml#L28).
-
-
 ### How to find id of the server and user ###
 
 First you need to turn on developer mode in the discord app.
@@ -67,6 +62,8 @@ First you need to turn on developer mode in the discord app.
 User settings > under app settings > advanced > turn on developer mode.
 
 Now by right clicking any server or user you can get id of them.
+
+After obtaining all necessary environment details, edit [application.yaml](https://github.com/Glaxier0/discord-bot-reddit-java/blob/4ae350a1d9a1ef2bb6738b8d98c5a84d71edd535/src/main/resources/application.yaml#L28).
 
 ## Database ##
 
