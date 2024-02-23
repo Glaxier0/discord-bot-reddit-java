@@ -1,10 +1,17 @@
 spring:
   datasource:
    url: jdbc:postgresql://localhost:5432/reddit_bot
-   username:
-   password:
+   username: postgres
+   password: postgres
   main:
     web-application-type: none
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: info
 
 # noinspection SpringBootApplicationYaml
 reddit:
