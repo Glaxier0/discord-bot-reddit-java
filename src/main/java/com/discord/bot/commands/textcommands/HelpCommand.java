@@ -1,31 +1,29 @@
 package com.discord.bot.commands.textcommands;
 
 import com.discord.bot.commands.ISlashCommand;
+import com.discord.bot.service.SubredditService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+import java.util.stream.Collectors;
+
 public class HelpCommand implements ISlashCommand {
     final TextCommandUtils utils;
+    final SubredditService subredditService;
 
-    final String subreddits = """
-            - Unexpected
-            - dankmemes
-            - memes
-            - greentext
-            - blursedimages
-            - perfectlycutscreams
-            - interestingasfuck
-            - facepalm
-            """;
-
-    public HelpCommand(TextCommandUtils utils) {
+    public HelpCommand(TextCommandUtils utils, SubredditService subredditService) {
         this.utils = utils;
+        this.subredditService = subredditService;
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
+        var subreddits = subredditService.getSubredditsByGenre("reddit");
+        var formattedSubreddits = subreddits.stream()
+                .map(subreddit -> "- " + subreddit)
+                .collect(Collectors.joining("\n", "\n", "\n"));
 
         embedBuilder.setTitle("Commands").setDescription("""
                         - /[subreddit_name]
@@ -44,7 +42,7 @@ public class HelpCommand implements ISlashCommand {
                         - ||in age restricted||
                         - ||channel||
                         """)
-                .addField("Subreddits", subreddits, false);
+                .addField("Subreddits", formattedSubreddits, false);
 
         event.replyEmbeds(embedBuilder.build()).queue();
 
