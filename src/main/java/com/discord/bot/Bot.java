@@ -24,6 +24,7 @@ public class Bot {
     final UserService userService;
     final PostService postService;
     final SubredditService subredditService;
+    final YoutubeVideoService youtubeVideoService;
 
     final SearchReddit redditSearchService;
     final RemoveOldPosts removeOldPostsService;
@@ -42,13 +43,14 @@ public class Bot {
 
     public Bot(PostService postService, SubredditService subredditService,
                TodoService todoService, UserService userService,
-               SearchReddit redditSearchService, RedditTokenService redditTokenService,
-               RemoveOldPosts removeOldPostsService, FirebaseServiceImpl firebaseService,
-               RedgifsTokenService redgifsTokenService) {
+               YoutubeVideoService youtubeVideoService, SearchReddit redditSearchService,
+               RedditTokenService redditTokenService, RemoveOldPosts removeOldPostsService,
+               FirebaseServiceImpl firebaseService, RedgifsTokenService redgifsTokenService) {
         this.postService = postService;
         this.subredditService = subredditService;
         this.todoService = todoService;
         this.userService = userService;
+        this.youtubeVideoService = youtubeVideoService;
         this.redditSearchService = redditSearchService;
         this.redditTokenService = redditTokenService;
         this.removeOldPostsService = removeOldPostsService;
@@ -60,7 +62,7 @@ public class Bot {
     public void startDiscordBot() throws InterruptedException {
         JDA jda = JDABuilder.createDefault(discordToken)
                 .addEventListeners(
-                        new CommandManager(postService, subredditService, todoService, userService, adminUserId))
+                        new CommandManager(postService, subredditService, youtubeVideoService, todoService, userService, adminUserId))
                 .setActivity(Activity.playing("Type /help")).build();
         jda.awaitReady();
         new JdaCommands(subredditService).addJdaCommands(jda);

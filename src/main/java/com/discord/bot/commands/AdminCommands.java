@@ -44,6 +44,14 @@ public class AdminCommands {
                 Commands.slash("delete", "Delete a subreddit.")
                         .addOptions(new OptionData(OptionType.STRING, "name", "Name of the subreddit.")
                                 .setRequired(true)),
+                Commands.slash("addvideo", "Add a video.")
+                        .addOptions(new OptionData(OptionType.STRING, "url", "Url of the video.")
+                                        .setRequired(true),
+                                new OptionData(OptionType.STRING, "genre", "Genre of the video " +
+                                        "(monke etc).").setRequired(true)),
+                Commands.slash("deletevideo", "Delete a video.")
+                        .addOptions(new OptionData(OptionType.STRING, "url", "Url of the video.")
+                                .setRequired(true)),
                 //Custom Commands
                 Commands.slash("formylove", "For the special one.")
         ).queue();
